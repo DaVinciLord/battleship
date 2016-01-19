@@ -1,0 +1,38 @@
+Pour Linux :
+	Si vous ne l'avez pas un "sudo apt-get install git" devrait faire l'affaire. 
+
+Pour Windows :
+	Télchargez l'installeur sur : https://git-scm.com/download/win (choisissez la version qui vous convient) et laissez vous guider (vous pouvez généralement répondre à chaque par le choix "recommandé").
+
+
+Comme vous n'avez sûrement pas encore de dépôt local il faut commencer par la configuration de git :
+	Lancez la console git puis tapez ceci (les infos entre les guillemets sont à remplacez): 
+		git config --global user.email "me@me.com" ou git config --global user.mail "me@me.com"
+		git config --global user.name "Mon_Nom"	
+
+	 Ensuite, si vous ne voulez pas vous enquiquinez à produire des clés ssh vous pouvez utiliser la méthode https pour faire vos changements:
+		"git clone https://X@bitbucket.org/DaVinciLord/battleship.git" crééera un dossier "battleship" dans le dossier courant de la console (n'oubliez pas de faire un "cd" pour en changer, pour aller sur une autre partition sous Windows il faut faire "cd /x/" où "x" est la lettre de la partition, ou alors clic-droit->"Git Bash Here" pour Windows dans le dossier voulu)
+		où X est votre pseudo sur bitbucket.org. 
+
+
+Pour récupérer les nouvelles données:
+	git pull brancheLocal brancheDistante (exemple: "git pull origin master").
+
+Pour envoyer vos nouvelles données:
+	git add . (le dossier courant, quand vous êtes à la racine du dépôt) ou alors l'énumération complète des fichiers modifiés depuis la racine.
+	git commit -m 'Un message de commit'
+	git push -u brancheLocale brancheDistante (exemple: "git push -u origin master").
+
+Pour changer de branche localement:
+	git branch "nomdelabranche" :  pour créer localement une branche non existante
+	git checkout "nomdelabranche" :  pour passer à cette branche en local
+
+Pour récupérer la première fois une branche distante:
+	git fetch && git checkout branche :  récupèrera les infos puis basculera sur la nouvelle branche
+		
+
+
+Si jamais vous avez un problème, google est là pour vous aider (je ne suis pas expert non plus ^^ ).
+Si j'ai oublier des choses ou que ça ne fonctionne pas, dites le moi, mais pas sûr que je trouve (je débute comme vous).
+
+Pour l'intégration aux différents IDE, je suis capable de faire la config pour IntelliJ mais pas Eclipse donc à vous de voir après.
