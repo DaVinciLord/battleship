@@ -15,14 +15,16 @@ import model.ship.ShipType;
 public class ShipPlacementAndShootTest {
 	public static void main(String[] args) throws ShipCaseRaceException, ShipBadLengthException, ShipOffLimitException, ShipNotAlignException {
 		IBoard<Case> sea = new Board<Case>(new Coordinates(5, 5, 5));
-		Coordinates coords = new Coordinates(6, 6, 6);
+		// Coordinates coords = new Coordinates(6, 6, 6); Attention : Coordinates est non mutable !
 		for (int i = 0; i < 5; i++) {
-			coords.getCoordinates()[0] = i;
+			// coords.getCoordinates()[0] = i; Par conséquent le tableau renvoyé par getCoordinates est une copie !
 			for (int j = 0; j < 5; j++) {
-				coords.getCoordinates()[1] = j;
+				// coords.getCoordinates()[1] = j; Et on ne modifie pas réellement l'objet coordinates !
 				for (int k = 0; k < 5; k++) {
-					coords.getCoordinates()[2] = k;
-					sea.setItem(coords, new Case());
+					// coords.getCoordinates()[2] = k; Qui reste [6, 6, 6] : the number of the beast !
+					// sea.setItem(coords, new Case()); Et du coup on a une IndexOutOfBoundsException !
+				    sea.setItem(new Coordinates(i, j, k), new Case()); // il faut donc faire comme ça !
+				    // (ou alors on peut utiliser le dimZeroIterator() qui est prévu pour ça).
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-package batailleNavale;
+package tests.gui;
 
 import gui.GraphicBoard;
 import model.board.Board;
@@ -23,7 +23,7 @@ public class GraphicBoardTest {
     public GraphicBoardTest() {
         // création de la vue
         frame = new JFrame("test tableau graphique");
-        board = new GraphicBoard<Case>(new Board<>(new Coordinates(10, 10)), new Coordinates(-2, -1));
+        board = new GraphicBoard<Case>(new Board<Case>(new Coordinates(10, 10)), new Coordinates(-2, -1));
         board.setForeGround(true);
         text = new JTextField(10);
         text.setEditable(false);
