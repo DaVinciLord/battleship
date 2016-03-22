@@ -34,6 +34,6 @@
 !*.odt
 !*.txt
 !*.dia
-
+!*.png
 
 **/.idea/*

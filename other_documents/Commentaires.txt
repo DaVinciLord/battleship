@@ -1,0 +1,11 @@
+GuessShipPlace:
+1)
+Cette classe est une première version qui détermine les placements possibles des vaisseaux adverses si on fournit les zones de cases HIT et SUNK entourées de MISSED. 
+Elle est peu efficace car les tableaux d'int doivent être comparés avec Arrays.equals et par conséquent les recherches se font en temps linéaire. 
+On voit également des résultats doublons apparaître. 
+Une solution serait peut-être de définir un objet coordonnée avec une redéfinition de equals pour profiter des recherches efficaces de l'API des collections.
+
+2)
+Ce GuessShipPlace est utilisable pour calculer toutes les possibilités de placement de navires restants (en ne donnant pas la liste des sunks). 
+Cependant, le calcul devient rapidement coûteux dès que le nombre de cases dans hits est grand ou qu'il y a trop de cases adjacentes. 
+À utiliser quand la partie est bien entamée pour réduire le nombre de possibilités.
