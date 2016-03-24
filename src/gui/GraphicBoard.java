@@ -61,6 +61,11 @@ public class GraphicBoard<E> extends JComponent {
      * nombre de lignes.
      */
     private int dimY;
+    
+    /**
+     * L'objet qui dessine spécifiquement ce qui est relatif au type E.
+     */
+    private final BoardDrawer<E> drawer;
 
     // CONSTRUCTEUR
 
@@ -76,17 +81,20 @@ public class GraphicBoard<E> extends JComponent {
      *     pour toute compsante non négative de axe, d'indice i :
      *     axe.get(i) < model.getDimensionsSizes().get(i) </pre>
      */
-    public GraphicBoard(IBoard<E> model, Coordinates axes) {
+    public GraphicBoard(IBoard<E> model, Coordinates axes, BoardDrawer<E> drawer) {
         if (model == null) {
             throw new AssertionError("model null");
         }
         if (model.dimensionNb() < 2 ) {
             throw new AssertionError("pas assez de dimensions");
         }
+        if (drawer == null) {
+            throw new AssertionError("pas assez de dimensions");
+        }
         this.model = model;
         updateAxes(axes);
         foreGround = false;
-
+        this.drawer = drawer;
         cls = new CoordinatesListenerSupport(this);
         createView();
         createController();
@@ -174,7 +182,18 @@ public class GraphicBoard<E> extends JComponent {
     }
 
     // COMMANDES
-
+    
+    /**
+     * Indique à quelles composantes des coordoonnées doivent correspondre les
+     * axes, et pour quelles valeurs sur les autres composantes les cases sont
+     * représentées.
+     * Exemple : un GraphicBoard représentant un IBoard de dimensions [6, 5, 4, 3]
+     *     avec un axe [-2, 2, 0, -1] affichera toutes les cases de coordonnées
+     *     [y, 2, 0, x] pour x de 0 à 2 et y de 0 à 5
+     *     la valeur -1 signifie l'axe des X et la valeur -2 signifie l'axe des Y
+     *     Ainsi, ce GraphicBoard s'affichera en 3 colonnes (axe horizontal) et 
+     *     6 lignes (axe vertical).
+     */
     public void updateAxesAndRepaint(Coordinates axes) {
         updateAxes(axes);
         createView();
@@ -194,6 +213,7 @@ public class GraphicBoard<E> extends JComponent {
                 paintCase(x, y, g);
             }
         }
+        drawer.drawOnBoard(g, model, axes, 1.f);
     }
 
     /**

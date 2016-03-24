@@ -49,14 +49,20 @@ public class GraphicBoardLayers<E> extends JPanel {
      * L'Ã©couteur commun Ã  tous les GraphicNArrays contenus.
      */
     private CoordinatesListener cl;
+    
+    /**
+     * L'objet qui dessine spécifiquement ce qui est relatif au type E.
+     */
+    private BoardDrawer<E> drawer;
 
     // CONSTRUCTEUR
 
-    public GraphicBoardLayers(IBoard<E> model, Coordinates axes) {
+    public GraphicBoardLayers(IBoard<E> model, Coordinates axes, BoardDrawer<E> drawer) {
         super(null);
-        if (model == null) {
-            throw new AssertionError("model null");
+        if (model == null || axes == null || drawer == null) {
+            throw new AssertionError("paramètres null");
         }
+        this.drawer = drawer;
         this.model = model;
         cls = new CoordinatesListenerSupport(this);
         setLayout(new OverlayLayout(this));
@@ -81,14 +87,14 @@ public class GraphicBoardLayers<E> extends JPanel {
             int[] axis = axes.getCoordinates();
             for (int k = 0; k < dimZ; k++) {
                 axis[zIndex] = k;
-                GraphicBoard<E> graf = new GraphicBoard<E>(model, new Coordinates(axis));
+                GraphicBoard<E> graf = new GraphicBoard<E>(model, new Coordinates(axis), drawer);
                 float opac = ((float) k + 1.f) / dimZ;
                 System.out.println(opac);
                 graf.setOpacity(0.5f);
                 boards.add(graf);
             }
         } else {
-            GraphicBoard<E> graf = new GraphicBoard<E>(model, axes);
+            GraphicBoard<E> graf = new GraphicBoard<E>(model, axes, drawer);
             boards.add(graf);
         }
     }
