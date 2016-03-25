@@ -1,6 +1,12 @@
-package model.network;
+package project;
 
-import model.player.IPlayer;
+import java.net.Socket;
+
+import project.exceptions.ServerBadDataException;
+import project.exceptions.ServerBadFormatException;
+import project.exceptions.ServerEmptyDataException;
+import project.exceptions.ServerNullDataException;
+import project.model.IPlayer;
 
 /**
  * Interface du controleur du serveur.
@@ -25,21 +31,29 @@ public interface IServerController extends Runnable{
 	 * Méthode permettant de recevoir les données issues de la socket
 	 * sous forme de String.
 	 * @param data Données reçu.
+	 * @throws ServerBadFormatException 
+	 * @throws ServerBadDataException 
+	 * @throws ServerEmptyDataException 
+	 * @throws ServerNullDataException 
 	 * @pre
 	 * 	data != null
 	 * 	!data.equals("")
 	 */
-	public void receiveData(String data);
+	public void receiveData() throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException;
 	
 	/**
 	 * Méthode permettant de vérifier l'intégrité des données reçus.
 	 * @param data Données reçus.
 	 * @return True si les données sont bonnes, fausses sinon.
+	 * @throws ServerNullDataException 
+	 * @throws ServerEmptyDataException 
+	 * @throws ServerBadDataException 
+	 * @throws ServerBadFormatException 
 	 * @pre
 	 * 	data != null
 	 * 	!data.equals("")
 	 */
-	public boolean verifyData(String data);
+	public boolean verifyData(String data) throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException;
 	
 	/**
 	 * Méthode retournant le nom canonique de notre adresse IP,
@@ -71,4 +85,10 @@ public interface IServerController extends Runnable{
 	 * @return Le modèle de l'application (ici le joueur).
 	 */
 	public IPlayer getModel();
+	
+	/**
+	 * 
+	 * @return La socket du client.
+	 */
+	public Socket getSocket();
 }

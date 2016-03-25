@@ -1,65 +1,117 @@
-package model.network;
+package project;
 
-import model.player.IPlayer;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
+import project.exceptions.ServerBadDataException;
+import project.exceptions.ServerBadFormatException;
+import project.exceptions.ServerEmptyDataException;
+import project.exceptions.ServerNullDataException;
+import project.exceptions.ServerSocketAcceptException;
+import project.model.IPlayer;
+
+/**
+ * 
+ * @author Nicolas GILLE
+ * @date 25 mars 2016
+ */
 public class ServerController implements IServerController {
-	
 	private IPlayer model;
 	private String lastData;
 	private IServer server;
+	private Socket socket;
 	
-	public ServerController(IPlayer model, IServer server) {
+	public ServerController(IPlayer model, IServer server) throws ServerSocketAcceptException {
 		this.model = model;
 		this.lastData = null;
 		this.server = server;
+		this.socket = this.server.connectSocket();
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-
+		while(this.server.isRunning()) {
+			try {
+				this.receiveData();
+			} catch (ServerNullDataException | ServerEmptyDataException | ServerBadDataException
+					| ServerBadFormatException e) {
+				e.printStackTrace();
+			}
+			this.sendData();
+		}
 	}
 
+	/**
+	 * @TODO
+	 * 	Il faut que je vois comment je peux récuperer les bonnes données aifn de pouvoir
+	 * écrire dans mon flux.
+	 */
 	@Override
 	public void sendData() {
-		// TODO Auto-generated method stub
+		try {
+			String data = null;
+			DataOutputStream out = new DataOutputStream(this.socket.getOutputStream());
+			out.writeUTF(data);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
 
+	/**
+	 * @TODO
+	 * 	Il faut que je fasse un objet permettant de convertir un String en object et inversement.
+	 */
+	@Override
+	public void receiveData() throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException {
+		try {
+			DataInputStream in = new DataInputStream(this.socket.getInputStream());
+			this.lastData = in.readUTF();
+			if (this.verifyData(this.lastData)) {
+//				this.model.LAMETHODEAUTILISER(this.lastData);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public void receiveData(String data) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean verifyData(String data) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean verifyData(String data) throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException {
+		if (data == null) 
+			throw new ServerNullDataException("Aucune donnée reçu");
+		if (data.equals("")) 
+			throw new ServerEmptyDataException("Les données reçus sont vide");
+		String[] split = data.split(":");
+		if (split.length == 1) 
+			throw new ServerBadFormatException("Les données reçus ne sont pas au bon format");
+		if (!(split[0].equals("String") || split[0].equals("Coordinates") || split[0].equals("Boolean") || split[0].equals("State")))
+			throw new ServerBadDataException("Les données reçus ne sont pas du bon type");
+		return true;
 	}
 
 	@Override
 	public String getHostName() {
-		// TODO Auto-generated method stub
 		return this.server.getHostName();
 	}
 
 	@Override
 	public String getData() {
-		// TODO Auto-generated method stub
 		return this.lastData;
 	}
 
 	@Override
 	public void setData(String s) {
-		// TODO Auto-generated method stub
 		this.lastData = s;
 	}
 
 	@Override
 	public IPlayer getModel() {
-		// TODO Auto-generated method stub
 		return this.model;
 	}
-
+	
+	public Socket getSocket() { 
+		return this.socket; 
+	}
 }

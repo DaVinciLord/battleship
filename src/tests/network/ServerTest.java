@@ -1,14 +1,16 @@
-package tests.network;
-
-import exceptions.network.ServerBadPortException;
-import exceptions.network.ServerClosedSocketException;
-import exceptions.network.ServerNullSocketException;
-import exceptions.network.ServerSchrodingerException;
-import model.network.Server;
+package project.test;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Map;
+
+import project.Server;
+import project.exceptions.ServerBadPortException;
+import project.exceptions.ServerClosedSocketException;
+import project.exceptions.ServerNullSocketException;
+import project.exceptions.ServerSchrodingerException;
 
 public class ServerTest {
 	private final static int BAD_BACKLOG = -2;
@@ -288,27 +290,48 @@ public class ServerTest {
 		System.out.println(s.toString());
 	}
 	
+	private static void scanningNetworkInterface() {
+		Server s = null;
+		try {
+			s = new Server(6666, 10);
+		} catch (ServerBadPortException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("IPv4");
+		Map<String, String> map = s.getNetworkInterfaceScan().getIPv4();
+		for (String str : map.keySet()) {
+			System.out.println(str.toString() + " " + map.get(str).toString());
+		}
+		System.out.println("IPv6");
+		map = s.getNetworkInterfaceScan().getIPv6();
+		for (String str : map.keySet()) {
+			System.out.println(str.toString() + " " + map.get(str).toString());
+		}
+	}
 	
 	public static void main(String[] args) throws ServerSchrodingerException, ServerBadPortException, ServerClosedSocketException, IOException, ServerNullSocketException {
-		//constructor1();
-		//constructor2();
-		//constructor3();
-		//constructor4();
-		//constructor5();
-		//startServeur1();
-		//startServeur2();
-		//stopServeur1();
-		//stopServeur2();
-		//stopServeur3();
-		//toStringServer();
-		//closeSocket1();
-		//closeSocket2();
-		//closeSocket3();
-		//setTimeout();
-		//isRunning();
-	 	//getIP();
-		//getHostName();
-		//getPort();
-		setPort();
+//		constructor1();
+//		constructor2();
+//		constructor3();
+//		constructor4();
+//		constructor5();
+//		startServeur1();
+//		startServeur2();
+//		stopServeur1();
+//		stopServeur2();
+//		stopServeur3();
+//		toStringServer();
+//		closeSocket1();
+//		closeSocket2();
+//		closeSocket3();
+//		setTimeout();
+//		isRunning();
+//		getIP();
+//		getHostName();
+//		getPort();
+//		setPort();
+//		scanningNetworkInterface();
+		System.out.println(Server.class.getSimpleName());
 	}
 }

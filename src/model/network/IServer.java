@@ -1,12 +1,13 @@
-package model.network;
-
-import exceptions.network.ServerBadPortException;
-import exceptions.network.ServerClosedSocketException;
-import exceptions.network.ServerNullSocketException;
-import exceptions.network.ServerSchrodingerException;
+package project;
 
 import java.net.InetAddress;
 import java.net.Socket;
+
+import project.exceptions.ServerBadPortException;
+import project.exceptions.ServerClosedSocketException;
+import project.exceptions.ServerNullSocketException;
+import project.exceptions.ServerSchrodingerException;
+import project.exceptions.ServerSocketAcceptException;
 
 /**
  * Interface du serveur.
@@ -49,17 +50,11 @@ public interface IServer extends Runnable{
 	public void run();
 	
 	/**
-	 * Permet de mettre la socket d'ecoute en écoute.
-	 * Cette méthode est bloquante, car elle mets en attente le socket d'écoute
-	 * du serveur.
-	 */
-	public void listenSocket();
-	
-	/**
 	 * Permet de connecter la socket issues de l'écoute.
 	 * @return La socket permettant de communiquer avec le second joueur.
+	 * @throws ServerSocketAcceptException 
 	 */
-	public Socket connectSocket();
+	public Socket connectSocket() throws ServerSocketAcceptException;
 	
 	/**
 	 * Méthode deconnectant la <code>Socket</code> et fermant son flux.  

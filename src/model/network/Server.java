@@ -1,16 +1,27 @@
-package model.network;
+package project;
 
 import java.io.IOException;
+import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
-import exceptions.network.ServerBadPortException;
-import exceptions.network.ServerClosedSocketException;
-import exceptions.network.ServerNullSocketException;
-import exceptions.network.ServerSchrodingerException;
+import project.exceptions.ServerBadPortException;
+import project.exceptions.ServerClosedSocketException;
+import project.exceptions.ServerNullSocketException;
+import project.exceptions.ServerSchrodingerException;
+import project.exceptions.ServerSocketAcceptException;
 
+/**
+ * 
+ * @author Nicolas GILLE
+ * @date 22 mars 2016
+ */
 public class Server implements IServer {
 	private static final int MS_TO_S = 1000;
 	private static final int PORT = 24680;
@@ -19,11 +30,11 @@ public class Server implements IServer {
 			
 	private ServerSocket listen;
 	private ServerState state;
+	private NetworkInterfaceScan nis;
 	private int port;
 	
 	public Server() throws ServerBadPortException {
 		this(Server.PORT, Server.BACKLOG);
-		this.port = Server.PORT;
 	}
 	
 	public Server(int port, int backlog) throws ServerBadPortException {
@@ -37,6 +48,7 @@ public class Server implements IServer {
 		}
 		this.state = ServerState.OFF;
 		this.port = port;
+		this.nis = new NetworkInterfaceScan();
 	}
 	
 	@Override
@@ -65,20 +77,20 @@ public class Server implements IServer {
 	@Override
 	public void run() {
 		while(this.isRunning()) {
-			
+			Thread t = new Thread();
+			t.start();
 		}
 	}
 
 	@Override
-	public void listenSocket() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Socket connectSocket() {
-		// TODO Auto-generated method stub
-		return null;
+	public Socket connectSocket() throws ServerSocketAcceptException {
+		Socket s;
+		try {
+			s = this.listen.accept();
+		} catch (IOException e) {
+			throw new ServerSocketAcceptException("Le serveur n'a pas pu accepter la connexion");
+		}
+		return s;
 	}
 
 	@Override
@@ -145,10 +157,63 @@ public class Server implements IServer {
 		return this.getIP().getHostAddress() + ":" + this.getPort() + ";\n" + this.getState().toString();
 	}
 	
+	public NetworkInterfaceScan getNetworkInterfaceScan() {
+		return this.nis;
+	}
+	
 	private ServerState getState() { 
 		return this.state;
 	}
 	
+	/**
+	 * Classe interne gérant les IPv4/6 pour toutes les interfaces réseau présente dans l'OS.
+	 * Celle-ci contient deux Map prenant en clé le nom de l'interface réseau et en valeur l'IP associé.
+	 * 
+	 * @author Nicolas GILLE
+	 * @date 22 mars 2016
+	 */
+	public class NetworkInterfaceScan {
+		private Map<String, String> networkfInterfaceIPv4;
+		private Map<String, String> networkfInterfaceIPv6;
+		
+		public NetworkInterfaceScan() {
+			try {
+				this.networkfInterfaceIPv4 = new HashMap<String, String>();
+				this.networkfInterfaceIPv6 = new HashMap<String, String>();
+				this.scanningNetworkInterface();
+			} catch (SocketException e) {
+				e.printStackTrace();
+			}
+		}
+
+		public Map<String, String> getIPv4() { return this.networkfInterfaceIPv4; }
+		public Map<String, String> getIPv6() { return this.networkfInterfaceIPv6; }
+		
+		private void scanningNetworkInterface() throws SocketException {
+			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+		    while (e.hasMoreElements()) {
+		        NetworkInterface n = e.nextElement();
+		        String name = n.getName();
+		        Enumeration<InetAddress> ei = n.getInetAddresses();
+		        while (ei.hasMoreElements()) {
+		            InetAddress i = ei.nextElement();
+		            if (i instanceof Inet6Address) {
+		            	String s = i.toString().substring(1, i.toString().length());
+		            	int percentIndex = s.indexOf("%");
+		            	this.networkfInterfaceIPv6.put(name, s.substring(0, percentIndex));
+		            } else {
+		            	this.networkfInterfaceIPv4.put(name, i.getHostAddress());
+		            }
+		        }
+		    }
+		}
+	}
+	
+	/**
+	 * Etat du serveur représenter avec un boolean permettant de faire tourner en boucle le serveur jusqu'à extinction de l'application.
+	 * @author Nicolas GILLE
+	 * @date 22 mars 2016
+	 */
 	private enum ServerState {
 		ON(true, "Serveur eteint"),
 		OFF(false, "Serveur allumé");

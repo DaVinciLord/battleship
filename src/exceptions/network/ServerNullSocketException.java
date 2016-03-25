@@ -1,4 +1,4 @@
-package exceptions.network;
+package project.exceptions;
 
 public class ServerNullSocketException extends ServerException {
 	private static final long serialVersionUID = -6934993666640106173L;
