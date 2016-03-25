@@ -24,12 +24,13 @@ import project.exceptions.ServerSocketAcceptException;
  */
 public class Server implements IServer {
 	private static final int MS_TO_S = 1000;
-	private static final int PORT = 24680;
-	private static final int BACKLOG = 2;
 	private static final int TIMEOUT = 30 * MS_TO_S;
+	public static final int PORT = 24680;
+	public static final int BACKLOG = 2;
 			
 	private ServerSocket listen;
 	private ServerState state;
+	private InetAddress addr;
 	private NetworkInterfaceScan nis;
 	private int port;
 	
@@ -47,6 +48,21 @@ public class Server implements IServer {
 			e.printStackTrace();
 		}
 		this.state = ServerState.OFF;
+		this.port = port;
+		this.nis = new NetworkInterfaceScan();
+	}
+	
+	public Server(int port, int backlog, InetAddress addr) throws ServerBadPortException {
+		try {
+			if ((port > 1024 && port <= 65535) || backlog > 1)
+				this.listen = new ServerSocket(port, backlog, addr);
+			else
+				throw new ServerBadPortException("Port invalide");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.state = ServerState.OFF;
+		this.addr = addr;
 		this.port = port;
 		this.nis = new NetworkInterfaceScan();
 	}
@@ -238,3 +254,4 @@ public class Server implements IServer {
 		}
 	}
 }
+
