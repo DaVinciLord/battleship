@@ -1,11 +1,10 @@
 package model.ai;
 
-import model.board.Board;
+import java.util.List;
+
 import model.board.IBoard;
 import model.board.State;
 import model.coordinates.Coordinates;
-
-import java.util.List;
 
 /**
      * Interface spécifiant l'intelligence artificielle qui pourra être utilisée
