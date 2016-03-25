@@ -1,12 +1,11 @@
 package model.ai;
 
-import model.board.Board;
+import java.util.ArrayList;
+import java.util.List;
+
 import model.board.IBoard;
 import model.board.State;
 import model.coordinates.Coordinates;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MediumAdvisor extends AAdvisor {
     private Coordinates lastCoords;

@@ -1,15 +1,14 @@
 package model.player;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import model.ai.EasyAdvisor;
 import model.ai.IAdvisor;
 import model.ai.MediumAdvisor;
 import model.ai.NoobAdvisor;
 import model.coordinates.Coordinates;
 import model.ship.IShip;
-import model.ship.Ship;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 
 public class AIPlayer extends APlayer {
@@ -64,6 +63,10 @@ public class AIPlayer extends APlayer {
         adv.setShipLeft(l);      
     }
 
+    /**
+     * Permet de consulter son conseillé, et de retourner le tir que l'IA fait
+     * @return les coordonnées du tir
+     */
     public Coordinates shoot() {
         return adv.getAdvise();
     }

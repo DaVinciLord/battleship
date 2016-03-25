@@ -1,11 +1,10 @@
 package model.ai;
 
-import model.board.Board;
-import model.board.IBoard;
-import model.board.State;
-
 import java.util.Collections;
 import java.util.List;
+
+import model.board.IBoard;
+import model.board.State;
 
 
 public abstract class AAdvisor implements IAdvisor {

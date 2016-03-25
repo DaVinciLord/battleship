@@ -13,16 +13,4 @@ public class Player extends APlayer {
         super(dimensions, shipNaL);
     }
     
-
-    public Coordinates shoot(String hit) {
-        return new Coordinates(hit);
-    }
-
-    @Override
-    public Coordinates shoot() {
-        // TODO Stub de la méthode généré automatiquement
-        return null;
-    }
-
-
 }
