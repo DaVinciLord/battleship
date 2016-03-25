@@ -1,4 +1,4 @@
-package project.exceptions;
+package exceptions.network;
 
 public class ServerSocketAcceptException extends ServerException {
 

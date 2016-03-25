@@ -1,4 +1,4 @@
-package project;
+package model.network;
 
 import java.io.IOException;
 import java.net.Inet6Address;

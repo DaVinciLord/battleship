@@ -1,4 +1,4 @@
-package project.exceptions;
+package exceptions.network;
 
 public class ServerClosedSocketException extends ServerException{
 	private static final long serialVersionUID = 3807213060977263611L;

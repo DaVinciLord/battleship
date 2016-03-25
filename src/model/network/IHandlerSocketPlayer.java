@@ -1,4 +1,4 @@
-package project;
+package model.network;
 
 /**
  * Classe s'occupant uniquement de l'échange des données entre les clients.

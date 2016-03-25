@@ -1,4 +1,4 @@
-package project.exceptions;
+package exceptions.network;
 
 public class ServerEmptyDataException extends ServerException {
 	private static final long serialVersionUID = -5687531229736361744L;

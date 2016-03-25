@@ -1,4 +1,4 @@
-package project;
+package model.network;
 
 import java.net.InetAddress;
 import java.net.Socket;
