@@ -1,16 +1,15 @@
-package project.test;
+package tests.network;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Map;
 
-import project.Server;
-import project.exceptions.ServerBadPortException;
-import project.exceptions.ServerClosedSocketException;
-import project.exceptions.ServerNullSocketException;
-import project.exceptions.ServerSchrodingerException;
+import exceptions.network.ServerBadPortException;
+import exceptions.network.ServerClosedSocketException;
+import exceptions.network.ServerNullSocketException;
+import exceptions.network.ServerSchrodingerException;
+import model.network.Server;
 
 public class ServerTest {
 	private final static int BAD_BACKLOG = -2;

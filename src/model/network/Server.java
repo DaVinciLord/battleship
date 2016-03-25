@@ -11,11 +11,11 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import project.exceptions.ServerBadPortException;
-import project.exceptions.ServerClosedSocketException;
-import project.exceptions.ServerNullSocketException;
-import project.exceptions.ServerSchrodingerException;
-import project.exceptions.ServerSocketAcceptException;
+import exceptions.network.ServerBadPortException;
+import exceptions.network.ServerClosedSocketException;
+import exceptions.network.ServerNullSocketException;
+import exceptions.network.ServerSchrodingerException;
+import exceptions.network.ServerSocketAcceptException;
 
 /**
  * 

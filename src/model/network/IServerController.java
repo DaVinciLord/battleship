@@ -2,11 +2,11 @@ package model.network;
 
 import java.net.Socket;
 
-import project.exceptions.ServerBadDataException;
-import project.exceptions.ServerBadFormatException;
-import project.exceptions.ServerEmptyDataException;
-import project.exceptions.ServerNullDataException;
-import project.model.IPlayer;
+import exceptions.network.ServerBadDataException;
+import exceptions.network.ServerBadFormatException;
+import exceptions.network.ServerEmptyDataException;
+import exceptions.network.ServerNullDataException;
+import model.player.IPlayer;
 
 /**
  * Interface du controleur du serveur.

@@ -5,12 +5,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import project.exceptions.ServerBadDataException;
-import project.exceptions.ServerBadFormatException;
-import project.exceptions.ServerEmptyDataException;
-import project.exceptions.ServerNullDataException;
-import project.exceptions.ServerSocketAcceptException;
-import project.model.IPlayer;
+import exceptions.network.ServerBadDataException;
+import exceptions.network.ServerBadFormatException;
+import exceptions.network.ServerEmptyDataException;
+import exceptions.network.ServerNullDataException;
+import exceptions.network.ServerSocketAcceptException;
+import model.player.IPlayer;
 
 /**
  * 
