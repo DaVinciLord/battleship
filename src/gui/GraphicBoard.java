@@ -23,7 +23,7 @@ public class GraphicBoard<E> extends JComponent {
     /**
      * Taille préférée d'une case.
      */
-    public static final int CASE_SIZE = 35;
+    public static final int DEFAULT_CASE_SIZE = 40;
 
     // ATTRIBUT
 
@@ -38,14 +38,19 @@ public class GraphicBoard<E> extends JComponent {
     private final IBoard<E> model;
 
     /**
-     * L'opacité avec laquelle ce composant doit être dessiné.
+     * L'opacité avec laquelle ce composant doit être dessiné. (fond)
      */
     private float opacity;
+    
+    /**
+     * taille réelle de la case.
+     */
+    private int caseSize;
 
     /**
      * Indique si les cases sont cliquables. (composant au premier plan).
      */
-    private boolean foreGround;
+    private boolean caseActive;
 
     /**
      * indique les axes et les composantes fixées.
@@ -91,9 +96,11 @@ public class GraphicBoard<E> extends JComponent {
         if (drawer == null) {
             throw new AssertionError("pas assez de dimensions");
         }
+        opacity = 1.f;
+        caseSize = DEFAULT_CASE_SIZE;
         this.model = model;
         updateAxes(axes);
-        foreGround = false;
+        caseActive = false;
         this.drawer = drawer;
         cls = new CoordinatesListenerSupport(this);
         createView();
@@ -107,9 +114,9 @@ public class GraphicBoard<E> extends JComponent {
      * Cette méthode permet aussi d'updater la vue.
      */
     private void createView() {
-        opacity = 1.f;
+        
         setBackground(new Color(0.0f, 0.0f, 0.0f, 0.0f));
-        Dimension d = new Dimension(CASE_SIZE * dimX + 1, CASE_SIZE * dimY + 1);
+        Dimension d = new Dimension(caseSize * dimX + 1, caseSize * dimY + 1);
         setPreferredSize(d);
         setMinimumSize(d);
         setMaximumSize(d);
@@ -119,9 +126,9 @@ public class GraphicBoard<E> extends JComponent {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (foreGround) {
-                    int x = e.getX() / CASE_SIZE;
-                    int y = e.getY() / CASE_SIZE;
+                if (caseActive) {
+                    int x = e.getX() / caseSize;
+                    int y = e.getY() / caseSize;
                     int[] coord = axes.getCoordinates();
                     for (int k = 0; k < coord.length; k++) {
                         if (coord[k] == -1) {
@@ -163,8 +170,8 @@ public class GraphicBoard<E> extends JComponent {
      * indique si le composant est au premier plan, c'est à dire apte à renvoyer
      * des CoordEvents avec coordonnée renseignée.
      */
-    public boolean isForeGround() {
-        return foreGround;
+    public boolean isCaseActive() {
+        return caseActive;
     }
 
     /**
@@ -200,6 +207,20 @@ public class GraphicBoard<E> extends JComponent {
         revalidate();
         repaint();
     }
+    
+    public void scaleAndRepaint(float scale) {
+        if (scale <= 0.0f) {
+            throw new AssertionError("scale négatif ou nul");
+        }
+        caseSize = Math.round(DEFAULT_CASE_SIZE * scale);
+        Dimension d = new Dimension(caseSize * dimX + 1, caseSize * dimY + 1);
+        setPreferredSize(d);
+        setMinimumSize(d);
+        setMaximumSize(d);
+        createView();
+        repaint();
+        revalidate();
+    }
 
     /**
      * Dessine le tableau sans tenir compte du statut des éléments dans
@@ -222,11 +243,13 @@ public class GraphicBoard<E> extends JComponent {
     private void paintCase(int x, int y, Graphics g) {
         Color c  = new Color(0.7f, 0.7f, 1.0f, opacity);
         g.setColor(c);
-        g.fillRect(x * CASE_SIZE, y * CASE_SIZE, CASE_SIZE, CASE_SIZE);
-        c  = new Color(0.2f, 0.2f, 1.0f, opacity);
+        g.fillRect(x * caseSize, y * caseSize, caseSize, caseSize);
+        c  = new Color(0.2f, 0.2f, 1.0f, 1.0f);
         g.setColor(c);
-        g.drawRect(x * CASE_SIZE, y * CASE_SIZE, CASE_SIZE, CASE_SIZE);
-        // g.drawRect(x * CASE_SIZE + 1, y * CASE_SIZE + 1, CASE_SIZE - 2, CASE_SIZE - 2);
+        g.drawRect(x * caseSize, y * caseSize, caseSize, caseSize);
+        if (caseActive) {
+            g.drawRect(x * caseSize + 1, y * caseSize + 1, caseSize - 2, caseSize - 2);
+        }
         // /!\ Je n'ai pas trouvé comment régler l'épaisseur du trait.
     }
 
@@ -234,8 +257,8 @@ public class GraphicBoard<E> extends JComponent {
      * Mets le plateau au premier plan ou en arriere-plan
      */
 
-    public void setForeGround(boolean b) {
-        foreGround = b;
+    public void setCaseActive(boolean b) {
+        caseActive = b;
     }
 
     /**

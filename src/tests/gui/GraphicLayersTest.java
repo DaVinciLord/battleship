@@ -1,13 +1,16 @@
 package tests.gui;
 
+import gui.BoardDrawer;
 import gui.GraphicBoardLayers;
 import model.board.Board;
 import model.board.Case;
+import model.board.IBoard;
 import model.coordinates.Coordinates;
 import model.coordinates.CoordinatesEvent;
 import model.coordinates.CoordinatesListener;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
@@ -21,10 +24,17 @@ public class GraphicLayersTest {
     private GraphicBoardLayers<Case> board;
     
     public GraphicLayersTest() {
+        BoardDrawer<Case> pinceau = new BoardDrawer<Case>() {
+            @Override
+            public void drawOnBoard(Graphics g, IBoard<Case> board,
+                    Coordinates axes, float scale) {
+            }
+        };
         // création de la vue
         frame = new JFrame("test tableau graphique");
-        board = new GraphicBoardLayers<Case>(new Board<Case>(new Coordinates(9, 9, 5)), new Coordinates(-2, -1, -3));
-        
+        board = new GraphicBoardLayers<Case>(new Board<Case>(new Coordinates(9, 9, 5)), new Coordinates(-2, -1, -3), pinceau);
+        // test changements d'axe :
+        board.updateAxesAndView(new Coordinates(-3, -2, -1));
         text = new JTextField(10);
         text.setEditable(false);
         // placement des composants
