@@ -1,4 +1,4 @@
-package gui;
+package gui.board;
 
 import model.board.IBoard;
 import model.coordinates.Coordinates;

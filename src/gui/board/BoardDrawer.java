@@ -1,4 +1,4 @@
-package gui;
+package gui.board;
 
 import java.awt.Graphics;
 

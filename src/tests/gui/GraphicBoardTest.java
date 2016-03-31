@@ -1,7 +1,7 @@
 package tests.gui;
 
-import gui.BoardDrawer;
-import gui.GraphicBoard;
+import gui.board.BoardDrawer;
+import gui.board.GraphicBoard;
 import model.board.Board;
 import model.board.Case;
 import model.board.IBoard;
