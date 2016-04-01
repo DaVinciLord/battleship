@@ -9,6 +9,8 @@ import model.board.Case;
 import model.board.IBoard;
 import model.board.State;
 import model.coordinates.Coordinates;
+import model.coordinates.CoordinatesListener;
+import model.coordinates.CoordinatesListenerSupport;
 import model.ship.IShip;
 import model.ship.Ship;
 import model.ship.ShipType;
@@ -47,6 +49,11 @@ public abstract class APlayer implements IPlayer {
      */
     private boolean ready;
     
+    /**
+     * Les écouteurs du joueur.
+     */
+    private CoordinatesListenerSupport cls;
+    
     // CONSTRUCTEURS
     
     public APlayer(Coordinates dimensions) {
@@ -54,7 +61,7 @@ public abstract class APlayer implements IPlayer {
     }
     
     public APlayer(Coordinates dimensions, Map<String, Integer> shipNaL) {
-
+        cls = new CoordinatesListenerSupport(this);
         selfGrid = new Board<Case>(dimensions);
         opponentGrid = new Board<State>(dimensions);
         Iterator<IBoard<Case>> isg = selfGrid.dimZeroIterator();
@@ -136,6 +143,9 @@ public abstract class APlayer implements IPlayer {
             throw new AssertionError("navire inconnu à l'amirauté");
         }
         s.setPosition(proue, poupe);
+        for (Coordinates c :s.getPosition()) {
+            cls.fireCoord(c, "ship placed");
+        }
     }
     
     public void removeShip(String name) {
@@ -145,6 +155,12 @@ public abstract class APlayer implements IPlayer {
         Ship s = ships.get(name);
         if (s == null) {
             throw new AssertionError("navire inconnu à l'amirauté");
+        }
+        if (!s.isPlaced()) {
+            throw new AssertionError("navire pas encore placé");
+        }
+        for (Coordinates c :s.getPosition()) {
+            cls.fireCoord(c, "ship removed");
         }
         s.removePosition();
     }
@@ -172,11 +188,27 @@ public abstract class APlayer implements IPlayer {
         if (s != State.MISSED) {
             life--;
         }
+        cls.fireCoord(fire, "shoot received");
         return s;
     }
     
     public void updateFireGrid(Coordinates fire, State s) {
         opponentGrid.setItem(fire, s);
+        cls.fireCoord(fire, "shoot fired");
+    }
+    
+    // LA PARTIE OÙ ON ÉCOUTE
+    
+    public void addCoordinatesListener(CoordinatesListener cl) {
+        cls.addCoordinatesListener(cl);
+    }
+    
+    public void removeCoordinatesListener(CoordinatesListener cl) {
+        cls.removeCoordinatesListener(cl);
+    }
+    
+    public CoordinatesListener[] getCoordinatesListeners() {
+        return cls.getCoordinatesListeners();
     }
     
 }

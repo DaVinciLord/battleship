@@ -35,10 +35,10 @@ public class CoordinatesListenerSupport {
         listenersList.remove(CoordinatesListener.class, listener);
     }
     
-    public void fireCoord(Coordinates coordinates) {
+    public void fireCoord(Coordinates coordinates, String actionType) {
         CoordinatesListener[] list = getCoordinatesListeners();
         if (list.length > 0) {
-            CoordinatesEvent e = new CoordinatesEvent(owner, coordinates);
+            CoordinatesEvent e = new CoordinatesEvent(owner, coordinates, actionType);
             for (CoordinatesListener lst : list) {
                 lst.doWithCoord(e);
             }

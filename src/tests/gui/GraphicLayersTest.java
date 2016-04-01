@@ -25,9 +25,20 @@ public class GraphicLayersTest {
     
     public GraphicLayersTest() {
         BoardDrawer<Case> pinceau = new BoardDrawer<Case>() {
+
             @Override
             public void drawOnBoard(Graphics g, IBoard<Case> board,
-                    Coordinates axes, float scale) {
+                    Coordinates axes, float scale, float alpha) {
+                // TODO Stub de la méthode généré automatiquement
+                
+            }
+
+            @Override
+            public void drawCase(Graphics g, IBoard<Case> board,
+                    Coordinates axes, float scale, float alpha,
+                    Coordinates position) {
+                // TODO Stub de la méthode généré automatiquement
+                
             }
         };
         // création de la vue

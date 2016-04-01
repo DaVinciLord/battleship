@@ -11,6 +11,7 @@ import model.board.Case;
 import model.board.IBoard;
 import model.board.State;
 import model.coordinates.Coordinates;
+import model.coordinates.CoordinatesListener;
 import model.ship.IShip;
     
     /**
@@ -109,43 +110,66 @@ import model.ship.IShip;
          * @throws ShipBadLengthException
          * @throws ShipOffLimitException
          * @throws ShipNotAlignException
+         * 
+         * Lance un CoordinatesEvent pour chaque case occupée par le navire, avec getActionType.equals("ship placed")
          */
         public void placeShip(String name, Coordinates proue, Coordinates poupe)
                 throws ShipCaseRaceException, ShipBadLengthException,
                 ShipOffLimitException, ShipNotAlignException ;
         
         /**
-         * Permet de retirer un bateau du le plateau.
+         * Permet de retirer un bateau du plateau.
          * @pre ship.contains(name)
          *      !ready
          * 
          * @param name le nom du bateau à retirer
+         * 
+         * Lance un CoordinatesEvent pour chaque case occupée par le navire, avec getActionType.equals("ship removed")
          */
         public void removeShip(String name);
         
         /**
-         * Permet de vérouiller l'usage des fonctions de déplacement de bateau
-         * en se définissant comme pret
+         * Permet de verrouiller l'usage des fonctions de déplacement de bateau
+         * en se définissant comme prêt
          * @pre forall(Ship : ship) Ship.isPlaced
          * 
          */
         public void setReady();
         
         /**
-         * Permet de faire subir un tir
+         * Permet de subir un tir.
          * @pre isReady
          *      fire.length == selfGrid.dimensionNb()
          *      old selfGrid.getItem(fire).getState() == State.NOTAIMED
          * @post if selfGrid.get(fire) == HIT || SUNK --> getLife == old getLife - 1   
-         * @param fire les coordonnées de l'endroit qui à été visé
+         * @param fire les coordonnées de l'endroit qui a été visé
          * @return l'état de la case visée après le tir
+         * 
+         * Lance un CoordinatesEvent pour la case ciblée, avec getActionType.equals("shoot received")
          */
         public State takeHit(Coordinates fire);
         
         /**
-         * Met à jour la grille sur la quelle on a tirer
+         * Met à jour la grille sur la quelle on a tiré.
          * @param fire les coordonnées où l'on viens de tirer
          * @param s l'état de la case retourné par l'autre joueur.
+         * 
+         * Lance un CoordinatesEvent pour la case ciblée, avec getActionType.equals("shoot fired")
          */
         public void updateFireGrid(Coordinates fire, State s);
+        
+        /**
+         * Ajoute un CoordinatesListener.
+         */
+        public void addCoordinatesListener(CoordinatesListener cl);
+        
+        /**
+         * Retire un CoordinatesListener.
+         */
+        public void removeCoordinatesListener(CoordinatesListener cl);
+        
+        /**
+         * Tableau des CoordinatesListener attachés à ce IPlayer.
+         */
+        public CoordinatesListener[] getCoordinatesListeners();
 }
