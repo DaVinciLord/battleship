@@ -43,6 +43,11 @@ public class GraphicBoard<E> extends JComponent {
     private float opacity;
     
     /**
+     * La taille relativement à la taille par défaut
+     */
+    private float scale;
+    
+    /**
      * taille réelle de la case.
      */
     private int caseSize;
@@ -97,6 +102,7 @@ public class GraphicBoard<E> extends JComponent {
             throw new AssertionError("pas assez de dimensions");
         }
         opacity = 1.f;
+        scale = 1.f;
         caseSize = DEFAULT_CASE_SIZE;
         this.model = model;
         updateAxes(axes);
@@ -137,9 +143,9 @@ public class GraphicBoard<E> extends JComponent {
                             coord[k] = y;
                         }
                     }
-                    cls.fireCoord(new Coordinates(coord));
+                    cls.fireCoord(new Coordinates(coord), "case selected");
                 } else {
-                    cls.fireCoord(null);
+                    cls.fireCoord(null, "GraphicBoardSelected");
                 }
             }
             @Override
@@ -164,6 +170,10 @@ public class GraphicBoard<E> extends JComponent {
      */
     public float getOpacity() {
         return opacity;
+    }
+    
+    public float getScale() {
+        return scale;
     }
 
     /**
@@ -212,6 +222,7 @@ public class GraphicBoard<E> extends JComponent {
         if (scale <= 0.0f) {
             throw new AssertionError("scale négatif ou nul");
         }
+        this.scale = scale;
         caseSize = Math.round(DEFAULT_CASE_SIZE * scale);
         Dimension d = new Dimension(caseSize * dimX + 1, caseSize * dimY + 1);
         setPreferredSize(d);
@@ -234,7 +245,7 @@ public class GraphicBoard<E> extends JComponent {
                 paintCase(x, y, g);
             }
         }
-        drawer.drawOnBoard(g, model, axes, 1.f);
+        drawer.drawOnBoard(g, model, axes, scale, opacity);
     }
 
     /**
@@ -271,6 +282,15 @@ public class GraphicBoard<E> extends JComponent {
             throw new AssertionError("invalid alpha");
         }
         opacity = alpha;
+        repaint();
+    }
+    
+    /**
+     * Met à jour le dessin d'une case.
+     * @param kaze
+     */
+    public void updateCase(Coordinates kaze) {
+        drawer.drawCase(getGraphics(), model, axes, scale, opacity, kaze);
     }
 
     public void addCoordListener(CoordinatesListener cl) {

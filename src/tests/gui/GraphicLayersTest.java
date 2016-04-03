@@ -1,6 +1,7 @@
 package tests.gui;
 
 import gui.board.BoardDrawer;
+import gui.board.GraphicBoardLayer;
 import gui.board.GraphicBoardLayers;
 import model.board.Board;
 import model.board.Case;
@@ -21,7 +22,7 @@ public class GraphicLayersTest {
     // ATTRIBUTS
     private JTextField text;
     private JFrame frame;
-    private GraphicBoardLayers<Case> board;
+    private GraphicBoardLayer<Case> board;
     
     public GraphicLayersTest() {
         BoardDrawer<Case> pinceau = new BoardDrawer<Case>() {
@@ -43,9 +44,9 @@ public class GraphicLayersTest {
         };
         // création de la vue
         frame = new JFrame("test tableau graphique");
-        board = new GraphicBoardLayers<Case>(new Board<Case>(new Coordinates(9, 9, 5)), new Coordinates(-2, -1, -3), pinceau);
-        // test changements d'axe :
-        board.updateAxesAndView(new Coordinates(-3, -2, -1));
+        // board = new GraphicBoardLayer<Case>(new Board<Case>(new Coordinates(5, 5, 5, 5)), new Coordinates(-2, -1, -3, 3), pinceau);
+        board = new GraphicBoardLayer<Case>(new Board<Case>(new Coordinates(6, 5, 7)), new Coordinates(-1, -2, -3), pinceau);
+        // board = new GraphicBoardLayer<Case>(new Board<Case>(new Coordinates(6, 5)), new Coordinates(-1, -2), pinceau);
         text = new JTextField(10);
         text.setEditable(false);
         // placement des composants
