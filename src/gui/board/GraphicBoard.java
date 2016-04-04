@@ -288,8 +288,21 @@ public class GraphicBoard<E> extends JComponent {
     /**
      * Met à jour le dessin d'une case.
      * @param kaze
+     * @pre
+     *     kaze doit être une coordonnée valide dans getModel()
      */
     public void updateCase(Coordinates kaze) {
+        if (kaze.length != model.dimensionNb()) {
+            throw new AssertionError("pas le bon nombre de dimension");
+        }
+        for (int k = 0; k < kaze.length; k++) {
+            if (kaze.get(k) < 0 || kaze.get(k) >= model.getDimensionsSizes().get(k)) {
+                throw new AssertionError("kaze en dehors du modèle");
+            }
+            if (axes.get(k) >= 0 && axes.get(k) != kaze.get(k)) {
+                throw new AssertionError("kaze en dehors de la représentation");
+            }
+        }
         drawer.drawCase(getGraphics(), model, axes, scale, opacity, kaze);
     }
 

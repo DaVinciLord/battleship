@@ -217,19 +217,40 @@ public class GraphicBoardLayer<E> extends JPanel {
         for (int k = 0; k < model.dimensionNb(); k++) {
             selectAxeX.add(new JRadioButton());
         }
+        for (int k = 0; k < model.dimensionNb(); k++) {
+            if (axes.get(k) == -1) {
+                selectAxeX.get(k).setSelected(true);
+                break;
+            }
+        }
         selectAxeY = new ArrayList<JRadioButton>();
         for (int k = 0; k < model.dimensionNb(); k++) {
             selectAxeY.add(new JRadioButton());
+        }
+        for (int k = 0; k < model.dimensionNb(); k++) {
+            if (axes.get(k) == -2) {
+                selectAxeY.get(k).setSelected(true);
+                break;
+            }
         }
         if (model.dimensionNb() >= 3) {
             selectAxeZ = new ArrayList<JRadioButton>();
             for (int k = 0; k < model.dimensionNb(); k++) {
                 selectAxeZ.add(new JRadioButton());
             }
+            for (int k = 0; k < model.dimensionNb(); k++) {
+                if (axes.get(k) == -3) {
+                    selectAxeZ.get(k).setSelected(true);
+                    break;
+                }
+            }
             if (model.dimensionNb() > 3) {
                 fixedCoords = new ArrayList<JTextField>();
                 for (int k = 0; k < model.dimensionNb(); k++) {
                     fixedCoords.add(new JTextField(2));
+                    if (axes.get(k) >= 0) {
+                        fixedCoords.get(k).setText("" + axes.get(k));
+                    }
                 }
             }
             sliderZ = new JSlider(SwingConstants.VERTICAL, 0, dimZ - 1, 0);
@@ -595,5 +616,34 @@ public class GraphicBoardLayer<E> extends JPanel {
         addListenerToGraphicBoard();
         revalidate();
         repaint();
+    }
+    
+    public void updateCase(Coordinates kaze) {
+        boolean really = true;
+        int profondeur = 0; // en cas de 2D
+        if (kaze.length != model.dimensionNb()) {
+            throw new AssertionError("pas le bon nombre de dimension");
+        }
+        for (int k = 0; k < kaze.length; k++) {
+            if (kaze.get(k) < 0 || kaze.get(k) >= model.getDimensionsSizes().get(k)) {
+                throw new AssertionError("kaze en dehors du modèle");
+            }
+            if (axes.get(k) >= 0 && axes.get(k) != kaze.get(k)) {
+                // On ignore : la case en question n'est pas visible sur la représentation actuelle
+                really = false;
+                break;
+            }
+            if (axes.get(k) == -3) {
+                // On a trouvé le GraphicBoard sur lequel doit se faire la mise à jour.
+                profondeur = kaze.get(k);
+            }
+        }
+        if (really) {
+            boards.get(profondeur).updateCase(kaze);
+        }
+    }
+    
+    public int depthIndex() {
+        return caseActiveIndex;
     }
 }
