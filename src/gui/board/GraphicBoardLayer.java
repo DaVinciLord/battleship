@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
@@ -643,7 +644,61 @@ public class GraphicBoardLayer<E> extends JPanel {
         }
     }
     
-    public int depthIndex() {
+    /**
+     * L'index de profondeur de la grille active.
+     */
+    public int getActiveGridDepth() {
         return caseActiveIndex;
+    }
+    
+    /**
+     * Donne la position du coin supérieur gauche de la grille active, relativement à this.
+     */
+    public Point getActiveGridLocation() {
+        // localisation de la grille sur son boardPanel
+        Point p = boards.get(caseActiveIndex).getLocation();
+        // localisation du boardPanel sur boardLayers
+        Point q = boardPanels.get(caseActiveIndex).getLocation();
+        // localisation du boardLayers sur this
+        Point r = boardLayers.getLocation();
+        // on additionne tout
+        p.translate(q.x + r.x, q.y + r.y);
+        return p;
+    }
+    
+    
+    /**
+     * Donne la Coordinates de la case sur laquelle on va droper un composant.
+     * Les coordonnées doivent être relatives à this.
+     * Renvoie null si le point de coordonnées (x, y) est en dehors de la grille active.
+     */
+    public Coordinates getDropPosition(int x, int y) {
+        int caseSize = Math.round(boards.get(caseActiveIndex).getScale() * GraphicBoard.DEFAULT_CASE_SIZE);
+        int delta = caseSize / 2; // pour centrer
+        // on regarde dans quelle case est le centre :
+        int posx = (x - getActiveGridLocation().x + delta) / caseSize;
+        int posy = (y - getActiveGridLocation().y + delta) / caseSize;
+        int[] coord = axes.getCoordinates();
+        boolean valid = true;
+        for (int k = 0; k < coord.length ; k++) {
+            if (coord[k] == -1) {
+                coord[k] = posx;
+                if (posx < 0 || posx >= model.getDimensionsSizes().get(k)) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (coord[k] == -2) {
+                coord[k] = posy;
+                if (posy < 0 || posy >= model.getDimensionsSizes().get(k)) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (coord[k] == -3) {
+                coord[k] = caseActiveIndex;
+            }
+        }
+        return valid ? new Coordinates(coord) : null;
     }
 }
