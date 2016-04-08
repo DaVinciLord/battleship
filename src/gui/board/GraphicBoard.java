@@ -132,6 +132,10 @@ public class GraphicBoard<E> extends JComponent {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
                 if (caseActive) {
                     int x = e.getX() / caseSize;
                     int y = e.getY() / caseSize;
@@ -147,9 +151,6 @@ public class GraphicBoard<E> extends JComponent {
                 } else {
                     cls.fireCoord(null, "GraphicBoardSelected");
                 }
-            }
-            @Override
-            public void mousePressed(MouseEvent e) {
             }
             @Override
             public void mouseReleased(MouseEvent e) {
