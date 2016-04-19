@@ -18,7 +18,7 @@ public class EasyAdvisor extends AAdvisor {
     }
 
     public EasyAdvisor() {
-        // TODO Auto-generated constructor stub
+        casesOfInterest = new ArrayList<Coordinates>();
     }
 
     @Override

@@ -16,11 +16,11 @@ public class MediumAdvisor extends AAdvisor {
         super(tab, ships);
         lastCoords = null;
         casesOfInterest = new ArrayList<Coordinates>();
-        minSize = ships.get(0);
+        minSize = ships.get(0);casesOfInterest = new ArrayList<Coordinates>();
     }
 
     public MediumAdvisor() {
-         
+        casesOfInterest = new ArrayList<Coordinates>();
     }
 
     public void setShipLeft(List<Integer> shipLeft) {
