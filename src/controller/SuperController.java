@@ -10,8 +10,8 @@ import javax.swing.JFrame;
 
 import exceptions.network.ServerBadPortException;
 import exceptions.network.ServerSocketAcceptException;
-import gui.BoardDrawer;
-import gui.GraphicBoard;
+import gui.board.BoardDrawer;
+import gui.board.GraphicBoard;
 import model.board.IBoard;
 import model.board.State;
 import model.coordinates.Coordinates;
@@ -36,18 +36,27 @@ public class SuperController {
     
     private void createView() {
         BoardDrawer<State> pinceau = new BoardDrawer<State>() {
-            @Override
-            public void drawOnBoard(Graphics g, IBoard<State> board,
-                    Coordinates axes, float scale) {
-            }
+
+			@Override
+			public void drawOnBoard(Graphics g, IBoard<State> board, Coordinates axes, float scale, float alpha) {
+				// TODO Stub de la méthode généré automatiquement
+				
+			}
+
+			@Override
+			public void drawCase(Graphics g, IBoard<State> board, Coordinates axes, float scale, float alpha,
+					Coordinates position) {
+				// TODO Stub de la méthode généré automatiquement
+				
+			}
         };
-       mainFrame = new JFrame();
-       mainFrame.setPreferredSize(new Dimension(500, 500));
-       mainFrame.add(new GraphicBoard<State>(p1.getShootGrid(), new Coordinates(-1, -1, 1), pinceau), BorderLayout.CENTER);
-       mainFrame.pack();
-       mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       mainFrame.setLocationRelativeTo(null);
-       mainFrame.setVisible(true);
+        mainFrame = new JFrame();
+        mainFrame.setPreferredSize(new Dimension(500, 500));
+        mainFrame.add(new GraphicBoard<State>(p1.getShootGrid(), new Coordinates(-1, -2, 1), pinceau), BorderLayout.CENTER);
+        mainFrame.pack();
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setVisible(true);
     }
 
     private void createModel(Coordinates dimensions) {

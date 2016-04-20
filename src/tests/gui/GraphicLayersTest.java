@@ -2,7 +2,6 @@ package tests.gui;
 
 import gui.board.BoardDrawer;
 import gui.board.GraphicBoardLayer;
-import gui.board.GraphicBoardLayers;
 import model.board.Board;
 import model.board.Case;
 import model.board.IBoard;

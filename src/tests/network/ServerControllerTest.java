@@ -1,14 +1,15 @@
-package project.test;
+package tests.network;
 
-import project.Server;
-import project.ServerController;
-import project.exceptions.ServerBadDataException;
-import project.exceptions.ServerBadFormatException;
-import project.exceptions.ServerBadPortException;
-import project.exceptions.ServerEmptyDataException;
-import project.exceptions.ServerNullDataException;
-import project.exceptions.ServerSocketAcceptException;
-import project.model.Player;
+import model.coordinates.Coordinates;
+import model.network.Server;
+import model.network.ServerController;
+import exceptions.network.ServerBadDataException;
+import exceptions.network.ServerBadFormatException;
+import exceptions.network.ServerBadPortException;
+import exceptions.network.ServerEmptyDataException;
+import exceptions.network.ServerNullDataException;
+import exceptions.network.ServerSocketAcceptException;
+import model.player.Player;
 
 public class ServerControllerTest {
 	private final static String NULL_DATA = null;
@@ -18,8 +19,8 @@ public class ServerControllerTest {
 	private final static String GOOD_FORMAT_STR = "String:bonjour";
 	private final static String GOOD_FORMAT_COORD = "Coord:1,2,3,4";
 	
-	private static void vefiryData() throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException {
-		Player model = new Player();
+	private static void verifyData() throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException {
+		Player model = new Player(new Coordinates(10, 10));
 		Server server = new Server();
 		ServerController sc = new ServerController(model, server);
 		sc.verifyData(NULL_DATA);
@@ -31,6 +32,6 @@ public class ServerControllerTest {
 	}
 	
 	public static void main(String[] args) throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException {
-		vefiryData();
+		verifyData();
 	}
 }
