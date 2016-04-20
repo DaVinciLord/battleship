@@ -16,6 +16,7 @@ import model.board.State;
 import model.coordinates.Coordinates;
 import model.coordinates.CoordinatesEvent;
 import model.coordinates.CoordinatesListener;
+import model.coordinates.CoordinatesListenerSupport;
 import model.player.IPlayer;
 
 public class GraphicBoardShooter extends JPanel {
@@ -43,7 +44,20 @@ public class GraphicBoardShooter extends JPanel {
      */
     private JTextField targetField;
     
+    /**
+     * Coordonnée de la case actuellement sélectionnée.
+     */
     private Coordinates target;
+    
+    /**
+     * Branchement d'écouteurs.
+     */
+    private CoordinatesListenerSupport cls;    
+    
+    /**
+     * Indique si c'est au tour du joueur (décidé par le SuperController ou le LocalController).
+     */
+    private boolean myTurn;
     
     // CONSTRUCTEUR
     
@@ -155,13 +169,15 @@ public class GraphicBoardShooter extends JPanel {
     }
     
     private void createController() {
+    	cls = new CoordinatesListenerSupport(this);
+    	myTurn = false;
         gbl.addCoordinatesListener(new CoordinatesListener() {
             @Override
             public void doWithCoord(CoordinatesEvent e) {
                 target = e.getCoordinates();
                 targetField.setText(target.toString());
                 if (player.getShootGrid().getItem(target) == State.NOTAIMED) {
-                    fire.setEnabled(true);
+                    fire.setEnabled(isMyTurn());
                 } else {
                     fire.setEnabled(false);
                 }
@@ -183,7 +199,8 @@ public class GraphicBoardShooter extends JPanel {
         fire.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                player.updateFireGrid(target, State.MISSED); // à modifier ensuite quand on aura vraiment de quoi tirer.
+                // player.updateFireGrid(target, State.MISSED); // à modifier ensuite quand on aura vraiment de quoi tirer.
+                cls.fireCoord(target, "fire");
             }
         });
         
@@ -215,7 +232,7 @@ public class GraphicBoardShooter extends JPanel {
                 if (good) {
                     target = c;
                     if (player.getShootGrid().getItem(target) == State.NOTAIMED) {
-                        fire.setEnabled(true);
+                        fire.setEnabled(isMyTurn());
                     } else {
                         fire.setEnabled(false);
                     }
@@ -224,5 +241,40 @@ public class GraphicBoardShooter extends JPanel {
                 }
             }
         });
+    }
+    
+    // MÉTHODES D'ÉCOUTEURS
+    
+    public CoordinatesListener[] getCoordinatesListeners() {
+    	return cls.getCoordinatesListeners();
+    }
+    
+    public void addCoordinatesListener(CoordinatesListener listener) {
+    	cls.addCoordinatesListener(listener);
+    }
+    
+    public void removeCoordinatesListener(CoordinatesListener listener) {
+    	cls.removeCoordinatesListener(listener);
+    }
+    
+    // AUTORISATION DE TIR
+    
+    /**
+     * Indique si c'est au tour du joueur de tirer.
+     */
+    public boolean isMyTurn() {
+    	return myTurn;
+    }
+    
+    /**
+     * Autorise ou interdit au joueur de tirer.
+     */
+    public void setMyTurn(boolean b) {
+    	myTurn = b;
+    	if (b && target != null && player.getShootGrid().getItem(target) == State.NOTAIMED) {
+    		fire.setEnabled(true);
+    	} else {
+    		fire.setEnabled(false);
+    	}
     }
 }
