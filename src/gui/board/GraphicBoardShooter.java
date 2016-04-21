@@ -103,7 +103,19 @@ public class GraphicBoardShooter extends JPanel {
                         if (board.getItem(new Coordinates(c)) != State.NOTAIMED) {
                             // on dessine
                             int diameter = (int) ((scale * GraphicBoard.DEFAULT_CASE_SIZE) / 3);
-                            g.setColor(new Color(1.f, 0.f, 0.f, alpha));
+                            
+                            if (board.getItem(new Coordinates(c)) == State.HIT) {
+                                g.setColor(new Color(1.f, 0.f, 0.f, alpha));
+                                }
+                            if (board.getItem(new Coordinates(c)) == State.SUNK) {
+                                 g.setColor(new Color(0.f, 0.f, 0.f, alpha));
+                                }
+                            if (board.getItem(new Coordinates(c)) == State.MISSED) {
+                                    g.setColor(new Color(0.f, 0.f, 1.f, alpha));
+                            }
+                            
+                            
+                            
                             g.fillOval((int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
                                     (int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
                                     diameter, diameter);
@@ -130,7 +142,17 @@ public class GraphicBoardShooter extends JPanel {
                     }
                     // on dessine
                     int diameter = (int) ((scale * GraphicBoard.DEFAULT_CASE_SIZE) / 3);
+                    if (board.getItem(position) == State.HIT) {
                     g.setColor(new Color(1.f, 0.f, 0.f, alpha));
+                    }
+                    if (board.getItem(position) == State.SUNK) {
+                        g.setColor(new Color(0.f, 0.f, 0.f, alpha));
+                    }
+                    if (board.getItem(position) == State.MISSED) {
+                        g.setColor(new Color(0.f, 0.f, 1.f, alpha));
+                    }
+                    
+                    
                     g.fillOval((int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
                             (int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
                             diameter, diameter);

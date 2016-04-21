@@ -1,28 +1,47 @@
 package controller;
 
-import java.util.Scanner;
+import javax.swing.JFrame;
 
 import exceptions.ship.ShipBadLengthException;
 import exceptions.ship.ShipCaseRaceException;
 import exceptions.ship.ShipNotAlignException;
 import exceptions.ship.ShipOffLimitException;
+import gui.board.GraphicBoardShooter;
 import model.board.State;
 import model.coordinates.Coordinates;
+import model.coordinates.CoordinatesEvent;
+import model.coordinates.CoordinatesListener;
 import model.player.AIPlayer;
 import model.player.Player;
 import model.ship.ShipType;
 
 public class LocalController {
-    boolean turn;
-    Player p1;
-    AIPlayer ai;
-    Coordinates size;
+    private boolean turn;
+    private Player p1;
+    private AIPlayer ai;
+    private GraphicBoardShooter gbs;
+    private JFrame frame;
     
     public LocalController(Coordinates c, AIPlayer.AdvType at) {
         createplayer(c);
         createIA(c, at);
         turn = (Math.random() >= 0.5) ? true : false;
-        size = c;
+        gbs = new GraphicBoardShooter(p1);
+        
+        gbs.setMyTurn(turn);
+        frame = new JFrame("test tableau de tir");
+        frame.add(gbs);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gbs.addCoordinatesListener(new CoordinatesListener() {
+            
+            @Override
+            public void doWithCoord(CoordinatesEvent e) {
+                tourdujoueur(e.getCoordinates());
+                tourdelia();
+            }
+        });
+        
+        
         
     }
 
@@ -56,54 +75,31 @@ public class LocalController {
         }
     }
 
-    public void startgame() {
-        while (p1.isAlive() && ai.isAlive()) {
-            game();
-            turn = !turn;
-        }
+
+
+    private void tourdujoueur(Coordinates c) {
+        State st = ai.takeHit(c);
+        p1.updateFireGrid(c, st);    
     }
-    private void game() {
+    
+    
+    private void tourdelia() {
         
-        if (turn) {
-            Scanner scan = new Scanner(System.in);
-            String s = scan.nextLine();
-            try {
-            Coordinates c = new Coordinates(s);
-            boolean good = true;
-            if (c.length != size.length ) {
-                good = false; 
-            } else {  
-                for (int i = 0; i < c.length; i++) {
-                    if (c.get(i) < 0 || c.get(i) > size.get(i)) {
-                        good = false;
-                    }
-                } 
-            }
-           
-            if (good) {
-            try {    
-            State st = ai.takeHit(c);
-            System.out.println(c + "  " + st);
-            p1.updateFireGrid(c, st);
-            } catch (AssertionError e) {
-                System.out.println("mavaises coordonnées");
-            }
-            } else {
-                System.out.println("mauvaises coordonnées");
-            }
-            } catch (NumberFormatException e) {
-                System.out.println("mauvaises coordonnées");
-            }
-            
-        } else {
-            Coordinates c = ai.shoot();
-            State st = p1.takeHit(c);
-            System.out.println(c + "  " + st);
-            ai.updateFireGrid(c, st);
- 
-          
+        Coordinates c = ai.shoot();
+        State st = p1.takeHit(c);
+        System.out.println(c + "  " + st);
+        ai.updateFireGrid(c, st);
+        
+        gbs.setMyTurn(true);
+    }
+    
+    public void display() {
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        if (!turn) {
+            tourdelia();
         }
-        
     }
     
 }

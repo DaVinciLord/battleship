@@ -2,7 +2,6 @@ package gui.board;
 
 import java.awt.Graphics;
 
-import model.board.Case;
 import model.board.IBoard;
 import model.coordinates.Coordinates;
 
