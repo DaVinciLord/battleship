@@ -27,12 +27,16 @@ public class ServerController implements IServerController {
 	}
 
 	public void sendData(String data) {
-		try {
-			DataOutputStream out = new DataOutputStream(this.getSocket().getOutputStream());
-			out.writeUTF(data);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+				try {
+					DataOutputStream out = new DataOutputStream(getSocket().getOutputStream());
+					out.writeUTF(data);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});		
 	}
 
 	public String receiveData() throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException {

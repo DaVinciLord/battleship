@@ -18,9 +18,8 @@ public class ReleaseServerTest {
 	public static void main(String[] args) throws ServerBadPortException, ServerSocketAcceptException, InterruptedException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, IOException {
 		Server server = new Server(6969, 2, InetAddress.getByName("10.130.162.33"));
 		ServerController sc = new ServerController(server);
-		Socket socket = new Socket(InetAddress.getByName("10.130.162.32"), 6969);
 		Scanner scan = new Scanner(System.in);
-		sc.setSocket(socket);
+		sc.setSocket(new Socket(InetAddress.getByName("10.130.162.32"), 6969));
 		for (int i = 0; i < 10; i++) {
 			System.out.println(sc.receiveData());
 			System.out.println(sc.getData());
