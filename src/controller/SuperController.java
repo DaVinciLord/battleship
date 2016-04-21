@@ -67,7 +67,7 @@ public class SuperController {
     private void createServerController(String adresse, int port) {
         try {
             try {
-                this.sc = new ServerController(this.p1, new Server(port == 0 ? port : Server.PORT, Server.BACKLOG, InetAddress.getByName(adresse)));
+                this.sc = new ServerController(new Server(port == 0 ? port : Server.PORT, Server.BACKLOG, InetAddress.getByName(adresse)));
             } catch (ServerSocketAcceptException | UnknownHostException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -80,11 +80,7 @@ public class SuperController {
     
     public void startGame() {
         if (turn) {
-        sc.setData(p1.shoot().toString());
-        sc.sendData();
-    }
-
-
-
+            sc.sendData(p1.shoot().getClass() + ":" + p1.shoot().toString());
+        }
     }
 }
