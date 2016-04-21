@@ -67,7 +67,6 @@ public class Server implements IServer {
 		this.nis = new NetworkInterfaceScan();
 	}
 	
-	@Override
 	public void start() throws ServerSchrodingerException {
 		if (!this.state.getState()) {
 			this.state = ServerState.ON;	
@@ -76,7 +75,6 @@ public class Server implements IServer {
 		}
 	}
 
-	@Override
 	public void shutdown() throws ServerSchrodingerException {
 		if (this.state.getState()) {
 			this.state = ServerState.OFF;
@@ -90,15 +88,13 @@ public class Server implements IServer {
 		}
 	}
 
-	@Override
 	public void run() {
 		while(this.isRunning()) {
 			Thread t = new Thread();
 			t.start();
 		}
 	}
-
-	@Override
+	
 	public Socket connectSocket() throws ServerSocketAcceptException {
 		Socket s;
 		try {
@@ -109,7 +105,6 @@ public class Server implements IServer {
 		return s;
 	}
 
-	@Override
 	public void closeSocket(Socket s) throws ServerClosedSocketException, ServerNullSocketException {
 		if (s == null) {
 			throw new ServerNullSocketException("La socket n'existe pas");
@@ -125,7 +120,6 @@ public class Server implements IServer {
 		}
 	}
 
-	@Override
 	public void setTimeout(Socket s, int timeout) {
 		int tm = timeout * Server.MS_TO_S;
 		try {
@@ -138,27 +132,22 @@ public class Server implements IServer {
 		}
 	}
 
-	@Override
 	public boolean isRunning() {
 		return this.state.getState();
 	}
 
-	@Override
 	public InetAddress getIP() {
 		return this.listen.getInetAddress();
 	}
 
-	@Override
 	public String getHostName() {
 		return this.getIP().toString() + ":" + this.getPort();
 	}
 
-	@Override
 	public int getPort() {
 		return this.port;
 	}
 
-	@Override
 	public void setPort(int port) throws ServerBadPortException {
 		if (port > 1024 && port < 65535)
 			this.port = port;

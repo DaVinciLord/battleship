@@ -6,7 +6,6 @@ import exceptions.network.ServerBadDataException;
 import exceptions.network.ServerBadFormatException;
 import exceptions.network.ServerEmptyDataException;
 import exceptions.network.ServerNullDataException;
-import model.player.IPlayer;
 
 /**
  * Interface du controleur du serveur.
@@ -20,12 +19,12 @@ import model.player.IPlayer;
  * @author Nicolas GILLE, Vincent METTON
  * @date 18 mars 2016
  */
-public interface IServerController extends Runnable{
+public interface IServerController {
 
 	/**
 	 * Passe les données reçu du receiveData() au Model.
 	 */
-	public void sendData();
+	public void sendData(String data);
 	
 	/**
 	 * Méthode permettant de recevoir les données issues de la socket
@@ -39,7 +38,7 @@ public interface IServerController extends Runnable{
 	 * 	data != null
 	 * 	!data.equals("")
 	 */
-	public void receiveData() throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException;
+	public String receiveData() throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException;
 	
 	/**
 	 * Méthode permettant de vérifier l'intégrité des données reçus.
@@ -79,16 +78,22 @@ public interface IServerController extends Runnable{
 	 * 	getData() == s
 	 */
 	public void setData(String s);
-	
-	/**
-	 * Permet d'accèder au Modèle du Controleur.
-	 * @return Le modèle de l'application (ici le joueur).
-	 */
-	public IPlayer getModel();
-	
+
 	/**
 	 * 
 	 * @return La socket du client.
 	 */
 	public Socket getSocket();
+	
+	/**
+	 * 
+	 * @param s
+	 */
+	public void setSocket(Socket s);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public IServer getServer();
 }
