@@ -2,6 +2,7 @@ package model.player;
 
 
 import java.util.List;
+import java.util.Map;
 
 import exceptions.ship.ShipBadLengthException;
 import exceptions.ship.ShipCaseRaceException;
@@ -52,9 +53,6 @@ import model.ship.IShip;
      *          forall ( Ship : ships) ShipNal.contains(Ship)
      *          
      */
-
-
-
     public interface IPlayer {
        
         
@@ -86,6 +84,11 @@ import model.ship.IShip;
         public List<IShip> getShips();
         
         /**
+         * Bateaux et leurs noms
+         */
+        public Map<String, IShip> getShipsAndNames();
+        
+        /**
          * La grille sur la quelle mes bateaux sont.
          */
         public IBoard<Case> getShipGrid();
@@ -95,12 +98,24 @@ import model.ship.IShip;
          */
         public IBoard<State> getShootGrid();
         
+        /**
+         * Indique si un ship est placé, en fonction de son nom.
+         * @pre shipNames().contains(name);
+         */
+        public boolean isShipPlaced(String name);
+        
+        
+        /**
+         * Indique si tous les ships sont placés.
+         */
+        public boolean isAllShipPlaced();
+        
         // COMMANDES
         
         
         /**
          * Permet de placer un bateau sur le plateau.
-         * @pre ship.contains(name)
+         * @pre shipNames.contains(name)
          *      !ready
          * 
          * @param name le nom du bateau à placer
@@ -119,7 +134,7 @@ import model.ship.IShip;
         
         /**
          * Permet de retirer un bateau du plateau.
-         * @pre ship.contains(name)
+         * @pre shipNames.contains(name)
          *      !ready
          * 
          * @param name le nom du bateau à retirer

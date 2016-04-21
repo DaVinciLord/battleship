@@ -122,12 +122,33 @@ public abstract class APlayer implements IPlayer {
         return new ArrayList<IShip>(ships.values());
     }
     
+    public Map<String, IShip> getShipsAndNames() {
+    	return new HashMap<String, IShip>(ships);
+    }
+    
     public IBoard<Case> getShipGrid() {
         return selfGrid;
     }
     
     public IBoard<State> getShootGrid() {
         return opponentGrid;
+    }
+    
+    public boolean isShipPlaced(String name) {
+	    Ship s = ships.get(name);
+	    if (s == null) {
+	        throw new AssertionError("navire inconnu à l'amirauté");
+	    }
+    	return s.isPlaced();
+    }
+    
+    public boolean isAllShipPlaced() {
+    	for (Ship s : ships.values()) {
+    		if (!s.isPlaced()) {
+    			return false;
+    		}
+    	}
+    	return true;
     }
     
     // COMMANDES

@@ -654,6 +654,7 @@ public class GraphicBoardLayer<E> extends JPanel {
     /**
      * Donne la position du coin supérieur gauche de la grille active, relativement à this.
      */
+    @Deprecated
     public Point getActiveGridLocation() {
         // localisation de la grille sur son boardPanel
         Point p = boards.get(caseActiveIndex).getLocation();
@@ -668,16 +669,17 @@ public class GraphicBoardLayer<E> extends JPanel {
     
     
     /**
-     * Donne la Coordinates de la case sur laquelle on va droper un composant.
+     * Donne la Coordinates de la case sur laquelle on clique.
      * Les coordonnées doivent être relatives à this.
      * Renvoie null si le point de coordonnées (x, y) est en dehors de la grille active.
-     */
-    public Coordinates getDropPosition(int x, int y) {
+     */ 
+    @Deprecated
+    public Coordinates getClicPosition(int x, int y) {
         int caseSize = Math.round(boards.get(caseActiveIndex).getScale() * GraphicBoard.DEFAULT_CASE_SIZE);
-        int delta = caseSize / 2; // pour centrer
-        // on regarde dans quelle case est le centre :
-        int posx = (x - getActiveGridLocation().x + delta) / caseSize;
-        int posy = (y - getActiveGridLocation().y + delta) / caseSize;
+        // int delta = caseSize / 2; // pour centrer
+        // on regarde dans quelle case on clique :
+        int posx = (x - getActiveGridLocation().x) / caseSize;
+        int posy = (y - getActiveGridLocation().y) / caseSize;
         int[] coord = axes.getCoordinates();
         boolean valid = true;
         for (int k = 0; k < coord.length ; k++) {
