@@ -48,11 +48,11 @@ public class LocalController {
     private void createplayer(Coordinates c) {
         p1 = new Player(c);
         try {
-        p1.placeShip(ShipType.AIRCRAFT.getName(), new Coordinates(1,2), new Coordinates(5, 2));
-        p1.placeShip(ShipType.BATTLESHIP.getName(),new Coordinates(7,3), new Coordinates(4, 3));
-        p1.placeShip(ShipType.CRUISER.getName(), new Coordinates(6,4), new Coordinates(6, 6));
-        p1.placeShip(ShipType.DESTROYER.getName(), new Coordinates(9,8), new Coordinates(9, 9));
-        p1.placeShip(ShipType.SUBMARINE.getName(), new Coordinates(9,1), new Coordinates(9, 3));
+        p1.placeShip(ShipType.AIRCRAFT.getName(), new Coordinates(1,2,1), new Coordinates(5, 2,1));
+        p1.placeShip(ShipType.BATTLESHIP.getName(),new Coordinates(7,3,4), new Coordinates(4, 3,4));
+        p1.placeShip(ShipType.CRUISER.getName(), new Coordinates(6,6,0), new Coordinates(6, 6,2));
+        p1.placeShip(ShipType.DESTROYER.getName(), new Coordinates(9,8,1), new Coordinates(9, 9,1));
+        p1.placeShip(ShipType.SUBMARINE.getName(), new Coordinates(9,1,3), new Coordinates(9, 3,3));
         p1.setReady();
         } catch (ShipCaseRaceException | ShipBadLengthException | ShipOffLimitException | ShipNotAlignException e) {
             // TODO Auto-generated catch block
@@ -62,17 +62,6 @@ public class LocalController {
 
     private void createIA(Coordinates c, AIPlayer.AdvType at) {
         ai = new AIPlayer(c, at);
-        try {
-        ai.placeShip(ShipType.AIRCRAFT.getName(), new Coordinates(1,2), new Coordinates(5, 2));
-        ai.placeShip(ShipType.BATTLESHIP.getName(),new Coordinates(7,3), new Coordinates(4, 3));
-        ai.placeShip(ShipType.CRUISER.getName(), new Coordinates(6,4), new Coordinates(6, 6));
-        ai.placeShip(ShipType.DESTROYER.getName(), new Coordinates(9,8), new Coordinates(9, 9));
-        ai.placeShip(ShipType.SUBMARINE.getName(), new Coordinates(9,1), new Coordinates(9, 3));
-        ai.setReady();
-        } catch (ShipCaseRaceException | ShipBadLengthException | ShipOffLimitException | ShipNotAlignException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 
 
