@@ -16,10 +16,10 @@ import model.network.ServerController;
 
 public class ReleaseServerTest {
 	public static void main(String[] args) throws ServerBadPortException, ServerSocketAcceptException, InterruptedException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, IOException {
-		Server server = new Server(6969, 2, InetAddress.getByName("10.130.162.31"));
+		Server server = new Server(6969, 2, InetAddress.getByName("10.130.162.30"));
 		ServerController sc = new ServerController(server);
 		Scanner scan = new Scanner(System.in);
-		sc.setSocket(new Socket(InetAddress.getByName("10.130.162.30"), 6969));
+		sc.setSocket(new Socket(InetAddress.getByName("10.130.162.31"), 6969));
 		for (int i = 0; i < 10; i++) {
 			sc.sendData(scan.nextLine());
 			System.out.println(sc.receiveData());

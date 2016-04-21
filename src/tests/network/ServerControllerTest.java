@@ -1,27 +1,13 @@
 package tests.network;
 
-<<<<<<< HEAD
+import exceptions.network.*;
 import model.coordinates.Coordinates;
 import model.network.Server;
 import model.network.ServerController;
-=======
+import model.player.Player;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
->>>>>>> remotes/origin/kero_branch
-import exceptions.network.ServerBadDataException;
-import exceptions.network.ServerBadFormatException;
-import exceptions.network.ServerBadPortException;
-import exceptions.network.ServerEmptyDataException;
-import exceptions.network.ServerNullDataException;
-import exceptions.network.ServerSocketAcceptException;
-<<<<<<< HEAD
-=======
-import model.coordinates.Coordinates;
-import model.network.Server;
-import model.network.ServerController;
->>>>>>> remotes/origin/kero_branch
-import model.player.Player;
 
 public class ServerControllerTest {
 	private final static String NULL_DATA = null;
@@ -31,11 +17,7 @@ public class ServerControllerTest {
 	private final static String GOOD_FORMAT_STR = "String:bonjour";
 	private final static String GOOD_FORMAT_COORD = "Coord:1,2,3,4";
 	
-<<<<<<< HEAD
-	private static void verifyData() throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException {
-=======
-	private static void vefiryData() throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException, UnknownHostException {
->>>>>>> remotes/origin/kero_branch
+	private static void verifyData() throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException, UnknownHostException {
 		Player model = new Player(new Coordinates(10, 10));
 		Server server = new Server();
 		ServerController sc = new ServerController(new Server(Server.PORT, Server.BACKLOG, InetAddress.getByName("127.0.0.1")));
@@ -47,11 +29,7 @@ public class ServerControllerTest {
 		sc.verifyData(GOOD_FORMAT_COORD);
 	}
 	
-	public static void main(String[] args) throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException {
-<<<<<<< HEAD
+	public static void main(String[] args) throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException, UnknownHostException {
 		verifyData();
-=======
-		
->>>>>>> remotes/origin/kero_branch
 	}
 }
