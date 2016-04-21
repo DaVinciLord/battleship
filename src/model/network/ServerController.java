@@ -19,7 +19,8 @@ import exceptions.network.ServerSocketAcceptException;
 public class ServerController implements IServerController {
 	private String lastData;
 	private IServer server;
-	private Socket socket;
+	private Socket socketListening;
+	private Socket socketDistant;
 	
 	public ServerController(IServer server) throws ServerSocketAcceptException {
 		this.lastData = null;
@@ -30,7 +31,7 @@ public class ServerController implements IServerController {
 		Thread t = new Thread(new Runnable() {
 			public void run() {
 				try {
-					DataOutputStream out = new DataOutputStream(getSocket().getOutputStream());
+					DataOutputStream out = new DataOutputStream(getSocketDistant().getOutputStream());
 					out.writeUTF(data);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -41,7 +42,7 @@ public class ServerController implements IServerController {
 
 	public String receiveData() throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException {
 		try {
-			DataInputStream in = new DataInputStream(this.getSocket().getInputStream());
+			DataInputStream in = new DataInputStream(this.getSocketDistant().getInputStream());
 			this.lastData = in.readUTF();
 			if (this.verifyData(this.lastData)) {
 				return this.getData();
@@ -76,13 +77,21 @@ public class ServerController implements IServerController {
 	public void setData(String s) {
 		this.lastData = s;
 	}
-	
-	public Socket getSocket() { 
-		return this.socket; 
+
+	public Socket getSocketListening() { 
+		return this.socketListening; 
 	}
 	
-	public void setSocket(Socket s) {
-		this.socket = s;
+	public void setSocketListening(Socket s) {
+		this.socketListening = s;
+	}
+
+	public Socket getSocketDistant() { 
+		return this.socketDistant; 
+	}
+	
+	public void setSocketDistant(Socket s) {
+		this.socketDistant = s;
 	}
 	
 	public IServer getServer() {

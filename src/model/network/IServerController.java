@@ -83,13 +83,16 @@ public interface IServerController {
 	 * 
 	 * @return La socket du client.
 	 */
-	public Socket getSocket();
+	public Socket getSocketListening();
 	
 	/**
-	 * 
+	 * Create Listening Socket
 	 * @param s
 	 */
-	public void setSocket(Socket s);
+	public void setSocketListening(Socket s);
+	
+	public Socket getSocketDistant();
+	public void setSocketDistant(Socket s);
 	
 	/**
 	 * 
