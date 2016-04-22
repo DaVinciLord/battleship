@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -29,7 +30,6 @@ import model.player.Player;
 public class SuperController {
     private boolean isHost;
     private Player p1;
-    private AIPlayer ai;
     private GraphicBoardShooter gbs;
     private GraphicShipBoard gsb;
     private JFrame frame;
@@ -49,11 +49,11 @@ public class SuperController {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gbs.addCoordinatesListener(new CoordinatesListener() {
             
-        @Override
-        public void doWithCoord(CoordinatesEvent e) {
-             tourdujoueur(e.getCoordinates());
-             tourdelennemie();
-        }
+            @Override
+            public void doWithCoord(CoordinatesEvent e) {
+                tourdujoueur(e.getCoordinates());
+                tourdelennemie();
+            }
         });
         
         p1.addCoordinatesListener(new CoordinatesListener() {
@@ -71,18 +71,6 @@ public class SuperController {
                 }
             }
         });
-        
-        ai.addCoordinatesListener(new CoordinatesListener() {
-            
-            @Override
-            public void doWithCoord(CoordinatesEvent e) {
-
-                if (e.getActionType().equals("dead")) {
-                    
-                    JOptionPane.showMessageDialog(frame, "Gagné");
-                }
-            }
-        });
      
     }
 
@@ -95,8 +83,6 @@ public class SuperController {
     private void createView() {
         frame = new JFrame("test tableau de tir");
         
-        isHost = true;
-        //turn = (Math.random() >= 0.5) ? true : false;
         gbs = new GraphicBoardShooter(p1);
         gbs.setMyTurn(isHost);
         gsb = new GraphicShipBoard(p1);
@@ -104,6 +90,7 @@ public class SuperController {
     }
 
     private void createModel(Coordinates c, String ipAddressLocal, String ipAddressEnnemy, boolean isHost) {
+        this.isHost = isHost;
         createPlayer(c);
         createServer(ipAddressLocal, ipAddressEnnemy, isHost);
     }
@@ -122,11 +109,23 @@ public class SuperController {
                 sc.setDistantServerSocket(new Socket(InetAddress.getByName(ipAddressEnnemy), Server.PORT));
                 
             } else {
-                sc.setDistantServerSocket(new Socket(InetAddress.getByName(ipAddressEnnemy), Server.PORT));
+                boolean ok = false;
+                while(!ok) {
+                    try {
+                        sc.setDistantServerSocket(new Socket(InetAddress.getByName(ipAddressEnnemy), Server.PORT));
+                        ok = true;
+                    } catch (ConnectException e) {
+                        System.out.println("Je suis dans le catch");
+                        JOptionPane jp = new JOptionPane();
+                        jp.grabFocus();
+                        ok = jp.showConfirmDialog(null, "Réésayer") != 0;
+                        System.out.println(ok);
+                    }
+                }
 
+                System.out.println("Je suis après le catch");
                 sc.setConnectedSocket(sc.getServer().connectSocket());
             }
-
         } catch (ServerSocketAcceptException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -148,7 +147,11 @@ public class SuperController {
         sc.sendData("Coordinates:" + c.toString());
         try {
             String state = sc.receiveData();
-            p1.updateFireGrid(c, State.valueOf(state));
+            String datas[] = state.split(":");
+            if(datas[0].equals("State")) {
+                p1.updateFireGrid(c, State.valueOf(datas[1].toUpperCase()));
+            }
+
         } catch (ServerNullDataException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -166,6 +169,7 @@ public class SuperController {
     
     
     private void tourdelennemie() {
+        jtp.setSelectedIndex(0);
         try {
             String data = sc.receiveData();
             String[] s = data.split(":");
@@ -173,6 +177,7 @@ public class SuperController {
                 Coordinates c = new Coordinates(s[1]);
                 State st = p1.takeHit(c);
                 sc.sendData("State:" + st.toString());
+                gbs.setMyTurn(true);
             }
         } catch (ServerNullDataException e) {
             // TODO Auto-generated catch block
