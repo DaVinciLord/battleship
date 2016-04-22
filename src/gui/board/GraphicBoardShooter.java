@@ -226,6 +226,8 @@ public class GraphicBoardShooter extends JPanel {
                         resString.append(" Le tir a touché un navire !");
                     } else if (result == State.MISSED) {
                         resString.append(" Le tir n'a rien touché.");
+                    } else if (result == State.SUNK) {
+                        resString.append(" Le tir a touché un navire et l'a coulé !");
                     }
                     infoLabel.setText(resString.toString());
                     if (target.equals(e.getCoordinates())) {

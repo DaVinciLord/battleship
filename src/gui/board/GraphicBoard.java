@@ -253,6 +253,7 @@ public class GraphicBoard<E> extends JComponent {
      * Dessine une case.
      */
     private void paintCase(int x, int y, Graphics g) {
+        g.clearRect(x * caseSize, y * caseSize, caseSize, caseSize);
         Color c  = new Color(0.7f, 0.7f, 1.0f, opacity);
         g.setColor(c);
         g.fillRect(x * caseSize, y * caseSize, caseSize, caseSize);
@@ -304,7 +305,20 @@ public class GraphicBoard<E> extends JComponent {
                 throw new AssertionError("kaze en dehors de la représentation");
             }
         }
-        drawer.drawCase(getGraphics(), model, axes, scale, opacity, kaze);
+        // trouver la position de la case
+        int x = 0;
+        int y = 0;
+        for (int k = 0; k < axes.length; k++) {
+            if (axes.get(k) == -1) {
+                x = kaze.get(k);
+            } else if (axes.get(k) == -2) {
+                y = kaze.get(k);
+            }
+        }
+        Graphics g = getGraphics();
+        
+        paintCase(x, y, g);
+        drawer.drawCase(g, model, axes, scale, opacity, kaze);
     }
 
     public void addCoordListener(CoordinatesListener cl) {

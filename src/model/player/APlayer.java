@@ -180,10 +180,12 @@ public abstract class APlayer implements IPlayer {
         if (!s.isPlaced()) {
             throw new AssertionError("navire pas encore placé");
         }
-        for (Coordinates c :s.getPosition()) {
+        
+        List<Coordinates> oldPositions = s.getPosition();
+        s.removePosition();
+        for (Coordinates c : oldPositions) {
             cls.fireCoord(c, "ship removed");
         }
-        s.removePosition();
     }
     
     public void setReady() {
