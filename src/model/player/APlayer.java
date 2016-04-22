@@ -212,7 +212,15 @@ public abstract class APlayer implements IPlayer {
             life--;
         }
         cls.fireCoord(fire, "shoot received");
+        
+        if (!isAlive()) {
+            cls.fireCoord(fire, "dead");
+        }
+        
         return s;
+        
+        
+        
     }
     
     public void updateFireGrid(Coordinates fire, State s) {

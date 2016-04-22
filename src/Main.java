@@ -11,7 +11,7 @@ public class Main {
         public static void main(String[] args) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    new LocalController(new Coordinates(10, 10, 5), AdvType.MEDIUM).display();;
+                    new LocalController(new Coordinates(6, 6), AdvType.MEDIUM).display();;
                 }
             });
         } 

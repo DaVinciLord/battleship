@@ -163,6 +163,8 @@ import model.ship.IShip;
          * @return l'état de la case visée après le tir
          * 
          * Lance un CoordinatesEvent pour la case ciblée, avec getActionType.equals("shoot received")
+         * 
+         * Si !isAlive Lance un CoordinatesEvent pour la case ciblée, avec getActionType.equals("dead")
          */
         public State takeHit(Coordinates fire);
         
@@ -172,6 +174,7 @@ import model.ship.IShip;
          * @param s l'état de la case retourné par l'autre joueur.
          * 
          * Lance un CoordinatesEvent pour la case ciblée, avec getActionType.equals("shoot fired")
+         * 
          */
         public void updateFireGrid(Coordinates fire, State s);
         
