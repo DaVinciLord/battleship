@@ -10,17 +10,18 @@ import exceptions.network.ServerBadFormatException;
 import exceptions.network.ServerEmptyDataException;
 import exceptions.network.ServerNullDataException;
 import exceptions.network.ServerSocketAcceptException;
+import model.network.*;
 
 /**
  * 
- * @author Nicolas GILLE
+ * @author Nicolas GILLE, Vincent METTON
  * @date 25 mars 2016
  */
-public class ServerController implements IServerController {
+public class ServerController implements model.network.IServerController {
 	private String lastData;
 	private IServer server;
-	private Socket socketListening;
-	private Socket socketDistant;
+	private Socket distantServerSocket;
+	private Socket connectedSocket;
 	
 	public ServerController(IServer server) throws ServerSocketAcceptException {
 		this.lastData = null;
@@ -28,21 +29,17 @@ public class ServerController implements IServerController {
 	}
 
 	public void sendData(String data) {
-		Thread t = new Thread(new Runnable() {
-			public void run() {
-				try {
-					DataOutputStream out = new DataOutputStream(getSocketDistant().getOutputStream());
-					out.writeUTF(data);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});		
+		try {
+			DataOutputStream out = new DataOutputStream(this.getDistantServerSocket().getOutputStream());
+			out.writeUTF(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String receiveData() throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException {
 		try {
-			DataInputStream in = new DataInputStream(this.getSocketDistant().getInputStream());
+			DataInputStream in = new DataInputStream(this.getConnectedSocket().getInputStream());
 			this.lastData = in.readUTF();
 			if (this.verifyData(this.lastData)) {
 				return this.getData();
@@ -75,23 +72,32 @@ public class ServerController implements IServerController {
 	}
 
 	public void setData(String s) {
+		if (s == null) {
+			throw new AssertionError("Vos données sont nulles");
+		}
 		this.lastData = s;
 	}
 
-	public Socket getSocketListening() { 
-		return this.socketListening; 
+	public Socket getConnectedSocket() { 
+		return this.connectedSocket; 
 	}
 	
-	public void setSocketListening(Socket s) {
-		this.socketListening = s;
+	public void setConnectedSocket(Socket s) {
+		if (s == null) {
+			throw new AssertionError("Socket is null");
+		}
+		this.connectedSocket= s;
 	}
 
-	public Socket getSocketDistant() { 
-		return this.socketDistant; 
+	public Socket getDistantServerSocket() { 
+		return this.distantServerSocket; 
 	}
 	
-	public void setSocketDistant(Socket s) {
-		this.socketDistant = s;
+	public void setDistantServerSocket(Socket s) {
+		if (s == null) {
+			throw new AssertionError("Socket is null");
+		}
+		this.distantServerSocket= s;
 	}
 	
 	public IServer getServer() {

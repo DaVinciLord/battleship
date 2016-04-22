@@ -6,6 +6,7 @@ import exceptions.network.ServerBadDataException;
 import exceptions.network.ServerBadFormatException;
 import exceptions.network.ServerEmptyDataException;
 import exceptions.network.ServerNullDataException;
+import model.network.IServer;
 
 /**
  * Interface du controleur du serveur.
@@ -22,21 +23,24 @@ import exceptions.network.ServerNullDataException;
 public interface IServerController {
 
 	/**
-	 * Passe les données reçu du receiveData() au Model.
+	 * Envoie les données a son adversaire.
+	 * @param data
+	 * 	Données que l'on envoie a son adversaire.
 	 */
 	public void sendData(String data);
 	
 	/**
 	 * Méthode permettant de recevoir les données issues de la socket
 	 * sous forme de String.
-	 * @param data Données reçu.
 	 * @throws ServerBadFormatException 
-	 * @throws ServerBadDataException 
+	 * @throws ServerBadDataException
 	 * @throws ServerEmptyDataException 
 	 * @throws ServerNullDataException 
 	 * @pre
 	 * 	data != null
 	 * 	!data.equals("")
+	 * @post
+	 * 	getData() == socket.getInputStream()
 	 */
 	public String receiveData() throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException;
 	
@@ -81,22 +85,41 @@ public interface IServerController {
 
 	/**
 	 * 
-	 * @return La socket du client.
+	 * @return Le serveur.
 	 */
-	public Socket getSocketListening();
-	
-	/**
-	 * Create Listening Socket
-	 * @param s
-	 */
-	public void setSocketListening(Socket s);
-	
-	public Socket getSocketDistant();
-	public void setSocketDistant(Socket s);
+	public IServer getServer();
 	
 	/**
 	 * 
-	 * @return
+	 * @param s
+	 * 	Socket connectée.
+	 * @pre
+	 * 	s != null
+	 * @post 
+	 * 	getConnectedSocket == s
 	 */
-	public IServer getServer();
+	public void setConnectedSocket(Socket s);
+	
+	/**
+	 * 
+	 * @return La socket connectée
+	 */
+	public Socket getConnectedSocket();
+	
+	/**
+	 * 
+	 * @param s
+	 * 	Socket distante.
+	 * @pre
+	 * 	s != null
+	 * @post
+	 * 	getDistantServerSocket == s
+	 */
+	public void setDistantServerSocket(Socket s);
+
+	/**
+	 * 
+	 * @return La socket distante
+	 */
+	public Socket getDistantServerSocket();
 }
