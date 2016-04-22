@@ -148,6 +148,8 @@ import model.ship.IShip;
          * en se définissant comme prêt
          * @pre forall(Ship : ship) Ship.isPlaced
          * 
+         * Lance un CoordinatesEvent contenant les dimensions, avec getActionType.equals("ready")
+         * 
          */
         public void setReady();
         

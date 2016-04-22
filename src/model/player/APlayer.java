@@ -193,6 +193,8 @@ public abstract class APlayer implements IPlayer {
             }
         }
         ready = true;
+        
+        cls.fireCoord(selfGrid.getDimensionsSizes(), "ready");
     }
     
     public State takeHit(Coordinates fire) {
