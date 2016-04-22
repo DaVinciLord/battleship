@@ -7,9 +7,6 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -29,12 +26,15 @@ import model.coordinates.CoordinatesEvent;
 import model.coordinates.CoordinatesListener;
 import model.coordinates.CoordinatesListenerSupport;
 import model.player.IPlayer;
+import model.ship.IShip;
 
 public class GraphicShipBoard extends JPanel {
 	
+    private static final long serialVersionUID = 8130087226957440117L;
+    
 	// ATTRIBUTS
-	
-	/**
+
+    /**
      * Le GraphicBoardLayer des tirs.
      */
     private GraphicBoardLayer<Case> gbl;
@@ -261,10 +261,31 @@ public class GraphicShipBoard extends JPanel {
             public void doWithCoord(CoordinatesEvent e) {
                 if (e.getActionType().equals("ship placed")) {
                 	gbl.updateCase(e.getCoordinates());
+                	if (player.isAllShipPlaced()) {
+                        ready.setEnabled(true);
+                        infoLabel.setText("Vous avez placé le " + selectedShip + ". Tous vos navires sont placés.");
+                    } else {
+                        infoLabel.setText("Vous avez placé le " + selectedShip + ".");
+                    }
                 } else if (e.getActionType().equals("ship removed")) {
                 	gbl.updateCase(e.getCoordinates());
+                    ready.setEnabled(false);
+                	infoLabel.setText("Vous avez retiré le " + selectedShip + ".");
                 } else if (e.getActionType().equals("shoot received")) {
                 	gbl.updateCase(e.getCoordinates());
+                	StringBuilder stringRes = new StringBuilder("L'aversaire a tiré en "
+                	        + e.getCoordinates().toString() + ".");
+                	IShip s = player.getShipGrid().getItem(e.getCoordinates()).getShip();
+                	if (s == null) {
+                	    stringRes.append(" Vous n'avez pas été touché.");
+                	} else {
+                	    stringRes.append(" Votre " + s.getName() + " a été touché");
+                	    if (s.getHP() == 0) {
+                	        stringRes.append(" et a coulé");
+                	    }
+                	    stringRes.append(".");
+                	}
+                	infoLabel.setText(stringRes.toString());
                 }
             }
         });
@@ -276,6 +297,12 @@ public class GraphicShipBoard extends JPanel {
 				placeShip.setEnabled(false);
 				removeShip.setEnabled(false);
 				ships.setEnabled(false);
+				ready.setEnabled(false);
+				proueField.setText("");
+				proueField.setEditable(false);
+				poupeField.setText("");
+				poupeField.setEditable(false);
+				infoLabel.setText("La partie va commencer. Vous ne pouvez plus modifier la position de vos navires");
 			}
 		});
 		ships.addActionListener(new ActionListener() {
@@ -296,13 +323,11 @@ public class GraphicShipBoard extends JPanel {
 						player.placeShip(selectedShip, proue, poupe);
 						placeShip.setEnabled(false);
 						removeShip.setEnabled(true);
-						if (player.isAllShipPlaced()) {
-							ready.setEnabled(true);
-						}
 					} catch (ShipCaseRaceException | ShipBadLengthException | ShipOffLimitException
 							| ShipNotAlignException e1) {
-						infoLabel.setText("erreur de placement" + e1.getMessage());
+						infoLabel.setText("erreur de placement " + e1.toString());
 					}
+					
 				}
 			}
 		});
@@ -314,7 +339,6 @@ public class GraphicShipBoard extends JPanel {
 					player.removeShip(selectedShip);
 					placeShip.setEnabled(true);
 					removeShip.setEnabled(false);
-					ready.setEnabled(false);
 				}
 			}
 		});
@@ -344,7 +368,7 @@ public class GraphicShipBoard extends JPanel {
 					poupe = new Coordinates(poupeField.getText());
 				} catch (NumberFormatException e1) {
 					poupe = oldpoupe;
-					infoLabel.setText("erreur de saisie sur la coordonnée de proue");
+					infoLabel.setText("erreur de saisie sur la coordonnée de poupe");
 					if (poupe != null) {
 						poupeField.setText(poupe.toString());
 					} else {
@@ -353,45 +377,7 @@ public class GraphicShipBoard extends JPanel {
 				}
 			}
 		});
-		/*
-		xClic = -1;
-		yClic = -1;
-		addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-				if (xClic == -1) {
-					xClic = e.getX();
-					yClic = e.getY();
-				}
-			}
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				if (xClic != -1) {
-					Coordinates provProue = getClicPosition(xClic, yClic);
-					Coordinates provPoupe = getClicPosition(e.getX(), e.getY());
-					if (provProue != null && provPoupe != null) {
-						proue = provProue;
-						poupe = provPoupe;
-						proueField.setText(proue.toString());
-						poupeField.setText(poupe.toString());
-					}
-					xClic = -1;
-					yClic = -1;
-				}
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// Si on sort du composant on ne veut pas être embêté
-				xClic = -1;
-				yClic = -1;
-			}
-		});*/
+		
 		fieldTrigger = true;
 		gbl.addCoordinatesListener(new CoordinatesListener() {
             @Override
@@ -409,13 +395,6 @@ public class GraphicShipBoard extends JPanel {
 	}
 	
 	// OUTILS
-	
-	@Deprecated
-	private Coordinates getClicPosition(int x, int y) {
-		Point p = gbl.getLocation();
-		return gbl.getClicPosition(x + p.x, y + p.y);
-		
-	}
 	
 	private int getSelectedShipLength() {
 		return player.getShipsAndNames().get(selectedShip).getMaxHP();
