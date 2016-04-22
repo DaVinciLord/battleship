@@ -3,6 +3,7 @@ package gui.board;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -59,6 +60,11 @@ public class GraphicBoardShooter extends JPanel {
      */
     private boolean myTurn;
     
+    /**
+     * Label d'information : affichera la dernière info.
+     */
+    private JLabel infoLabel;
+    
     // CONSTRUCTEUR
     
     public GraphicBoardShooter(IPlayer p) {
@@ -113,9 +119,7 @@ public class GraphicBoardShooter extends JPanel {
                             if (board.getItem(new Coordinates(c)) == State.MISSED) {
                                     g.setColor(new Color(0.f, 0.f, 1.f, alpha));
                             }
-                            
-                            
-                            
+
                             g.fillOval((int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
                                     (int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
                                     diameter, diameter);
@@ -177,15 +181,20 @@ public class GraphicBoardShooter extends JPanel {
         fire = new JButton("Feu !");
         fire.setEnabled(false);
         targetField = new JTextField(player.getShootGrid().dimensionNb() * 3);
+        infoLabel = new JLabel("informations sur les tirs ici");
     }
     
     private void placeComponents() {
         setLayout(new BorderLayout());
         add(gbl, BorderLayout.CENTER);
-        JPanel p = new JPanel(); {
-            p.add(new JLabel("coordonnées visées : "));
-            p.add(targetField);
-            p.add(fire);
+        JPanel p = new JPanel(new GridLayout(0,1)); {
+            JPanel p1 = new JPanel(); {
+                p1.add(new JLabel("coordonnées visées : "));
+                p1.add(targetField);
+                p1.add(fire);
+            }
+            p.add(p1);
+            p.add(infoLabel);
         }
         add(p, BorderLayout.NORTH);
     }
@@ -211,6 +220,14 @@ public class GraphicBoardShooter extends JPanel {
             public void doWithCoord(CoordinatesEvent e) {
                 if (e.getActionType().equals("shoot fired")) {
                     gbl.updateCase(e.getCoordinates());
+                    StringBuilder resString = new StringBuilder("Vous avez tiré en " + e.getCoordinates().toString() + ".");
+                    State result = player.getShootGrid().getItem(e.getCoordinates());
+                    if (result == State.HIT) {
+                        resString.append(" Le tir a touché un navire !");
+                    } else if (result == State.MISSED) {
+                        resString.append(" Le tir n'a rien touché.");
+                    }
+                    infoLabel.setText(resString.toString());
                     if (target.equals(e.getCoordinates())) {
                         fire.setEnabled(false);
                     }
