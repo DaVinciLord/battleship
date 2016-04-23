@@ -76,6 +76,12 @@ public class GraphicBoard<E> extends JComponent {
      * L'objet qui dessine spécifiquement ce qui est relatif au type E.
      */
     private final BoardDrawer<E> drawer;
+    
+    /**
+     * Coordonnées de la case en surbrillance (relativement à this).
+     */
+    private int xCase;
+    private int yCase;
 
     // CONSTRUCTEUR
 
@@ -111,7 +117,6 @@ public class GraphicBoard<E> extends JComponent {
         cls = new CoordinatesListenerSupport(this);
         createView();
         createController();
-        // repaint();
     }
 
     // OUTILS DE CONSTRUCTION
@@ -129,6 +134,9 @@ public class GraphicBoard<E> extends JComponent {
     }
 
     private void createController() {
+        
+        xCase = -1;
+        yCase = -2;
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -137,17 +145,42 @@ public class GraphicBoard<E> extends JComponent {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (caseActive) {
-                    int x = e.getX() / caseSize;
-                    int y = e.getY() / caseSize;
+                    Graphics g = getGraphics();
+                    int oldXCase = xCase;
+                    int oldYCase = yCase;
+                    xCase = e.getX() / caseSize;
+                    yCase = e.getY() / caseSize;
                     int[] coord = axes.getCoordinates();
                     for (int k = 0; k < coord.length; k++) {
                         if (coord[k] == -1) {
-                            coord[k] = x;
+                            coord[k] = xCase;
                         } else if (coord[k] == -2) {
-                            coord[k] = y;
+                            coord[k] = yCase;
                         }
                     }
                     cls.fireCoord(new Coordinates(coord), "case selected");
+                    if (oldXCase != -1) {
+                        paintCase(oldXCase, oldYCase, g);
+                        int[] kaze = axes.getCoordinates();
+                        for (int k = 0; k < kaze.length; k++) {
+                            if (axes.get(k) == -1) {
+                                kaze[k] = oldXCase;
+                            } else if (axes.get(k) == -2) {
+                                kaze[k] = oldYCase;
+                            }
+                        }
+                        drawer.drawCase(g, model, axes, scale, opacity, new Coordinates(kaze));
+                    }
+                    paintCase(xCase, yCase, g);
+                    int[] kaze = axes.getCoordinates();
+                    for (int k = 0; k < kaze.length; k++) {
+                        if (axes.get(k) == -1) {
+                            kaze[k] = xCase;
+                        } else if (axes.get(k) == -2) {
+                            kaze[k] = yCase;
+                        }
+                    }
+                    drawer.drawCase(g, model, axes, scale, opacity, new Coordinates(kaze));
                 } else {
                     cls.fireCoord(null, "GraphicBoardSelected");
                 }
@@ -261,6 +294,11 @@ public class GraphicBoard<E> extends JComponent {
         g.setColor(c);
         g.drawRect(x * caseSize, y * caseSize, caseSize, caseSize);
         if (caseActive) {
+            if (x == xCase && y == yCase) {
+                c  = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                g.setColor(c);
+                g.drawRect(x * caseSize + 2, y * caseSize + 2, caseSize - 4, caseSize - 4);
+            }
             g.drawRect(x * caseSize + 1, y * caseSize + 1, caseSize - 2, caseSize - 2);
         }
         // /!\ Je n'ai pas trouvé comment régler l'épaisseur du trait.
