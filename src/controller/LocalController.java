@@ -33,7 +33,8 @@ public class LocalController {
     }
 
     private void createController() {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         gbs.addCoordinatesListener(new CoordinatesListener() {
             
         @Override
