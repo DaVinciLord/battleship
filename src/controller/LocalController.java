@@ -123,7 +123,9 @@ public class LocalController {
         gbs.setMyTurn(true);
     }
     
-    
+    public JFrame getFrame() {
+    	return frame;
+    }
     
     public void display() {
         frame.pack();

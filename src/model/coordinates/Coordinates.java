@@ -38,7 +38,7 @@ public class Coordinates implements Iterable<Integer> {
         length = a.length;
         coord = new int[length];
         for (int k = 0; k < length; k++) {
-            coord[k] = Integer.parseInt(a[k]);
+            coord[k] = Integer.parseInt(a[k].trim());
         }
     }
     

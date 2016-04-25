@@ -3,6 +3,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -52,6 +54,8 @@ public class StartGame {
     
     private Coordinates dimensions;
     private JTextField dimensionsField;
+    
+    private WindowListener wl;
     
     // CONSTRUCTEUR
     
@@ -192,19 +196,32 @@ public class StartGame {
     
     private void createController() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        dimensionsField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                // TODO Stub de la méthode généré automatiquement
-                try {
-                    dimensions = new Coordinates(dimensionsField.getText());
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(frame,
-                            "Les dimensions doivent être des entiers séparés par des virgules",
-                            "Erreur de dimensions", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        
+        wl = new WindowListener() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+			}
+			@Override
+			public void windowClosing(WindowEvent e) {
+			}
+			@Override
+			public void windowClosed(WindowEvent e) {
+				frame.setVisible(true);
+				e.getWindow().removeWindowListener(wl);
+			}
+			@Override
+			public void windowIconified(WindowEvent e) {
+			}
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+			}
+			@Override
+			public void windowActivated(WindowEvent e) {
+			}
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+			}
+        };
         
         chooseIA.addActionListener(new ActionListener() {
             @Override
@@ -268,14 +285,16 @@ public class StartGame {
             public void actionPerformed(ActionEvent arg0) {
                 // TODO Stub de la méthode généré automatiquement
                 if (dimensions != null && !yourAdress.getText().equals("") && !advAdress.getText().equals("")) {
-                    startAsHost.setEnabled(false);
-                    startAsGuest.setEnabled(false);
-                    startLocal.setEnabled(false);
-                    new SuperController(dimensions, yourAdress.getText(),advAdress.getText(), true);
-                    // quand on a fermé la fenêtre (enfin je crois)
-                    startAsHost.setEnabled(true);
-                    startAsGuest.setEnabled(true);
-                    startLocal.setEnabled(true);
+                    try {
+                    	dimensions = new Coordinates(dimensionsField.getText());
+	                    SuperController sc = new SuperController(dimensions, yourAdress.getText(),advAdress.getText(), true);
+	                    sc.getFrame().addWindowListener(wl);
+	                    sc.display();
+                    } catch (NumberFormatException e) {
+                		JOptionPane.showMessageDialog(frame,
+                                "Les dimensions doivent être des entiers séparés par des virgules",
+                                "Erreur de dimensions", JOptionPane.ERROR_MESSAGE);
+                	}
                 }
             }
             
@@ -285,15 +304,17 @@ public class StartGame {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // TODO Stub de la méthode généré automatiquement
-                if (dimensions != null && !yourAdress.getText().equals("") && !advAdress.getText().equals("")) {
-                    startAsHost.setEnabled(false);
-                    startAsGuest.setEnabled(false);
-                    startLocal.setEnabled(false);
-                    new SuperController(dimensions, yourAdress.getText(),advAdress.getText(), false);
-                    // quand on a fermé la fenêtre (enfin je crois)
-                    startAsHost.setEnabled(true);
-                    startAsGuest.setEnabled(true);
-                    startLocal.setEnabled(true);
+                if (!dimensionsField.getText().equals("") && !yourAdress.getText().equals("") && !advAdress.getText().equals("")) {
+                	try {
+                		dimensions = new Coordinates(dimensionsField.getText());
+	                    SuperController sc = new SuperController(dimensions, yourAdress.getText(),advAdress.getText(), false);
+	                    sc.getFrame().addWindowListener(wl);
+	                    sc.display();
+                	} catch (NumberFormatException e) {
+                		JOptionPane.showMessageDialog(frame,
+                                "Les dimensions doivent être des entiers séparés par des virgules",
+                                "Erreur de dimensions", JOptionPane.ERROR_MESSAGE);
+                	}
                 }
             }
             
@@ -302,17 +323,18 @@ public class StartGame {
         startLocal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                // TODO Stub de la méthode généré automatiquement
-                if (dimensions != null) {
-                    startAsHost.setEnabled(false);
-                    startAsGuest.setEnabled(false);
-                    startLocal.setEnabled(false);
-                    
-                    new LocalController(dimensions, advIA).display();
-                    // quand on a fermé la fenêtre (enfin je crois)
-                    startAsHost.setEnabled(true);
-                    startAsGuest.setEnabled(true);
-                    startLocal.setEnabled(true);
+                if (!dimensionsField.getText().equals("")) {
+                	try {
+	                	dimensions = new Coordinates(dimensionsField.getText());
+	                	frame.setVisible(false);
+	                    LocalController lc = new LocalController(dimensions, advIA);
+	                    lc.getFrame().addWindowListener(wl);
+	                    lc.display();
+                	} catch (NumberFormatException e) {
+                		JOptionPane.showMessageDialog(frame,
+                                "Les dimensions doivent être des entiers séparés par des virgules",
+                                "Erreur de dimensions", JOptionPane.ERROR_MESSAGE);
+                	}
                 }
             }
             
