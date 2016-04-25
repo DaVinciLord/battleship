@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
+import exceptions.ship.OverPanamaException;
 import gui.board.GraphicBoardShooter;
 import gui.board.GraphicShipBoard;
 import model.board.State;
@@ -23,7 +24,7 @@ public class LocalController {
     private JFrame frame;
     private JTabbedPane jtp;
     
-    public LocalController(Coordinates c, AIPlayer.AdvType at) {
+    public LocalController(Coordinates c, AIPlayer.AdvType at) throws OverPanamaException {
         createModel(c, at);
         createView();
         placeComponents();
@@ -91,16 +92,16 @@ public class LocalController {
         jtp = new JTabbedPane();
     }
 
-    private void createModel(Coordinates c, AdvType at ) {
+    private void createModel(Coordinates c, AdvType at ) throws OverPanamaException {
         createPlayer(c);
         createIA(c, at);
     }
 
-    private void createPlayer(Coordinates c) {
+    private void createPlayer(Coordinates c) throws OverPanamaException {
         p1 = new Player(c);
     }
 
-    private void createIA(Coordinates c, AIPlayer.AdvType at) {
+    private void createIA(Coordinates c, AIPlayer.AdvType at) throws OverPanamaException {
         ai = new AIPlayer(c, at);
     }
 

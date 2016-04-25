@@ -1,5 +1,6 @@
 package model.ship;
 
+import exceptions.ship.OverPanamaException;
 import exceptions.ship.ShipBadLengthException;
 import exceptions.ship.ShipCaseRaceException;
 import exceptions.ship.ShipNotAlignException;
@@ -34,7 +35,7 @@ public class Ship implements IShip {
 	
 	// CONSTRUCTEUR
     
-    public Ship(IBoard<Case> board, ShipType type) {
+    public Ship(IBoard<Case> board, ShipType type) throws OverPanamaException {
         if (board == null) {
             throw new AssertionError("il faut un board");
         }
@@ -48,7 +49,7 @@ public class Ship implements IShip {
             }
         }
         if (type.getMaxHP() > n) {
-            throw new AssertionError("Over panama");
+            throw new OverPanamaException("board trop petit pour ce navire");
         }
         sea = board;
         name = type.getName();

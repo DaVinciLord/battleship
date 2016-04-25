@@ -21,7 +21,7 @@ import javax.swing.SwingUtilities;
 
 import controller.LocalController;
 import controller.SuperController;
-
+import exceptions.ship.OverPanamaException;
 import model.coordinates.Coordinates;
 import model.player.AIPlayer;
 import model.player.AIPlayer.AdvType;
@@ -274,7 +274,11 @@ public class StartGame {
                 		JOptionPane.showMessageDialog(frame,
                                 "Les dimensions doivent être des entiers séparés par des virgules",
                                 "Erreur de dimensions", JOptionPane.ERROR_MESSAGE);
-                	}
+                	} catch (OverPanamaException e) {
+                		JOptionPane.showMessageDialog(frame,
+                                "Avec les dimensions choisies, vous ne pourrez pas placer les plus grands navires",
+                                "Tableau trop petit", JOptionPane.ERROR_MESSAGE);
+					}
                 }
             }
             
@@ -293,10 +297,13 @@ public class StartGame {
                         JOptionPane.showMessageDialog(frame,
                                 "Les dimensions doivent être des entiers séparés par des virgules",
                                 "Erreur de dimensions", JOptionPane.ERROR_MESSAGE);
-                    }
+                    } catch (OverPanamaException e) {
+                    	JOptionPane.showMessageDialog(frame,
+                            "Avec les dimensions choisies, vous ne pourrez pas placer les plus grands navires",
+                            "Tableau trop petit", JOptionPane.ERROR_MESSAGE);
+					}
                 }
             }
-
         });
         
         startLocal.addActionListener(new ActionListener() {
@@ -313,7 +320,11 @@ public class StartGame {
                 		JOptionPane.showMessageDialog(frame,
                                 "Les dimensions doivent être des entiers séparés par des virgules",
                                 "Erreur de dimensions", JOptionPane.ERROR_MESSAGE);
-                	}
+                	} catch (OverPanamaException e) {
+                		JOptionPane.showMessageDialog(frame,
+                                "Avec les dimensions choisies, vous ne pourrez pas placer les plus grands navires",
+                                "Tableau trop petit", JOptionPane.ERROR_MESSAGE);
+					}
                 }
             }
             

@@ -3,6 +3,7 @@ package model.player;
 import java.util.ArrayList;
 import java.util.Map;
 
+import exceptions.ship.OverPanamaException;
 import model.ai.EasyAdvisor;
 import model.ai.IAdvisor;
 import model.ai.MediumAdvisor;
@@ -28,7 +29,7 @@ public class AIPlayer extends APlayer {
         IAdvisor getAdv() { return elconsiglieri; }
     }
     
-    public AIPlayer(Coordinates dimensions, Map<String, Integer> shipNaL) {
+    public AIPlayer(Coordinates dimensions, Map<String, Integer> shipNaL) throws OverPanamaException {
         super(dimensions, shipNaL);
         adv = new NoobAdvisor();
         adv.setEnemyBoard(getShootGrid()); 
@@ -38,7 +39,7 @@ public class AIPlayer extends APlayer {
     }
 
 
-    public AIPlayer(Coordinates dimensions) {
+    public AIPlayer(Coordinates dimensions) throws OverPanamaException {
         super(dimensions);
         adv = new NoobAdvisor();
         adv.setEnemyBoard(getShootGrid()); 
@@ -51,7 +52,7 @@ public class AIPlayer extends APlayer {
         setReady();
     }
     
-    public AIPlayer(Coordinates dimensions, Map<String, Integer> shipNaL, AdvType advisor) {
+    public AIPlayer(Coordinates dimensions, Map<String, Integer> shipNaL, AdvType advisor) throws OverPanamaException {
         super(dimensions, shipNaL);
         adv = advisor.getAdv();
         adv.setEnemyBoard(getShootGrid()); 
@@ -60,7 +61,7 @@ public class AIPlayer extends APlayer {
         setReady();
     }
     
-    public AIPlayer(Coordinates dimensions, AdvType advisor) {
+    public AIPlayer(Coordinates dimensions, AdvType advisor) throws OverPanamaException {
         super(dimensions);
         adv = advisor.getAdv();
         adv.setEnemyBoard(getShootGrid()); 

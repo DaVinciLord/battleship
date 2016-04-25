@@ -287,6 +287,8 @@ public class GraphicBoard<E> extends JComponent {
      */
     private void paintCase(int x, int y, Graphics g) {
         g.clearRect(x * caseSize, y * caseSize, caseSize, caseSize);
+        // 
+        // setBackground(new Color(0.0f, 0.0f, 0.0f, 0.0f));
         Color c  = new Color(0.7f, 0.7f, 1.0f, opacity);
         g.setColor(c);
         g.fillRect(x * caseSize, y * caseSize, caseSize, caseSize);

@@ -1,6 +1,7 @@
 package tests.network;
 
 import exceptions.network.*;
+import exceptions.ship.OverPanamaException;
 import model.coordinates.Coordinates;
 import model.network.Server;
 import model.network.ServerController;
@@ -17,7 +18,7 @@ public class ServerControllerTest {
 	private final static String GOOD_FORMAT_STR = "String:bonjour";
 	private final static String GOOD_FORMAT_COORD = "Coord:1,2,3,4";
 	
-	private static void verifyData() throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException, UnknownHostException {
+	private static void verifyData() throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException, UnknownHostException, OverPanamaException {
 		Player model = new Player(new Coordinates(10, 10));
 		Server server = new Server();
 		ServerController sc = new ServerController(new Server(Server.PORT, Server.BACKLOG, InetAddress.getByName("127.0.0.1")));
@@ -29,7 +30,7 @@ public class ServerControllerTest {
 		sc.verifyData(GOOD_FORMAT_COORD);
 	}
 	
-	public static void main(String[] args) throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException, UnknownHostException {
+	public static void main(String[] args) throws ServerBadPortException, ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException, ServerSocketAcceptException, UnknownHostException, OverPanamaException {
 		verifyData();
 	}
 }

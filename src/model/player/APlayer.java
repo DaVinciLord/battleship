@@ -1,5 +1,6 @@
 package model.player;
 
+import exceptions.ship.OverPanamaException;
 import exceptions.ship.ShipBadLengthException;
 import exceptions.ship.ShipCaseRaceException;
 import exceptions.ship.ShipNotAlignException;
@@ -56,11 +57,11 @@ public abstract class APlayer implements IPlayer {
     
     // CONSTRUCTEURS
     
-    public APlayer(Coordinates dimensions) {
+    public APlayer(Coordinates dimensions) throws OverPanamaException {
         this(dimensions, null);
     }
     
-    public APlayer(Coordinates dimensions, Map<String, Integer> shipNaL) {
+    public APlayer(Coordinates dimensions, Map<String, Integer> shipNaL) throws OverPanamaException {
         cls = new CoordinatesListenerSupport(this);
         selfGrid = new Board<Case>(dimensions);
         opponentGrid = new Board<State>(dimensions);
@@ -92,7 +93,7 @@ public abstract class APlayer implements IPlayer {
         }
     }
     
-    private void consStandardShipList() {
+    private void consStandardShipList() throws OverPanamaException {
         ships = new HashMap<String, Ship>();
         for (ShipType st : ShipType.values()) {
             ships.put(st.getName(), new Ship(selfGrid, st));

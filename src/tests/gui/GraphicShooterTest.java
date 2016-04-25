@@ -3,6 +3,7 @@ package tests.gui;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import exceptions.ship.OverPanamaException;
 import model.coordinates.Coordinates;
 import model.player.IPlayer;
 import model.player.Player;
@@ -15,7 +16,7 @@ public class GraphicShooterTest {
     private JFrame frame;
     private IPlayer player;
     
-    public GraphicShooterTest() {
+    public GraphicShooterTest() throws OverPanamaException {
         player = new Player(new Coordinates(6, 5, 4));
         gbs = new GraphicBoardShooter(player);
         frame = new JFrame("test tableau de tir");
@@ -34,7 +35,12 @@ public class GraphicShooterTest {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new GraphicShooterTest().display();
+                try {
+					new GraphicShooterTest().display();
+				} catch (OverPanamaException e) {
+					// TODO Bloc catch généré automatiquement
+					e.printStackTrace();
+				}
             }
         });
 

@@ -16,6 +16,7 @@ import exceptions.network.ServerBadPortException;
 import exceptions.network.ServerEmptyDataException;
 import exceptions.network.ServerNullDataException;
 import exceptions.network.ServerSocketAcceptException;
+import exceptions.ship.OverPanamaException;
 import gui.board.GraphicBoardShooter;
 import gui.board.GraphicShipBoard;
 import model.board.State;
@@ -36,7 +37,7 @@ public class SuperController {
     private JTabbedPane jtp;
     private ServerController sc;
     
-    public SuperController(Coordinates c, String ipAddressLocal, String ipAddressEnnemy, boolean isHost) {
+    public SuperController(Coordinates c, String ipAddressLocal, String ipAddressEnnemy, boolean isHost) throws OverPanamaException {
         createModel(c, ipAddressLocal, ipAddressEnnemy, isHost);
         createView();
         placeComponents();
@@ -90,13 +91,13 @@ public class SuperController {
         jtp = new JTabbedPane();
     }
 
-    private void createModel(Coordinates c, String ipAddressLocal, String ipAddressEnnemy, boolean isHost) {
+    private void createModel(Coordinates c, String ipAddressLocal, String ipAddressEnnemy, boolean isHost) throws OverPanamaException {
         this.isHost = isHost;
         createPlayer(c);
         createServer(ipAddressLocal, ipAddressEnnemy, isHost);
     }
 
-    private void createPlayer(Coordinates c) {
+    private void createPlayer(Coordinates c) throws OverPanamaException {
         p1 = new Player(c);
     }
 

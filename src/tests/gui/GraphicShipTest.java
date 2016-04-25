@@ -3,6 +3,7 @@ package tests.gui;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import exceptions.ship.OverPanamaException;
 import model.coordinates.Coordinates;
 import model.player.IPlayer;
 import model.player.Player;
@@ -15,7 +16,7 @@ public class GraphicShipTest {
     private JFrame frame;
     private IPlayer player;
     
-    public GraphicShipTest() {
+    public GraphicShipTest() throws OverPanamaException {
         player = new Player(new Coordinates(6, 5, 4));
         gsb = new GraphicShipBoard(player);
         frame = new JFrame("test tableau de navires");
@@ -32,7 +33,12 @@ public class GraphicShipTest {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new GraphicShipTest().display();
+                try {
+					new GraphicShipTest().display();
+				} catch (OverPanamaException e) {
+					// TODO Bloc catch généré automatiquement
+					e.printStackTrace();
+				}
             }
         });
 	}

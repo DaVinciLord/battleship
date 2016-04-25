@@ -62,6 +62,18 @@ public class Coordinates implements Iterable<Integer> {
         return Arrays.equals(coord, ((Coordinates) o).getCoordinates());
     }
     
+    public boolean isOnAxe(Coordinates c) {
+    	if (c == null || length != c.length) {
+    		throw new AssertionError("t'es même pas dans la bonne dimension");
+    	}
+    	for (int k = 0; k < length; k++) {
+    		if (c.get(k) >= 0 && c.get(k) != get(k)) {
+    			return false;
+    		}
+    	}
+    	return true;
+    }
+    
     public int hashCode() {
         int res = 0;
         for (int k : coord) {

@@ -221,7 +221,7 @@ public class GraphicShipBoard extends JPanel {
         for (int k = 3; k < player.getShootGrid().dimensionNb(); k++) {
             axe[k] = 0;
         }
-        gbl = new GraphicBoardLayer<Case>(player.getShipGrid(), new Coordinates(axe), drawer);
+        gbl = new GraphicBoardLayer<Case>(player.getShipGrid(), new Coordinates(axe), new ShipDrawer());
         
 		ready = new JButton("prêt");
 		ready.setEnabled(false);

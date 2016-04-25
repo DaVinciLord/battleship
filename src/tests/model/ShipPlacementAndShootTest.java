@@ -1,5 +1,6 @@
 package tests.model;
 
+import exceptions.ship.OverPanamaException;
 import exceptions.ship.ShipBadLengthException;
 import exceptions.ship.ShipCaseRaceException;
 import exceptions.ship.ShipNotAlignException;
@@ -13,7 +14,7 @@ import model.ship.Ship;
 import model.ship.ShipType;
 
 public class ShipPlacementAndShootTest {
-	public static void main(String[] args) throws ShipCaseRaceException, ShipBadLengthException, ShipOffLimitException, ShipNotAlignException {
+	public static void main(String[] args) throws ShipCaseRaceException, ShipBadLengthException, ShipOffLimitException, ShipNotAlignException, OverPanamaException {
 		IBoard<Case> sea = new Board<Case>(new Coordinates(5, 5, 5));
 		// Coordinates coords = new Coordinates(6, 6, 6); Attention : Coordinates est non mutable !
 		for (int i = 0; i < 5; i++) {

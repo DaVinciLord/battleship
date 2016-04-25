@@ -1,5 +1,6 @@
 package tests.model;
 
+import exceptions.ship.OverPanamaException;
 import exceptions.ship.ShipBadLengthException;
 import exceptions.ship.ShipCaseRaceException;
 import exceptions.ship.ShipNotAlignException;
@@ -23,10 +24,11 @@ public class PlayerTest {
      * @throws ShipOffLimitException 
      * @throws ShipBadLengthException 
      * @throws ShipCaseRaceException 
+     * @throws OverPanamaException 
      */
     public static void main(String[] args) 
             throws ShipCaseRaceException, ShipBadLengthException,
-            ShipOffLimitException, ShipNotAlignException {
+            ShipOffLimitException, ShipNotAlignException, OverPanamaException {
         Player j1 = new Player(new Coordinates(5, 5, 5));
         Player j2 = new Player(new Coordinates(5, 5, 5));
         

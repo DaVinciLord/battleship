@@ -2,6 +2,13 @@ package model.coordinates;
 
 import javax.swing.event.EventListenerList;
 
+/**
+ * 
+ * @author vimarsyl
+ * Adapté à partir de la classe serie06.event.SentenceSupport des TP d'IHM.
+ * crédit : MM Andary && Patrou sous licence creative commons
+ * http://creativecommons.org/licenses/by-nc-sa/2.0/fr/
+ */
 public class CoordinatesListenerSupport {
     
     private EventListenerList listenersList;
