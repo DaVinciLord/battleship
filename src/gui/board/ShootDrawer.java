@@ -65,6 +65,23 @@ public class ShootDrawer implements BoardDrawer<State> {
                     				 (int)((y * caseSize) + caseSize),
                     				 0, 0, img.getWidth(), img.getHeight(), null);
                 }
+                
+             // Si le tir a abouti sur un bateau
+                else if (board.getItem(new Coordinates(c)) == State.SUNK) {
+                	BufferedImage img = null;
+                    try {
+    					img = ImageIO.read(new File("./ressources/images/useless/death.png"));
+    				} catch (IOException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				}
+                    int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
+                    g.drawImage(img, (int)(x * caseSize),
+                    				 (int)(y * caseSize),
+                    				 (int)((x * caseSize) + caseSize),
+                    				 (int)((y * caseSize) + caseSize),
+                    				 0, 0, img.getWidth(), img.getHeight(), null);
+                }
                
             }
         }
@@ -108,6 +125,23 @@ public class ShootDrawer implements BoardDrawer<State> {
             	BufferedImage img = null;
                 try {
 					img = ImageIO.read(new File("./ressources/images/useless/hit.png"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
+                g.drawImage(img, (int)(x * caseSize),
+                				 (int)(y * caseSize),
+                				 (int)((x * caseSize) + caseSize),
+                				 (int)((y * caseSize) + caseSize),
+                				 0, 0, img.getWidth(), img.getHeight(), null);
+            }
+            
+         // Si le tir a abouti sur un bateau
+            else if (board.getItem(position) == State.SUNK) {
+            	BufferedImage img = null;
+                try {
+					img = ImageIO.read(new File("./ressources/images/useless/death.png"));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
