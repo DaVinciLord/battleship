@@ -1,10 +1,7 @@
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -197,30 +194,13 @@ public class StartGame {
     private void createController() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        wl = new WindowListener() {
-			@Override
-			public void windowOpened(WindowEvent e) {
-			}
-			@Override
-			public void windowClosing(WindowEvent e) {
-			}
+        wl = new WindowAdapter() {
+
 			@Override
 			public void windowClosed(WindowEvent e) {
-				frame.setVisible(true);
-				e.getWindow().removeWindowListener(wl);
-			}
-			@Override
-			public void windowIconified(WindowEvent e) {
-			}
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-			}
-			@Override
-			public void windowActivated(WindowEvent e) {
-			}
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-			}
+                frame.setVisible(true);
+                e.getWindow().removeWindowListener(wl);
+            }
         };
         
         chooseIA.addActionListener(new ActionListener() {
@@ -283,11 +263,11 @@ public class StartGame {
         startAsHost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                // TODO Stub de la méthode généré automatiquement
-                if (dimensions != null && !yourAdress.getText().equals("") && !advAdress.getText().equals("")) {
+
+                if (!dimensionsField.getText().equals("") && !yourAdress.getText().equals("") && !advAdress.getText().equals("")) {
+                    dimensions = new Coordinates(dimensionsField.getText());
                     try {
-                    	dimensions = new Coordinates(dimensionsField.getText());
-	                    SuperController sc = new SuperController(dimensions, yourAdress.getText(),advAdress.getText(), true);
+                        SuperController sc = new SuperController(dimensions, yourAdress.getText(),advAdress.getText(), true);
 	                    sc.getFrame().addWindowListener(wl);
 	                    sc.display();
                     } catch (NumberFormatException e) {
@@ -303,21 +283,20 @@ public class StartGame {
         startAsGuest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                // TODO Stub de la méthode généré automatiquement
                 if (!dimensionsField.getText().equals("") && !yourAdress.getText().equals("") && !advAdress.getText().equals("")) {
-                	try {
-                		dimensions = new Coordinates(dimensionsField.getText());
-	                    SuperController sc = new SuperController(dimensions, yourAdress.getText(),advAdress.getText(), false);
-	                    sc.getFrame().addWindowListener(wl);
-	                    sc.display();
-                	} catch (NumberFormatException e) {
-                		JOptionPane.showMessageDialog(frame,
+                    try {
+                        dimensions = new Coordinates(dimensionsField.getText());
+                        SuperController sc = new SuperController(dimensions, yourAdress.getText(), advAdress.getText(), false);
+                        sc.getFrame().addWindowListener(wl);
+                        sc.display();
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(frame,
                                 "Les dimensions doivent être des entiers séparés par des virgules",
                                 "Erreur de dimensions", JOptionPane.ERROR_MESSAGE);
-                	}
+                    }
                 }
             }
-            
+
         });
         
         startLocal.addActionListener(new ActionListener() {
