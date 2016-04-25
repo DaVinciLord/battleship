@@ -49,6 +49,7 @@ public class LocalController {
             @Override
             public void doWithCoord(CoordinatesEvent e) {
                 if (e.getActionType().equals("ready")) {
+                	gbs.setMyTurn(turn);
                     if(!turn) {
                         tourdelia();
                     }
@@ -85,7 +86,7 @@ public class LocalController {
         
         turn = (Math.random() >= 0.5) ? true : false;
         gbs = new GraphicBoardShooter(p1);
-        gbs.setMyTurn(turn);
+        
         gsb = new GraphicShipBoard(p1);
         jtp = new JTabbedPane();
     }
