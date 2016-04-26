@@ -1,20 +1,20 @@
 package model.network;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Inet6Address;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
+import exceptions.network.ServerBadDataException;
+import exceptions.network.ServerBadFormatException;
 import exceptions.network.ServerBadPortException;
 import exceptions.network.ServerClosedSocketException;
+import exceptions.network.ServerEmptyDataException;
+import exceptions.network.ServerNullDataException;
 import exceptions.network.ServerNullSocketException;
-import exceptions.network.ServerSchrodingerException;
 import exceptions.network.ServerSocketAcceptException;
 
 /**
@@ -27,11 +27,11 @@ public class Server implements IServer {
 	private static final int TIMEOUT = 30 * MS_TO_S;
 	public static final int PORT = 24680;
 	public static final int BACKLOG = 2;
-			
+	
+	private String lastData;
+	private Socket distantServerSocket;
+	private Socket connectedSocket;	
 	private ServerSocket listen;
-	private ServerState state;
-	private InetAddress addr;
-	private NetworkInterfaceScan nis;
 	private int port;
 	
 	public Server() throws ServerBadPortException {
@@ -39,17 +39,7 @@ public class Server implements IServer {
 	}
 	
 	public Server(int port, int backlog) throws ServerBadPortException {
-		try {
-			if ((port > 1024 && port <= 65535) || backlog > 1)
-				this.listen = new ServerSocket(port, backlog);
-			else
-				throw new ServerBadPortException("Port invalide");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		this.state = ServerState.OFF;
-		this.port = port;
-		this.nis = new NetworkInterfaceScan();
+		this(port, backlog, null);
 	}
 	
 	public Server(int port, int backlog, InetAddress addr) throws ServerBadPortException {
@@ -61,48 +51,87 @@ public class Server implements IServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.state = ServerState.OFF;
-		this.addr = addr;
 		this.port = port;
-		this.nis = new NetworkInterfaceScan();
-	}
-	
-	public void start() throws ServerSchrodingerException {
-		if (!this.state.getState()) {
-			this.state = ServerState.ON;	
-		} else {
-			throw new ServerSchrodingerException("Le serveur tourne deja");
-		}
-	}
-
-	public void shutdown() throws ServerSchrodingerException {
-		if (this.state.getState()) {
-			this.state = ServerState.OFF;
-			try {
-				this.listen.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else {
-			throw new ServerSchrodingerException("Le serveur est déjà coupé");
-		}
-	}
-
-	public void run() {
-		while(this.isRunning()) {
-			Thread t = new Thread();
-			t.start();
-		}
+		this.lastData = null;
 	}
 	
 	public Socket connectSocket() throws ServerSocketAcceptException {
 		Socket s;
 		try {
 			s = this.listen.accept();
+			this.listen.close();
 		} catch (IOException e) {
 			throw new ServerSocketAcceptException("Le serveur n'a pas pu accepter la connexion");
 		}
 		return s;
+	}
+
+	public void sendData(String data) {
+		try {
+			DataOutputStream out = new DataOutputStream(this.getDistantServerSocket().getOutputStream());
+			out.writeUTF(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String receiveData() throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException {
+		try {
+			DataInputStream in = new DataInputStream(this.getConnectedSocket().getInputStream());
+			this.lastData = in.readUTF();
+			if (this.verifyData(this.lastData)) {
+				return this.getData();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return this.getData();
+	}
+
+	public boolean verifyData(String data) throws ServerNullDataException, ServerEmptyDataException, ServerBadDataException, ServerBadFormatException {
+		if (data == null) 
+			throw new ServerNullDataException("Aucune donnÃ©e reÃ§u");
+		if (data.equals("")) 
+			throw new ServerEmptyDataException("Les donnÃ©es reÃ§us sont vide");
+		String[] split = data.split(":");
+		if (split.length == 1) 
+			throw new ServerBadFormatException("Les donnÃ©es reÃ§us ne sont pas au bon format");
+		if (!(split[0].equals("String") || split[0].equals("Coordinates") || split[0].equals("State")))
+			throw new ServerBadDataException("Les donnÃ©es reÃ§us ne sont pas du bon type");
+		return true;
+	}
+
+	public String getData() {
+		return this.lastData;
+	}
+
+	public void setData(String s) {
+		if (s == null) {
+			throw new AssertionError("Vos donnÃ©es sont nulles");
+		}
+		this.lastData = s;
+	}
+
+	public Socket getConnectedSocket() { 
+		return this.connectedSocket; 
+	}
+	
+	public void setConnectedSocket(Socket s) {
+		if (s == null) {
+			throw new AssertionError("Socket is null");
+		}
+		this.connectedSocket= s;
+	}
+
+	public Socket getDistantServerSocket() { 
+		return this.distantServerSocket; 
+	}
+	
+	public void setDistantServerSocket(Socket s) {
+		if (s == null) {
+			throw new AssertionError("Socket is null");
+		}
+		this.distantServerSocket= s;
 	}
 
 	public void closeSocket(Socket s) throws ServerClosedSocketException, ServerNullSocketException {
@@ -116,7 +145,7 @@ public class Server implements IServer {
 				e.printStackTrace();
 			}
 		} else {
-			throw new ServerClosedSocketException("La socket est déjà fermée");
+			throw new ServerClosedSocketException("La socket est dÃ©jÃ  fermÃ©e");
 		}
 	}
 
@@ -130,10 +159,6 @@ public class Server implements IServer {
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public boolean isRunning() {
-		return this.state.getState();
 	}
 
 	public InetAddress getIP() {
@@ -156,91 +181,9 @@ public class Server implements IServer {
 	}
 	
 	/**
-	 * addresse associé + ":" + port + " / " + etat 
+	 * addresse associÃ© + ":" + port + " / " + etat 
 	 */
 	public String toString() {
-		return this.getIP().getHostAddress() + ":" + this.getPort() + ";\n" + this.getState().toString();
-	}
-	
-	public NetworkInterfaceScan getNetworkInterfaceScan() {
-		return this.nis;
-	}
-	
-	private ServerState getState() { 
-		return this.state;
-	}
-	
-	/**
-	 * Classe interne gérant les IPv4/6 pour toutes les interfaces réseau présente dans l'OS.
-	 * Celle-ci contient deux Map prenant en clé le nom de l'interface réseau et en valeur l'IP associé.
-	 * 
-	 * @author Nicolas GILLE
-	 * @date 22 mars 2016
-	 */
-	public class NetworkInterfaceScan {
-		private Map<String, String> networkfInterfaceIPv4;
-		private Map<String, String> networkfInterfaceIPv6;
-		
-		public NetworkInterfaceScan() {
-			try {
-				this.networkfInterfaceIPv4 = new HashMap<String, String>();
-				this.networkfInterfaceIPv6 = new HashMap<String, String>();
-				this.scanningNetworkInterface();
-			} catch (SocketException e) {
-				e.printStackTrace();
-			}
-		}
-
-		public Map<String, String> getIPv4() { return this.networkfInterfaceIPv4; }
-		public Map<String, String> getIPv6() { return this.networkfInterfaceIPv6; }
-		
-		private void scanningNetworkInterface() throws SocketException {
-			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
-		    while (e.hasMoreElements()) {
-		        NetworkInterface n = e.nextElement();
-		        String name = n.getName();
-		        Enumeration<InetAddress> ei = n.getInetAddresses();
-		        while (ei.hasMoreElements()) {
-		            InetAddress i = ei.nextElement();
-		            if (i instanceof Inet6Address) {
-		            	String s = i.toString().substring(1, i.toString().length());
-		            	int percentIndex = s.indexOf("%");
-		            	this.networkfInterfaceIPv6.put(name, s.substring(0, percentIndex));
-		            } else {
-		            	this.networkfInterfaceIPv4.put(name, i.getHostAddress());
-		            }
-		        }
-		    }
-		}
-	}
-	
-	/**
-	 * Etat du serveur représenter avec un boolean permettant de faire tourner en boucle le serveur jusqu'à extinction de l'application.
-	 * @author Nicolas GILLE
-	 * @date 22 mars 2016
-	 */
-	private enum ServerState {
-		ON(true, "Serveur eteint"),
-		OFF(false, "Serveur allumé");
-		private boolean state;
-		private String msg;
-		
-		private ServerState(boolean s, String msg) { 
-			this.state = s; 
-			this.msg = msg;
-		}
-		
-		public boolean getState() { 
-			return this.state; 
-		}
-		
-		public String getMessage() {
-			return this.msg;
-		}
-		
-		public String toString() {
-			return this.getMessage();
-		}
+		return this.getHostName() + "\n";
 	}
 }
-
