@@ -68,8 +68,9 @@ public class SuperController {
                     }
                 }
                 if (e.getActionType().equals("dead")) {
-                    
+                    sc.sendData("Victory:Bravo");
                     JOptionPane.showMessageDialog(frame, "Perdu");
+                    
                 }
             }
         });
@@ -144,6 +145,11 @@ public class SuperController {
     private void tourdujoueur(Coordinates c) {
         sc.sendData("Coordinates:" + c.toString());
         if (ServOut.receiveData(sc) != RetVal.STATE) {
+            if (ServOut.isVictoious()) {
+                JOptionPane.showConfirmDialog(frame, "Vous avez Gagné, Bravo");
+            } else  { 
+                JOptionPane.showMessageDialog(frame, "Une Erreur est survenue, Redémarage de l'application");
+            }
             rageQuitServer();
         }
         p1.updateFireGrid(c, ServOut.getState());
@@ -153,6 +159,11 @@ public class SuperController {
     private void tourdelennemie() {
         jtp.setSelectedIndex(0);
         if (ServOut.receiveData(sc) != RetVal.COORDINATES) {
+            if (ServOut.isVictoious()) {
+                JOptionPane.showConfirmDialog(frame, "Vous avez Gagné, Bravo");
+            } else  { 
+                JOptionPane.showMessageDialog(frame, "Une Erreur est survenue, Redémarage de l'application");
+            }
             rageQuitServer();
         }
         State st = p1.takeHit(ServOut.getCoordinates()); 
@@ -168,7 +179,7 @@ public class SuperController {
     }
     
     private void rageQuitServer() {
-        JOptionPane.showMessageDialog(frame, "Une Erreur est survenue, Redémarage de l'application");
+        
         try {
             sc.closeSocket(sc.getConnectedSocket());
             sc.closeSocket(sc.getDistantServerSocket());
@@ -181,6 +192,7 @@ public class SuperController {
     private static enum RetVal {
          COORDINATES("Coordinates"),
          STATE("State"),
+         VICTORY("Victory"),
          ERROR("Erreur");
 
      
@@ -193,7 +205,7 @@ public class SuperController {
     private static class ServOut {
         private static Coordinates c;
         private static State state;
-
+        private static boolean victory;
 
             
         
@@ -207,6 +219,9 @@ public class SuperController {
         private static Coordinates getCoordinates() {
             return c;
         }
+        private static boolean isVictoious() {
+            return victory;
+        }
         
         private static RetVal receiveData(Server sc) {
             try {
@@ -219,6 +234,9 @@ public class SuperController {
                 }
                 if (rv == RetVal.STATE) {
                     state = State.valueOf(s[1].toUpperCase());
+                }
+                if (rv == RetVal.VICTORY) {
+                    victory = true;
                 }
                 return rv;    
             } catch (ServerBadDataException | ServerNullDataException | ServerEmptyDataException | ServerBadFormatException e) {
