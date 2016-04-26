@@ -94,15 +94,15 @@ public class SuperController {
 
     private void createModel(Coordinates c, String ipAddressLocal, String ipAddressEnnemy, boolean isHost) throws OverPanamaException {
         this.isHost = isHost;
+        c = createServer(ipAddressLocal, ipAddressEnnemy, isHost, c);
         createPlayer(c);
-        createServer(ipAddressLocal, ipAddressEnnemy, isHost);
     }
 
     private void createPlayer(Coordinates c) throws OverPanamaException {
         p1 = new Player(c);
     }
 
-    private void createServer(String ipAddressLocal, String ipAddressEnnemy, boolean isHost) {
+    private Coordinates createServer(String ipAddressLocal, String ipAddressEnnemy, boolean isHost, Coordinates c) {
         try {
             sc = new Server(Server.PORT, Server.BACKLOG, InetAddress.getByName(ipAddressLocal));                     
            
@@ -111,6 +111,7 @@ public class SuperController {
 
                 sc.setDistantServerSocket(new Socket(InetAddress.getByName(ipAddressEnnemy), Server.PORT));
                 
+                sc.sendData("Coordinates:" + c);
             } else {
                 boolean ok = false;
                 while(!ok) {
@@ -121,13 +122,24 @@ public class SuperController {
                        
                         JOptionPane jp = new JOptionPane();
                         jp.grabFocus();
-                        ok = jp.showConfirmDialog(null, "Réésayer") != 0;
-                        System.out.println(ok);
+                        jp.showConfirmDialog(null, "Réésayer");
+                        
                     }
                 }
 
                 
                 sc.setConnectedSocket(sc.connectSocket());
+                
+                if (ServOut.receiveData(sc) != RetVal.COORDINATES) {
+                    if (ServOut.isVictoious()) {
+                        JOptionPane.showConfirmDialog(frame, "Vous avez Gagné, Bravo");
+                    } else  { 
+                        JOptionPane.showMessageDialog(frame, "Une Erreur est survenue, Redémarage de l'application");
+                    }
+                    rageQuitServer();
+                }
+                
+                c = ServOut.getCoordinates();
             }
         } catch (ServerSocketAcceptException e) {
             e.printStackTrace();
@@ -138,6 +150,7 @@ public class SuperController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return c;
     }
 
 
