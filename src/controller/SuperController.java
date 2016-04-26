@@ -47,7 +47,6 @@ public class SuperController {
     }
 
     private void createController() {
-        // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         gbs.addCoordinatesListener(new CoordinatesListener() {
             
@@ -72,7 +71,7 @@ public class SuperController {
                 if (e.getActionType().equals("dead")) {
                     sc.sendData("Victory:Bravo");
                     JOptionPane.showMessageDialog(frame, "Perdu");
-                    
+                    rageQuitServer();
                 }
             }
         });
@@ -180,7 +179,7 @@ public class SuperController {
     }
     
     private void rageQuitServer() {
-        if (ServOut.isVictoious()) {
+        if (ServOut.isVictorious()) {
                 JOptionPane.showConfirmDialog(frame, "Vous avez Gagné, Bravo");
             } else  { 
                 JOptionPane.showMessageDialog(frame, "Une Erreur est survenue, Redémarage de l'application");
@@ -224,7 +223,7 @@ public class SuperController {
         private static Coordinates getCoordinates() {
             return c;
         }
-        private static boolean isVictoious() {
+        private static boolean isVictorious() {
             return victory;
         }
         
