@@ -15,11 +15,32 @@ import model.coordinates.Coordinates;
 import model.ship.IShip;
 
 public class ShipDrawer implements BoardDrawer<Case> {
-
+    
+    public static final File DEFAULT_DIR = new File("./ressources/images/useless");
+    
+    // ATTRIBUTS
+    
+    private File imgDir;
+    
+    // CONSRUCTEUR
+    
+    public ShipDrawer(File imgDir) {
+        if (imgDir == null) {
+            throw new AssertionError("imgDir null");
+        }
+        this.imgDir = imgDir;
+    }
+    
+    public ShipDrawer() {
+        this(DEFAULT_DIR);
+    }
+    
+    
 	@Override
 	public void drawOnBoard(Graphics g, IBoard<Case> board, Coordinates axes, float scale, float alpha) {
 		// TODO Stub de la méthode généré automatiquement
 		BufferedImage img = null;
+		int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
 		int axeX = 0;
         int axeY = 0;
         // on repère sur quelle tranche de board on est (et son orientation)
@@ -44,7 +65,7 @@ public class ShipDrawer implements BoardDrawer<Case> {
                 		// cas où le ship est dans le sens de la profondeur.
                 	} else { // fin du cas profondeur
                 		int[] ori = axes.getCoordinates();
-                		ori[axeX] = x;
+                		ori[axeY] = y;
                 		Coordinates horiz = new Coordinates(ori);
                 		if (ship.getProue().isOnAxe(horiz) && ship.getPoupe().isOnAxe(horiz)) {
                 			// cas où le ship est disposé horizontalement
@@ -63,11 +84,9 @@ public class ShipDrawer implements BoardDrawer<Case> {
                 				if (isProue) {
                 					// dessine la proue
                 					try {
-										img = ImageIO.read(new File("./ressources/images/useless/ship3-1-r.png"));
-										g.drawImage(img, (int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-												(int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-												(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE),
-												(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE), null);
+										img = ImageIO.read(new File(imgDir, "ship3-1-r.png"));
+										g.drawImage(img, x * caseSize, y * caseSize,
+				                                caseSize, caseSize, null);
 									} catch (IOException e) {
 										// TODO Bloc catch généré automatiquement
 										e.printStackTrace();
@@ -75,11 +94,9 @@ public class ShipDrawer implements BoardDrawer<Case> {
                 				} else {
                 					// dessine la poupe
                 					try {
-										img = ImageIO.read(new File("./ressources/images/useless/ship3-3-r.png"));
-										g.drawImage(img, (int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-												(int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-												(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE),
-												(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE), null);
+										img = ImageIO.read(new File(imgDir, "ship3-3-r.png"));
+										g.drawImage(img, x * caseSize, y * caseSize,
+				                                caseSize, caseSize, null);
 									} catch (IOException e) {
 										// TODO Bloc catch généré automatiquement
 										e.printStackTrace();
@@ -88,11 +105,9 @@ public class ShipDrawer implements BoardDrawer<Case> {
                 			} else {
                 				// on est sur une section intermédiaire
                 				try {
-									img = ImageIO.read(new File("./ressources/images/useless/ship3-2-r.png"));
-									g.drawImage(img, (int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-											(int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-											(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE),
-											(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE), null);
+									img = ImageIO.read(new File(imgDir, "ship3-2-r.png"));
+									g.drawImage(img, x * caseSize, y * caseSize,
+			                                caseSize, caseSize, null);
 								} catch (IOException e) {
 									// TODO Bloc catch généré automatiquement
 									e.printStackTrace();
@@ -117,11 +132,9 @@ public class ShipDrawer implements BoardDrawer<Case> {
                     				if (isProue) {
                     					// dessine la proue
                     					try {
-    										img = ImageIO.read(new File("./ressources/images/useless/ship3-1.png"));
-    										g.drawImage(img, (int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-    												(int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-    												(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE),
-    												(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE), null);
+    										img = ImageIO.read(new File(imgDir, "ship3-1.png"));
+    										g.drawImage(img, x * caseSize, y * caseSize,
+    				                                caseSize, caseSize, null);
     									} catch (IOException e) {
     										// TODO Bloc catch généré automatiquement
     										e.printStackTrace();
@@ -129,11 +142,9 @@ public class ShipDrawer implements BoardDrawer<Case> {
                     				} else {
                     					// dessine la poupe
                     					try {
-    										img = ImageIO.read(new File("./ressources/images/useless/ship3-3.png"));
-    										g.drawImage(img, (int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-    												(int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-    												(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE),
-    												(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE), null);
+    										img = ImageIO.read(new File(imgDir, "ship3-3.png"));
+    										g.drawImage(img, x * caseSize, y * caseSize,
+    				                                caseSize, caseSize, null);
     									} catch (IOException e) {
     										// TODO Bloc catch généré automatiquement
     										e.printStackTrace();
@@ -143,11 +154,9 @@ public class ShipDrawer implements BoardDrawer<Case> {
                 			} else {
                 				// on est sur une section intermédiaire
                 				try {
-									img = ImageIO.read(new File("./ressources/images/useless/ship3-2.png"));
-									g.drawImage(img, (int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-											(int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE),
-											(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE),
-											(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE), null);
+									img = ImageIO.read(new File(imgDir, "ship3-2.png"));
+									g.drawImage(img, x * caseSize, y * caseSize,
+			                                caseSize, caseSize, null);
 								} catch (IOException e) {
 									// TODO Bloc catch généré automatiquement
 									e.printStackTrace();
@@ -155,25 +164,35 @@ public class ShipDrawer implements BoardDrawer<Case> {
                 			}
                 		} // fin du cas vertical
                 	}
-                	/*
-                	g.setColor(new Color(0.3f, 0.3f, 0.3f, alpha));
-                	g.fillRect((int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE) + 2,
-                			(int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE) + 2, 
-                			(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE) - 2, 
-                			(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE) - 2);
-                	*/
                 } // fin du cas où on a un ship
-                if (board.getItem(new Coordinates(c)).getState() != State.NOTAIMED) {
-                    // on dessine le tir
-                    int diameter = (int) ((scale * GraphicBoard.DEFAULT_CASE_SIZE) / 3);
-                    g.setColor(new Color(1.f, 0.f, 0.f, alpha));
-                    g.fillOval((int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
-                            (int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
-                            diameter, diameter);
+                
+                // tirs
+                
+                State fireState = board.getItem(caseCoord).getState();
+                // Si le tir n'a abouti sur aucun bateau
+                if (fireState == State.MISSED) {
+                    try {
+                        img = ImageIO.read(new File(imgDir, "water.png"));
+                        g.drawImage(img, x * caseSize, y * caseSize,
+                                caseSize, caseSize, null);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                // Si le tir a abouti sur un bateau
+                else if (fireState == State.HIT) {
+                    try {
+                        img = ImageIO.read(new File(imgDir, "hit.png"));
+                        g.drawImage(img, x * caseSize, y * caseSize,
+                                caseSize, caseSize, null);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
             }
         }
-		
 	}
 
 	@Override

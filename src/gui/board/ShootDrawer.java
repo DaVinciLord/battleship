@@ -12,11 +12,31 @@ import model.board.State;
 import model.coordinates.Coordinates;
 
 public class ShootDrawer implements BoardDrawer<State> {
-
+    
+    public static final File DEFAULT_DIR = new File("./ressources/images/useless");
+    
+    // ATTRIBUTS
+    
+    private File imgDir;
+    
+    // CONSRUCTEUR
+    
+    public ShootDrawer(File imgDir) {
+        if (imgDir == null) {
+            throw new AssertionError("imgDir null");
+        }
+        this.imgDir = imgDir;
+    }
+    
+    public ShootDrawer() {
+        this(DEFAULT_DIR);
+    }
 	
 	public void drawOnBoard(Graphics g, IBoard<State> board,
             Coordinates axes, float scale, float alpha) {
         // TODO Stub de la méthode généré automatiquement
+	    BufferedImage img = null;
+	    int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
         int axeX = 0;
         int axeY = 0;
         // on repère sur quelle tranche de board on est (et son orientation)
@@ -33,54 +53,41 @@ public class ShootDrawer implements BoardDrawer<State> {
             for (int y = 0; y < board.getDimensionsSizes().get(axeY); y++) {
                 c[axeX] = x;
                 c[axeY] = y;
-             // Si le tir n'a abouti sur aucun bateau
+                // Si le tir n'a abouti sur aucun bateau
                 if (board.getItem(new Coordinates(c)) == State.MISSED) {
-                	BufferedImage img = null;
+                	
                     try {
-						img = ImageIO.read(new File("./ressources/images/useless/water.png"));
+						img = ImageIO.read(new File(imgDir, "water.png"));
+						g.drawImage(img, x * caseSize, y * caseSize,
+                                caseSize, caseSize, null);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-                    int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
-                    g.drawImage(img, (int)(x * caseSize),
-                    				 (int)(y * caseSize),
-                    				 (int)((x * caseSize) + caseSize),
-                    				 (int)((y * caseSize) + caseSize),
-                    				 0, 0, img.getWidth(), img.getHeight(), null);
                 }
-             // Si le tir a abouti sur un bateau
+                // Si le tir a abouti sur un bateau
                 else if (board.getItem(new Coordinates(c)) == State.HIT) {
-                	BufferedImage img = null;
                     try {
-						img = ImageIO.read(new File("./ressources/images/useless/hit.png"));
+						img = ImageIO.read(new File(imgDir, "hit.png"));
+						g.drawImage(img, x * caseSize, y * caseSize,
+                                caseSize, caseSize, null);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-                    int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
-                    g.drawImage(img, (int)(x * caseSize),
-                    				 (int)(y * caseSize),
-                    				 (int)((x * caseSize) + caseSize),
-                    				 (int)((y * caseSize) + caseSize),
-                    				 0, 0, img.getWidth(), img.getHeight(), null);
                 }
                 
-             // Si le tir a abouti sur un bateau
+                 // Si le tir a abouti sur un bateau et l'a coulé
                 else if (board.getItem(new Coordinates(c)) == State.SUNK) {
-                	BufferedImage img = null;
                     try {
-    					img = ImageIO.read(new File("./ressources/images/useless/death.png"));
+    					img = ImageIO.read(new File(imgDir, "death.png"));
+    					g.drawImage(img, x * caseSize, y * caseSize,
+                                caseSize, caseSize, null);
     				} catch (IOException e) {
     					// TODO Auto-generated catch block
     					e.printStackTrace();
-    				}
-                    int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
-                    g.drawImage(img, (int)(x * caseSize),
-                    				 (int)(y * caseSize),
-                    				 (int)((x * caseSize) + caseSize),
-                    				 (int)((y * caseSize) + caseSize),
-                    				 0, 0, img.getWidth(), img.getHeight(), null);
+    				};
+                    
                 }
                
             }
@@ -91,6 +98,8 @@ public class ShootDrawer implements BoardDrawer<State> {
 	public void drawCase(Graphics g, IBoard<State> board,
             Coordinates axes, float scale, float alpha,
             Coordinates position) {
+	    BufferedImage img = null;
+	    int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
         // TODO Stub de la méthode généré automatiquement
         if (board.getItem(position) != State.NOTAIMED) {
             // on cherche les coordonnées "graphiques" de la case
@@ -105,53 +114,39 @@ public class ShootDrawer implements BoardDrawer<State> {
             }
             // Si le tir n'a abouti sur aucun bateau
             if (board.getItem(position) == State.MISSED) {
-            	BufferedImage img = null;
                 try {
-					img = ImageIO.read(new File("./ressources/images/useless/water.png"));
+					img = ImageIO.read(new File(imgDir, "water.png"));
+					g.drawImage(img, x * caseSize, y * caseSize,
+                            caseSize, caseSize, null);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-                int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
-                g.drawImage(img, (int)(x * caseSize),
-                				 (int)(y * caseSize),
-                				 (int)((x * caseSize) + caseSize),
-                				 (int)((y * caseSize) + caseSize),
-                				 0, 0, img.getWidth(), img.getHeight(), null);
             }
             
             // Si le tir a abouti sur un bateau
             else if (board.getItem(position) == State.HIT) {
-            	BufferedImage img = null;
                 try {
-					img = ImageIO.read(new File("./ressources/images/useless/hit.png"));
+					img = ImageIO.read(new File(imgDir, "hit.png"));
+					g.drawImage(img, x * caseSize, y * caseSize,
+                            caseSize, caseSize, null);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-                int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
-                g.drawImage(img, (int)(x * caseSize),
-                				 (int)(y * caseSize),
-                				 (int)((x * caseSize) + caseSize),
-                				 (int)((y * caseSize) + caseSize),
-                				 0, 0, img.getWidth(), img.getHeight(), null);
             }
             
-         // Si le tir a abouti sur un bateau
+            // Si le tir a abouti sur un bateau et l'a coulé
             else if (board.getItem(position) == State.SUNK) {
-            	BufferedImage img = null;
                 try {
-					img = ImageIO.read(new File("./ressources/images/useless/death.png"));
+					img = ImageIO.read(new File(imgDir, "death.png"));
+					g.drawImage(img, x * caseSize, y * caseSize,
+                            caseSize, caseSize, null);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-                int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
-                g.drawImage(img, (int)(x * caseSize),
-                				 (int)(y * caseSize),
-                				 (int)((x * caseSize) + caseSize),
-                				 (int)((y * caseSize) + caseSize),
-                				 0, 0, img.getWidth(), img.getHeight(), null);
+                
             }
         }
         
