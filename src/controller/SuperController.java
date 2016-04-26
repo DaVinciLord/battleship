@@ -12,8 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
 
+import exceptions.network.ServerBadDataException;
+import exceptions.network.ServerBadFormatException;
 import exceptions.network.ServerBadPortException;
 import exceptions.network.ServerClosedSocketException;
+import exceptions.network.ServerEmptyDataException;
+import exceptions.network.ServerNullDataException;
 import exceptions.network.ServerNullSocketException;
 import exceptions.network.ServerSocketAcceptException;
 import exceptions.ship.OverPanamaException;
@@ -178,7 +182,7 @@ public class SuperController {
     
     private void rageQuitServer() {
         if (ServOut.isVictorious()) {
-                JOptionPane.showConfirmDialog(frame, "Vous avez Gagné, Bravo");
+                JOptionPane.showMessageDialog(frame, "Vous avez Gagné, Bravo");
             } else  { 
                 JOptionPane.showMessageDialog(frame, "Une Erreur est survenue, Redémarage de l'application");
         }
@@ -212,7 +216,7 @@ public class SuperController {
             
         
         private ServOut() {
-    
+            
         }
         private static State getState() {
             return state;
@@ -227,26 +231,13 @@ public class SuperController {
         
         private static RetVal receiveData(Server sc) {
             
-             
-                SwingWorker<String, Void> sw = new SwingWorker<String, Void>() {
-
-                    @Override
-                    protected String doInBackground() throws Exception {
-                        String data = sc.receiveData();
-                        return data;
-                    }
-
-                    
-                };
+   
                 
-                String data = "Error:Error";
+                String data;
                 try {
-                    data = sw.get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-                
-                
+                    data = sc.receiveData();
+
+
                 String[] s = data.split(":");
                 RetVal rv = RetVal.valueOf(s[0].toUpperCase());
                 if (rv == RetVal.COORDINATES) {
@@ -259,9 +250,12 @@ public class SuperController {
                     victory = true;
                 }
                 return rv;    
+                } catch (ServerNullDataException | ServerEmptyDataException | ServerBadDataException
+                        | ServerBadFormatException e) {
+            }
            
             
-            //return RetVal.ERROR;
+            return RetVal.ERROR;
             
             
         }
