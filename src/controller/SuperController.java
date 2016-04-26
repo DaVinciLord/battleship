@@ -152,7 +152,7 @@ public class SuperController {
     
     private void tourdelennemie() {
         jtp.setSelectedIndex(0);
-        if (ServOut.receiveData(sc) != RetVal.COORD) {
+        if (ServOut.receiveData(sc) != RetVal.COORDINATES) {
             rageQuitServer();
         }
         State st = p1.takeHit(ServOut.getCoordinates()); 
@@ -179,12 +179,13 @@ public class SuperController {
     }
     
     private static enum RetVal {
-         COORD("Coordinates"),
+         COORDINATES("Coordinates"),
          STATE("State"),
          ERROR("Erreur");
 
+     
          private RetVal(String s) {
-
+         
          } 
 
      }
@@ -212,8 +213,8 @@ public class SuperController {
                 String data;
                 data = sc.receiveData();
                 String[] s = data.split(":");
-                RetVal rv = RetVal.valueOf(s[0]);
-                if (rv == RetVal.COORD) {
+                RetVal rv = RetVal.valueOf(s[0].toUpperCase());
+                if (rv == RetVal.COORDINATES) {
                     c = new Coordinates(s[1]);
                 }
                 if (rv == RetVal.STATE) {
