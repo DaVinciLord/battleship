@@ -15,9 +15,6 @@ import javax.swing.JComponent;
 
 public class GraphicBoard<E> extends JComponent {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -694145859923355617L;
 
     /**
@@ -150,37 +147,42 @@ public class GraphicBoard<E> extends JComponent {
                     int oldYCase = yCase;
                     xCase = e.getX() / caseSize;
                     yCase = e.getY() / caseSize;
-                    int[] coord = axes.getCoordinates();
-                    for (int k = 0; k < coord.length; k++) {
-                        if (coord[k] == -1) {
-                            coord[k] = xCase;
-                        } else if (coord[k] == -2) {
-                            coord[k] = yCase;
-                        }
+                    if (xCase >= dimX || xCase < 0 || yCase >= dimY || yCase < 0) {
+                    	xCase = oldYCase;
+                        yCase = oldYCase;
+                    } else {
+	                    int[] coord = axes.getCoordinates();
+	                    for (int k = 0; k < coord.length; k++) {
+	                        if (coord[k] == -1) {
+	                            coord[k] = xCase;
+	                        } else if (coord[k] == -2) {
+	                            coord[k] = yCase;
+	                        }
+	                    }
+	                    cls.fireCoord(new Coordinates(coord), "case selected");
+	                    if (oldXCase != -1) {
+	                        paintCase(oldXCase, oldYCase, g);
+	                        int[] kaze = axes.getCoordinates();
+	                        for (int k = 0; k < kaze.length; k++) {
+	                            if (axes.get(k) == -1) {
+	                                kaze[k] = oldXCase;
+	                            } else if (axes.get(k) == -2) {
+	                                kaze[k] = oldYCase;
+	                            }
+	                        }
+	                        drawer.drawCase(g, model, axes, scale, opacity, new Coordinates(kaze));
+	                    }
+	                    paintCase(xCase, yCase, g);
+	                    int[] kaze = axes.getCoordinates();
+	                    for (int k = 0; k < kaze.length; k++) {
+	                        if (axes.get(k) == -1) {
+	                            kaze[k] = xCase;
+	                        } else if (axes.get(k) == -2) {
+	                            kaze[k] = yCase;
+	                        }
+	                    }
+	                    drawer.drawCase(g, model, axes, scale, opacity, new Coordinates(kaze));
                     }
-                    cls.fireCoord(new Coordinates(coord), "case selected");
-                    if (oldXCase != -1) {
-                        paintCase(oldXCase, oldYCase, g);
-                        int[] kaze = axes.getCoordinates();
-                        for (int k = 0; k < kaze.length; k++) {
-                            if (axes.get(k) == -1) {
-                                kaze[k] = oldXCase;
-                            } else if (axes.get(k) == -2) {
-                                kaze[k] = oldYCase;
-                            }
-                        }
-                        drawer.drawCase(g, model, axes, scale, opacity, new Coordinates(kaze));
-                    }
-                    paintCase(xCase, yCase, g);
-                    int[] kaze = axes.getCoordinates();
-                    for (int k = 0; k < kaze.length; k++) {
-                        if (axes.get(k) == -1) {
-                            kaze[k] = xCase;
-                        } else if (axes.get(k) == -2) {
-                            kaze[k] = yCase;
-                        }
-                    }
-                    drawer.drawCase(g, model, axes, scale, opacity, new Coordinates(kaze));
                 } else {
                     cls.fireCoord(null, "GraphicBoardSelected");
                 }
