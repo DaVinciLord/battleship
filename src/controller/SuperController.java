@@ -65,6 +65,8 @@ public class SuperController {
                 if (e.getActionType().equals("ready")) {
                     if(!isHost) {
                         tourdelennemie();
+                    } else {
+                        gbs.setMyTurn(isHost);
                     }
                 }
                 if (e.getActionType().equals("dead")) {
@@ -87,7 +89,7 @@ public class SuperController {
         frame = new JFrame("test tableau de tir");
         
         gbs = new GraphicBoardShooter(p1);
-        gbs.setMyTurn(isHost);
+        
         gsb = new GraphicShipBoard(p1);
         jtp = new JTabbedPane();
     }
@@ -131,11 +133,6 @@ public class SuperController {
                 sc.setConnectedSocket(sc.connectSocket());
                 
                 if (ServOut.receiveData(sc) != RetVal.COORDINATES) {
-                    if (ServOut.isVictoious()) {
-                        JOptionPane.showConfirmDialog(frame, "Vous avez Gagné, Bravo");
-                    } else  { 
-                        JOptionPane.showMessageDialog(frame, "Une Erreur est survenue, Redémarage de l'application");
-                    }
                     rageQuitServer();
                 }
                 
@@ -158,11 +155,6 @@ public class SuperController {
     private void tourdujoueur(Coordinates c) {
         sc.sendData("Coordinates:" + c.toString());
         if (ServOut.receiveData(sc) != RetVal.STATE) {
-            if (ServOut.isVictoious()) {
-                JOptionPane.showConfirmDialog(frame, "Vous avez Gagné, Bravo");
-            } else  { 
-                JOptionPane.showMessageDialog(frame, "Une Erreur est survenue, Redémarage de l'application");
-            }
             rageQuitServer();
         }
         p1.updateFireGrid(c, ServOut.getState());
@@ -172,11 +164,7 @@ public class SuperController {
     private void tourdelennemie() {
         jtp.setSelectedIndex(0);
         if (ServOut.receiveData(sc) != RetVal.COORDINATES) {
-            if (ServOut.isVictoious()) {
-                JOptionPane.showConfirmDialog(frame, "Vous avez Gagné, Bravo");
-            } else  { 
-                JOptionPane.showMessageDialog(frame, "Une Erreur est survenue, Redémarage de l'application");
-            }
+
             rageQuitServer();
         }
         State st = p1.takeHit(ServOut.getCoordinates()); 
@@ -192,7 +180,11 @@ public class SuperController {
     }
     
     private void rageQuitServer() {
-        
+        if (ServOut.isVictoious()) {
+                JOptionPane.showConfirmDialog(frame, "Vous avez Gagné, Bravo");
+            } else  { 
+                JOptionPane.showMessageDialog(frame, "Une Erreur est survenue, Redémarage de l'application");
+        }
         try {
             sc.closeSocket(sc.getConnectedSocket());
             sc.closeSocket(sc.getDistantServerSocket());
