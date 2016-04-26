@@ -100,7 +100,6 @@ public class ShootDrawer implements BoardDrawer<State> {
             Coordinates position) {
 	    BufferedImage img = null;
 	    int caseSize = (int)((GraphicBoard.DEFAULT_CASE_SIZE * scale));
-        // TODO Stub de la méthode généré automatiquement
         if (board.getItem(position) != State.NOTAIMED) {
             // on cherche les coordonnées "graphiques" de la case
             int x = 0;

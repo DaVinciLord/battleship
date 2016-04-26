@@ -1,8 +1,6 @@
 package gui.board;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import model.board.IBoard;
 import model.board.State;
 import model.coordinates.Coordinates;
 import model.coordinates.CoordinatesEvent;
@@ -84,87 +81,6 @@ public class GraphicBoardShooter extends JPanel {
     // OUTILS DE CONSTRUCTION
     
     private void createView() {
-     // provisoire jusqu'à ce qu'on aie deux vrais BoardDrawers.
-        BoardDrawer<State> drawer = new BoardDrawer<State>() {
-            @Override
-            public void drawOnBoard(Graphics g, IBoard<State> board,
-                    Coordinates axes, float scale, float alpha) {
-                // TODO Stub de la méthode généré automatiquement
-                int axeX = 0;
-                int axeY = 0;
-                // on repère sur quelle tranche de board on est (et son orientation)
-                for (int k = 0; k < board.dimensionNb(); k++) {
-                    if (axes.get(k) == -1) {
-                        axeX = k;
-                    } else if (axes.get(k) == -2) {
-                        axeY = k;
-                    }
-                }
-                // on parcourt la tranche
-                int[] c = axes.getCoordinates();
-                for (int x = 0; x < board.getDimensionsSizes().get(axeX); x++) {
-                    for (int y = 0; y < board.getDimensionsSizes().get(axeY); y++) {
-                        c[axeX] = x;
-                        c[axeY] = y;
-                        if (board.getItem(new Coordinates(c)) != State.NOTAIMED) {
-                            // on dessine
-                            int diameter = (int) ((scale * GraphicBoard.DEFAULT_CASE_SIZE) / 3);
-                            
-                            if (board.getItem(new Coordinates(c)) == State.HIT) {
-                                g.setColor(new Color(1.f, 0.f, 0.f, alpha));
-                                }
-                            if (board.getItem(new Coordinates(c)) == State.SUNK) {
-                                 g.setColor(new Color(0.f, 0.f, 0.f, alpha));
-                                }
-                            if (board.getItem(new Coordinates(c)) == State.MISSED) {
-                                    g.setColor(new Color(0.f, 0.f, 1.f, alpha));
-                            }
-
-                            g.fillOval((int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
-                                    (int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
-                                    diameter, diameter);
-                        }
-                    }
-                }
-                
-            }
-            @Override
-            public void drawCase(Graphics g, IBoard<State> board,
-                    Coordinates axes, float scale, float alpha,
-                    Coordinates position) {
-                // TODO Stub de la méthode généré automatiquement
-                if (board.getItem(position) != State.NOTAIMED) {
-                    // on cherche les coordonnées "graphiques" de la case
-                    int x = 0;
-                    int y = 0;
-                    for (int k = 0; k < board.dimensionNb(); k++) {
-                        if (axes.get(k) == -1) {
-                            x = position.get(k);
-                        } else if (axes.get(k) == -2) {
-                            y = position.get(k);
-                        }
-                    }
-                    // on dessine
-                    int diameter = (int) ((scale * GraphicBoard.DEFAULT_CASE_SIZE) / 3);
-                    if (board.getItem(position) == State.HIT) {
-                    g.setColor(new Color(1.f, 0.f, 0.f, alpha));
-                    }
-                    if (board.getItem(position) == State.SUNK) {
-                        g.setColor(new Color(0.f, 0.f, 0.f, alpha));
-                    }
-                    if (board.getItem(position) == State.MISSED) {
-                        g.setColor(new Color(0.f, 0.f, 1.f, alpha));
-                    }
-                    
-                    
-                    g.fillOval((int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
-                            (int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
-                            diameter, diameter);
-                }
-                
-            }
-            
-        };
         // un axe par défaut
         int[] axe = new int[player.getShootGrid().dimensionNb()];
         axe[0] = -1;
@@ -175,7 +91,7 @@ public class GraphicBoardShooter extends JPanel {
         for (int k = 3; k < player.getShootGrid().dimensionNb(); k++) {
             axe[k] = 0;
         }
-        gbl = new GraphicBoardLayer<State>(player.getShootGrid(), new Coordinates(axe), drawer);
+        gbl = new GraphicBoardLayer<State>(player.getShootGrid(), new Coordinates(axe), new ShootDrawer());
         
         // pour faire feu.
         fire = new JButton("Feu !");

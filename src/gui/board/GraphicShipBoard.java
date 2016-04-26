@@ -1,10 +1,7 @@
 package gui.board;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,8 +16,6 @@ import exceptions.ship.ShipCaseRaceException;
 import exceptions.ship.ShipNotAlignException;
 import exceptions.ship.ShipOffLimitException;
 import model.board.Case;
-import model.board.IBoard;
-import model.board.State;
 import model.coordinates.Coordinates;
 import model.coordinates.CoordinatesEvent;
 import model.coordinates.CoordinatesListener;
@@ -105,11 +100,9 @@ public class GraphicShipBoard extends JPanel {
     private JLabel lengthLabel;
     
     /**
-     * Coordonnées de clic et maintien.
+     * Le panel de placement de navires, disparait après ready.
      */
-    // private int xClic;
-    // private int yClic;
-    
+    private JPanel placeShipPanel;
     /**
      * trigger pour le remplissage des champs
      */
@@ -136,81 +129,6 @@ public class GraphicShipBoard extends JPanel {
 	// OUTILS DE CONSTRUCTION
 	
 	private void createView() {
-		// provisoire jusqu'à ce qu'on aie deux vrais BoardDrawers.
-        BoardDrawer<Case> drawer = new BoardDrawer<Case>() {
-            @Override
-            public void drawOnBoard(Graphics g, IBoard<Case> board,
-                    Coordinates axes, float scale, float alpha) {
-                int axeX = 0;
-                int axeY = 0;
-                // on repère sur quelle tranche de board on est (et son orientation)
-                for (int k = 0; k < board.dimensionNb(); k++) {
-                    if (axes.get(k) == -1) {
-                        axeX = k;
-                    } else if (axes.get(k) == -2) {
-                        axeY = k;
-                    }
-                }
-                // on parcourt la tranche
-                int[] c = axes.getCoordinates();
-                for (int x = 0; x < board.getDimensionsSizes().get(axeX); x++) {
-                    for (int y = 0; y < board.getDimensionsSizes().get(axeY); y++) {
-                        c[axeX] = x;
-                        c[axeY] = y;
-                        if (board.getItem(new Coordinates(c)).getShip() != null) {
-                        	// on dessine le ship
-                        	g.setColor(new Color(0.3f, 0.3f, 0.3f, alpha));
-                        	g.fillRect((int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE) + 2,
-                        			(int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE) + 2, 
-                        			(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE) - 2, 
-                        			(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE) - 2);
-                        }
-                        if (board.getItem(new Coordinates(c)).getState() != State.NOTAIMED) {
-                            // on dessine le tir
-                            int diameter = (int) ((scale * GraphicBoard.DEFAULT_CASE_SIZE) / 3);
-                            g.setColor(new Color(1.f, 0.f, 0.f, alpha));
-                            g.fillOval((int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
-                                    (int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
-                                    diameter, diameter);
-                        }
-                    }
-                }
-                
-            }
-            @Override
-            public void drawCase(Graphics g, IBoard<Case> board,
-                    Coordinates axes, float scale, float alpha,
-                    Coordinates position) {
-            	// on cherche les coordonnées "graphiques" de la case
-                int x = 0;
-                int y = 0;
-                for (int k = 0; k < board.dimensionNb(); k++) {
-                    if (axes.get(k) == -1) {
-                        x = position.get(k);
-                    } else if (axes.get(k) == -2) {
-                        y = position.get(k);
-                    }
-                }
-                if (board.getItem(position).getShip() != null) {
-                	// on dessine le ship
-                	g.setColor(new Color(0.3f, 0.3f, 0.3f, alpha));
-                	g.fillRect((int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE) + 2,
-                			(int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE) + 2, 
-                			(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE) - 2, 
-                			(int) (scale * GraphicBoard.DEFAULT_CASE_SIZE) - 2);
-                }
-                if (board.getItem(position).getState() != State.NOTAIMED) {
-                	// on dessine le tir
-                    int diameter = (int) ((scale * GraphicBoard.DEFAULT_CASE_SIZE) / 3);
-                    g.setColor(new Color(1.f, 0.f, 0.f, alpha));
-                    g.fillOval((int) (x * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
-                            (int) (y * scale * GraphicBoard.DEFAULT_CASE_SIZE) + diameter,
-                            diameter, diameter);
-                }
-                
-            }
-            
-        };
         // on construit un axe par défaut
         int[] axe = new int[player.getShootGrid().dimensionNb()];
         axe[0] = -1;
@@ -235,6 +153,7 @@ public class GraphicShipBoard extends JPanel {
 		removeShip.setEnabled(false);
 		infoLabel = new JLabel("Ici : Informations sur la partie");
 		lengthLabel = new JLabel("Longueur : " + getSelectedShipLength());
+		placeShipPanel = new JPanel();
 	}
 	
 	private void placeComponents() {
@@ -249,7 +168,8 @@ public class GraphicShipBoard extends JPanel {
 			p.add(removeShip);
 			p.add(ready);
 		}
-		add(p, BorderLayout.WEST);
+		placeShipPanel.add(p);
+		add(placeShipPanel, BorderLayout.WEST);
 		add(infoLabel, BorderLayout.NORTH);
 	}
 	
@@ -303,6 +223,7 @@ public class GraphicShipBoard extends JPanel {
 				poupeField.setText("");
 				poupeField.setEditable(false);
 				infoLabel.setText("La partie va commencer. Vous ne pouvez plus modifier la position de vos navires");
+				remove(placeShipPanel);
 			}
 		});
 		ships.addActionListener(new ActionListener() {
