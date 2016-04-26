@@ -1,0 +1,6 @@
+Modeles.dia
+	=> Représentation du modele classique Client - Server
+	et de notre modele a nous dit "Client / Serveur"
+		-> On peut observer que notre modele ne permet pas d'avoir une multiplicité de joueur
+		en meme temps, mais seulement deux personne jouant ensemble sur une partie.
+		
