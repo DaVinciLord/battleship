@@ -63,6 +63,14 @@ public class ShipDrawer implements BoardDrawer<Case> {
                 	// on dessine le ship
                 	if (!ship.getProue().isOnAxe(axes) || !ship.getPoupe().isOnAxe(axes)) {
                 		// cas où le ship est dans le sens de la profondeur.
+                		try {
+							img = ImageIO.read(new File(imgDir, "ship-cut.png"));
+							g.drawImage(img, x * caseSize, y * caseSize,
+	                                caseSize, caseSize, null);
+						} catch (IOException e) {
+							// TODO Bloc catch généré automatiquement
+							e.printStackTrace();
+						}
                 	} else { // fin du cas profondeur
                 		int[] ori = axes.getCoordinates();
                 		ori[axeY] = y;
@@ -221,6 +229,14 @@ public class ShipDrawer implements BoardDrawer<Case> {
         	// on dessine le ship
         	if (!ship.getProue().isOnAxe(axes) || !ship.getPoupe().isOnAxe(axes)) {
         		// cas où le ship est dans le sens de la profondeur.
+        		try {
+					img = ImageIO.read(new File(imgDir, "ship-cut.png"));
+					g.drawImage(img, x * caseSize, y * caseSize,
+                            caseSize, caseSize, null);
+				} catch (IOException e) {
+					// TODO Bloc catch généré automatiquement
+					e.printStackTrace();
+				}
         	} else { // fin du cas profondeur
         		int[] ori = axes.getCoordinates();
         		ori[axeY] = y;
