@@ -230,7 +230,7 @@ public class StartGame {
                 if (!adresses.contains(yourAdress.getText())) {
                     adresses.add(yourAdress.getText());
                     try {
-                        BufferedWriter bw = new BufferedWriter(new FileWriter(ADRESSES));
+                        BufferedWriter bw = new BufferedWriter(new FileWriter(ADRESSES, true));
                         bw.append(yourAdress.getText());
                         bw.newLine();
                         bw.close();
@@ -248,7 +248,7 @@ public class StartGame {
                 if (!adresses.contains(advAdress.getText())) {
                     adresses.add(advAdress.getText());
                     try {
-                        BufferedWriter bw = new BufferedWriter(new FileWriter(ADRESSES));
+                        BufferedWriter bw = new BufferedWriter(new FileWriter(ADRESSES, true));
                         bw.append(advAdress.getText());
                         bw.newLine();
                         bw.close();

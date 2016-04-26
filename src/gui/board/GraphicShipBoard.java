@@ -244,6 +244,7 @@ public class GraphicShipBoard extends JPanel {
 						player.placeShip(selectedShip, proue, poupe);
 						placeShip.setEnabled(false);
 						removeShip.setEnabled(true);
+						ships.setSelectedIndex((ships.getSelectedIndex() + 1) % ships.getItemCount());
 					} catch (ShipCaseRaceException | ShipBadLengthException | ShipOffLimitException
 							| ShipNotAlignException e1) {
 						infoLabel.setText("erreur de placement " + e1.toString());
