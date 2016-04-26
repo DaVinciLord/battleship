@@ -5,17 +5,15 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingWorker;
 
-import exceptions.network.ServerBadDataException;
-import exceptions.network.ServerBadFormatException;
 import exceptions.network.ServerBadPortException;
 import exceptions.network.ServerClosedSocketException;
-import exceptions.network.ServerEmptyDataException;
-import exceptions.network.ServerNullDataException;
 import exceptions.network.ServerNullSocketException;
 import exceptions.network.ServerSocketAcceptException;
 import exceptions.ship.OverPanamaException;
@@ -228,9 +226,27 @@ public class SuperController {
         }
         
         private static RetVal receiveData(Server sc) {
-            try {
-                String data;
-                data = sc.receiveData();
+            
+             
+                SwingWorker<String, Void> sw = new SwingWorker<String, Void>() {
+
+                    @Override
+                    protected String doInBackground() throws Exception {
+                        String data = sc.receiveData();
+                        return data;
+                    }
+
+                    
+                };
+                
+                String data = "Error:Error";
+                try {
+                    data = sw.get();
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+                
+                
                 String[] s = data.split(":");
                 RetVal rv = RetVal.valueOf(s[0].toUpperCase());
                 if (rv == RetVal.COORDINATES) {
@@ -243,11 +259,9 @@ public class SuperController {
                     victory = true;
                 }
                 return rv;    
-            } catch (ServerBadDataException | ServerNullDataException | ServerEmptyDataException | ServerBadFormatException e) {
-                
-            }
+           
             
-            return RetVal.ERROR;
+            //return RetVal.ERROR;
             
             
         }
