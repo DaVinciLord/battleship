@@ -5,12 +5,10 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingWorker;
 
 import exceptions.network.ServerBadDataException;
 import exceptions.network.ServerBadFormatException;
@@ -31,6 +29,7 @@ import model.network.Server;
 import model.player.Player;
 
 public class SuperController {
+    private static final int TIMEOUT = 30000;
     private boolean isHost;
     private Player p1;
     private GraphicBoardShooter gbs;
@@ -38,33 +37,34 @@ public class SuperController {
     private JFrame frame;
     private JTabbedPane jtp;
     private Server sc;
-    
-    public SuperController(Coordinates c, String ipAddressLocal, String ipAddressEnnemy, boolean isHost) throws OverPanamaException {
+    private boolean alive;
+
+    public SuperController(Coordinates c, String ipAddressLocal, String ipAddressEnnemy, boolean isHost)
+            throws OverPanamaException {
         createModel(c, ipAddressLocal, ipAddressEnnemy, isHost);
         createView();
         placeComponents();
         createController();
-        
-        
+
     }
 
     private void createController() {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         gbs.addCoordinatesListener(new CoordinatesListener() {
-            
+
             @Override
             public void doWithCoord(CoordinatesEvent e) {
                 tourdujoueur(e.getCoordinates());
                 tourdelennemie();
             }
         });
-        
+
         p1.addCoordinatesListener(new CoordinatesListener() {
-            
+
             @Override
             public void doWithCoord(CoordinatesEvent e) {
                 if (e.getActionType().equals("ready")) {
-                    if(!isHost) {
+                    if (!isHost) {
                         tourdelennemie();
                     } else {
                         gbs.setMyTurn(isHost);
@@ -72,12 +72,13 @@ public class SuperController {
                 }
                 if (e.getActionType().equals("dead")) {
                     sc.sendData("Victory:Bravo");
+                    alive = false;
                     JOptionPane.showMessageDialog(frame, "Perdu");
                     rageQuitServer();
                 }
             }
         });
-     
+
     }
 
     private void placeComponents() {
@@ -88,15 +89,17 @@ public class SuperController {
 
     private void createView() {
         frame = new JFrame("test tableau de tir");
-        
+
         gbs = new GraphicBoardShooter(p1);
-        
+
         gsb = new GraphicShipBoard(p1);
         jtp = new JTabbedPane();
     }
 
-    private void createModel(Coordinates c, String ipAddressLocal, String ipAddressEnnemy, boolean isHost) throws OverPanamaException {
+    private void createModel(Coordinates c, String ipAddressLocal, String ipAddressEnnemy, boolean isHost)
+            throws OverPanamaException {
         this.isHost = isHost;
+        alive = true;
         c = createServer(ipAddressLocal, ipAddressEnnemy, isHost, c);
         createPlayer(c);
     }
@@ -105,11 +108,12 @@ public class SuperController {
         p1 = new Player(c);
     }
 
+    @SuppressWarnings("static-access")
     private Coordinates createServer(String ipAddressLocal, String ipAddressEnnemy, boolean isHost, Coordinates c) {
         try {
-            sc = new Server(Server.PORT, Server.BACKLOG, InetAddress.getByName(ipAddressLocal));                     
-           
-            if(isHost) {
+            sc = new Server(Server.PORT, Server.BACKLOG, InetAddress.getByName(ipAddressLocal));
+
+            if (isHost) {
                 sc.setConnectedSocket(sc.connectSocket());
 
                 sc.setDistantServerSocket(new Socket(InetAddress.getByName(ipAddressEnnemy), Server.PORT));
@@ -117,26 +121,26 @@ public class SuperController {
                 sc.sendData("Coordinates:" + c);
             } else {
                 boolean ok = false;
-                while(!ok) {
+                while (!ok) {
                     try {
                         sc.setDistantServerSocket(new Socket(InetAddress.getByName(ipAddressEnnemy), Server.PORT));
                         ok = true;
                     } catch (ConnectException e) {
-                       
+
                         JOptionPane jp = new JOptionPane();
                         jp.grabFocus();
-                        jp.showConfirmDialog(null, "Réésayer");
-                        
+                        ok = jp.showConfirmDialog(null, "Réésayer") != JOptionPane.YES_OPTION;
+
                     }
                 }
 
-                
                 sc.setConnectedSocket(sc.connectSocket());
-                
+                sc.setTimeout(sc.getConnectedSocket(), TIMEOUT);
+                sc.setTimeout(sc.getDistantServerSocket(), TIMEOUT);
                 if (ServOut.receiveData(sc) != RetVal.COORDINATES) {
                     rageQuitServer();
                 }
-                
+
                 c = ServOut.getCoordinates();
             }
         } catch (ServerSocketAcceptException e) {
@@ -151,92 +155,76 @@ public class SuperController {
         return c;
     }
 
-
-
     private void tourdujoueur(Coordinates c) {
+
         sc.sendData("Coordinates:" + c.toString());
         if (ServOut.receiveData(sc) != RetVal.STATE) {
             rageQuitServer();
         }
-        p1.updateFireGrid(c, ServOut.getState());
+        if (!sc.getConnectedSocket().isClosed() && !sc.getDistantServerSocket().isClosed()) {
+            p1.updateFireGrid(c, ServOut.getState());
+        }
     }
-    
-    
+
     private void tourdelennemie() {
-        jtp.setSelectedIndex(0);
-        if (ServOut.receiveData(sc) != RetVal.COORDINATES) {
+        if (!sc.getConnectedSocket().isClosed() && !sc.getDistantServerSocket().isClosed()) {
+            jtp.setSelectedIndex(0);
+            if (ServOut.receiveData(sc) != RetVal.COORDINATES) {
+                rageQuitServer();
+            }
 
-            rageQuitServer();
+            State st = p1.takeHit(ServOut.getCoordinates());
+            if (!sc.getConnectedSocket().isClosed() && !sc.getDistantServerSocket().isClosed()) {
+                sc.sendData("State:" + st.toString());
+                gbs.setMyTurn(true);
+            }
         }
-        State st = p1.takeHit(ServOut.getCoordinates()); 
-        sc.sendData("State:" + st.toString());
-             gbs.setMyTurn(true);
     }
 
-        
-    
-    
     public JFrame getFrame() {
-    	return frame;
+        return frame;
     }
-    
+
     private void rageQuitServer() {
-        if (ServOut.isVictorious()) {
-                JOptionPane.showMessageDialog(frame, "Vous avez Gagné, Bravo");
-            } else  { 
-                JOptionPane.showMessageDialog(frame, "Une Erreur est survenue, Redémarage de l'application");
+        if (alive) {
+            JOptionPane.showMessageDialog(frame, "Vous avez Gagné, Bravo");
         }
+
         try {
             sc.closeSocket(sc.getConnectedSocket());
             sc.closeSocket(sc.getDistantServerSocket());
         } catch (ServerClosedSocketException | ServerNullSocketException e) {
-            
+
         }
         frame.dispose();
     }
-    
+
     private static enum RetVal {
-         COORDINATES("Coordinates"),
-         STATE("State"),
-         VICTORY("Victory"),
-         ERROR("Erreur");
+        COORDINATES("Coordinates"), STATE("State"), VICTORY("Victory"), ERROR("Erreur");
 
-     
-         private RetVal(String s) {
-         
-         } 
+        private RetVal(String s) {
 
-     }
-    
+        }
+
+    }
+
     private static class ServOut {
         private static Coordinates c;
         private static State state;
-        private static boolean victory;
 
-            
-        
-        private ServOut() {
-            
-        }
         private static State getState() {
             return state;
         }
-        
+
         private static Coordinates getCoordinates() {
             return c;
         }
-        private static boolean isVictorious() {
-            return victory;
-        }
-        
-        private static RetVal receiveData(Server sc) {
-            
-   
-                
-                String data;
-                try {
-                    data = sc.receiveData();
 
+        private static RetVal receiveData(Server sc) {
+
+            String data;
+            try {
+                data = sc.receiveData();
 
                 String[] s = data.split(":");
                 RetVal rv = RetVal.valueOf(s[0].toUpperCase());
@@ -246,26 +234,24 @@ public class SuperController {
                 if (rv == RetVal.STATE) {
                     state = State.valueOf(s[1].toUpperCase());
                 }
-                if (rv == RetVal.VICTORY) {
-                    victory = true;
+                if (rv == RetVal.ERROR) {
+                    JOptionPane.showMessageDialog(null, "Erreur");
                 }
-                return rv;    
-                } catch (ServerNullDataException | ServerEmptyDataException | ServerBadDataException
-                        | ServerBadFormatException e) {
+                return rv;
+            } catch (ServerNullDataException | ServerEmptyDataException | ServerBadDataException
+                    | ServerBadFormatException e) {
             }
-           
-            
+
             return RetVal.ERROR;
-            
-            
+
         }
-        
+
     }
-    
+
     public void display() {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
+
 }
