@@ -84,7 +84,7 @@ public class LocalController {
     }
 
     private void createView() {
-        frame = new JFrame("test tableau de tir");
+        frame = new JFrame("BattleShip !");
         
         turn = (Math.random() >= 0.5) ? true : false;
         gbs = new GraphicBoardShooter(p1);

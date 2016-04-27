@@ -88,7 +88,7 @@ public class SuperController {
     }
 
     private void createView() {
-        frame = new JFrame("test tableau de tir");
+        frame = new JFrame("BattleShip !");
 
         gbs = new GraphicBoardShooter(p1);
 

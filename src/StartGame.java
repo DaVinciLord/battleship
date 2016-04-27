@@ -261,10 +261,9 @@ public class StartGame {
         startAsHost.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-
-                if (!dimensionsField.getText().equals("") && !yourAdress.getText().equals("") && !advAdress.getText().equals("")) {
-                    dimensions = new Coordinates(dimensionsField.getText());
+                if (!yourAdress.getText().equals("") && !advAdress.getText().equals("")) {
                     try {
+                        dimensions = new Coordinates(dimensionsField.getText());
                         SuperController sc = new SuperController(dimensions, yourAdress.getText(),advAdress.getText(), true);
 	                    sc.getFrame().addWindowListener(wl);
 	                    sc.display();
@@ -285,9 +284,8 @@ public class StartGame {
         startAsGuest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (!dimensionsField.getText().equals("") && !yourAdress.getText().equals("") && !advAdress.getText().equals("")) {
+                if (!yourAdress.getText().equals("") && !advAdress.getText().equals("")) {
                     try {
-                        dimensions = new Coordinates(dimensionsField.getText());
                         SuperController sc = new SuperController(dimensions, yourAdress.getText(), advAdress.getText(), false);
                         sc.getFrame().addWindowListener(wl);
                         sc.display();
@@ -307,7 +305,6 @@ public class StartGame {
         startLocal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (!dimensionsField.getText().equals("")) {
                 	try {
 	                	dimensions = new Coordinates(dimensionsField.getText());
 	                	frame.setVisible(false);
@@ -319,11 +316,11 @@ public class StartGame {
                                 "Les dimensions doivent être des entiers séparés par des virgules",
                                 "Erreur de dimensions", JOptionPane.ERROR_MESSAGE);
                 	} catch (OverPanamaException e) {
+                	        frame.setVisible(true);
                 		JOptionPane.showMessageDialog(frame,
                                 "Avec les dimensions choisies, vous ne pourrez pas placer les plus grands navires",
                                 "Tableau trop petit", JOptionPane.ERROR_MESSAGE);
 					}
-                }
             }
             
         });
