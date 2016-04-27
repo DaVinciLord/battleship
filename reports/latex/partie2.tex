@@ -2,7 +2,7 @@
 
 \subsection{Protocoles}
 	\subsubsection{Protocole Réseau}
-	Le protocole réseau utilisé pour que deux joueurs puissent se connecter et jouer en réseau est le protocole TCP\footnote{Transmission Control Protocol : https://tools.ietf.org/html/rfc793} qui est un protocole en mode connecté mais également fiable quant à la connexion entre deux machines et pour la réception des paquets envoyés sur le réseau. \newline
+	Le protocole réseau\footnote{Tous les termes demandant explications sont disponibles dans le lexique} utilisé pour que deux joueurs puissent se connecter et jouer en réseau est le protocole TCP\footnote{Transmission Control Protocol : https://tools.ietf.org/html/rfc793} qui est un protocole en mode connecté mais également fiable quant à la connexion entre deux machines et pour la réception des paquets envoyés sur le réseau. \newline
 	
 	Nous avons préféré le protocole TCP au protocole UDP (\footnote{User Datagram Protocol : https://tools.ietf.org/html/rfc768} car, premièrement, son implémentation est bien plus aisée. En effet, nous n'avons pas à traiter certains cas d'erreurs, notamment dans le cas d'un paquet qui soit mal formé ou imcomplet car TCP assure que celui-ci sera totalement prêt avant de l'envoyer. \newline
 	Deuxièmement, malgré le fait que le protocole UDP soit plus rapide dans l'envoi des données, utiliser le protocole TCP dans notre cadre n'a pas d'impact significatif puisque, comme il sera exposé un peu plus tard, chaque joueur doit attendre la réception de données avant de continuer son traitement. Ainsi, il n'est pas, en pratique, possible de recevoir des données qui ne sont pas attendues à des moments précis.
@@ -22,6 +22,33 @@
 			Suite à ces différentes étapes, la connexion entre le joueur hôte et le joueur invité est établie, les échanges de données peuvent donc être effectuée.
 
 		\subsubsubsection{Échanges des données}
+			Mais avant de pouvoir commencer la partie et à échanger des données, chaque joueur doit placer ses bateaux puis attend que l'adversaire finisse de placer les siens. Pour nos besoins, nous n'avons pas décidé de laisser l'application choisir au hasard qui commence une partie: ce sera toujours le joueur hôte. \newline
+			
+			De ce fait, le joueur hôte devient donc le processus client qui doit alors choisir puis envoyer les coordonnées de son tir, ces dernières étant réceptionnées par le processus serveur, i.e le joueur invité, qui est en attente de ces coordonnées et rien d'autre. En effet, nous verrons plus tard comment ces données sont formatées pour que notre protocole fonctionne correctement (voir \ref{dataformat}).  \newline
+			
+			La prochaine étape consiste, pour le joueur invité maintenant devenu le processus client, d'envoyer le résultat du tir qui est un état de la case visée. Cet état peut être de trois natures: "touché", "coulé" ou bien "dans l'eau". Le joueur hôte, quant à lui, attend l'arrivée de ce résultat en tant que processus serveur.\newline \label{states}
+			
+			Enfin, les joueurs mettent à jour leur vue respective pour finalement changer le tour de jeu, c'est à dire que le joueur hôte passe la main au joueur invité. \newline
+			
+			Ce schéma, se répète quand c'est au tour du joueur invité de jouer, il suffit simplement d'inverser les rôles pour obtenir un tour de jeu complet et ce jusqu'à la victoire d'un des joueurs qui fermeront correctement ensuite proprement les différentes sockets mises en jeu.
+			
+		\subsubsubsection{Format des données}
+		\label{dataformat}
+			Dans le cadre de notre protocole, il a fallu décidé d'un certain format que les données doivent respectées pour pouvoir être acceptées et ainsi traitées. De ce fait, tout paquet est formé de cette manière afin de faciliter l'extraction des données utiles au protocole:
+			\begin{quote}
+				"Objet:Valeur"
+			\end{quote}
+			Ces deux composantes définissent donc le format des données envoyées. Nous allons donc maintenant définir quels sont les types d'objets possible ainsi que leurs valeurs associées.
+			
+			\begin{enumerate}
+				\item "Coordinates:X,X" $\rightarrow$ Ce format permet d'envoyer les coordonnées d'un tir, la valeur est une suite de nombres séparés par des virgules représentant la coordonnée sur un axe donné. Par exemple, si nous recevons "Coordinates:1,1", cela signifie que nous voulons tirer sur la case situé à 1 sur l'axe des X et en 1 sur l'axe des Y.
+			 
+				\item "State:X" $\rightarrow$ Ce format permet d'envoyer l'état de la case qui a été visé. Les valeurs possibles ont déjà été définies dans la partie \ref{states}. Par exemple, en recevant "State:HIT", cela signifie que la case visé à été touché.
+				
+				\item "String:X" $\rightarrow$ Un objet String est une chaîne de caractères, la valeur pouvant être n'importe quelle chaîne. Grâce à ce format, nous pouvons envoyer des messages simples, comme le fait d'avoir gagné la partie ou bien un message d'erreur que nous affichons à l'utilisateur. 
+				
+			\end{enumerate}
+			
 
 \subsection{Gestion des erreurs}
 	La gestion des erreurs est faites sur plusieurs niveaux d'abstraction dans notre projet. En effet, le premier niveau d'abstraction est le fait d'utiliser le protocole TCP/IP, car celui-ci, en opposition au protocole UDP, en plus de recevoir le paquet fait une vérification afin de valider le paquet avant de le transmettre. De ce fait, une partie des vérifications est déjà effectué par ce biais.\newline

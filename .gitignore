@@ -35,5 +35,6 @@
 !*.txt
 !*.dia
 !*.png
+!*.tex
 
 **/.idea/*
