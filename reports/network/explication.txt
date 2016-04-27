@@ -1,69 +1,174 @@
 \begin{itemize}
-\item Protocol rÈseau :
-    Un protocole est une mÈthode standard qui permet la communication entre des processus (s'exÈcutant Èventuellement sur diffÈrentes machines), 
-    c'est-‡-dire un ensemble de rËgles et de procÈdures ‡ respecter pour Èmettre et recevoir des donnÈes sur un rÈseau. 
-    Il en existe plusieurs selon ce que l'on attend de la communication. Certains protocoles seront par exemple spÈcialisÈs dans l'Èchange de fichiers (le FTP), 
-    d'autres pourront servir ‡ gÈrer simplement l'Ètat de la transmission et des erreurs (c'est le cas du protocole ICMP), ... 
+\item Protocol r√©seau :
+    Un protocole est une m√©thode standard qui permet la communication entre des processus (s'ex√©cutant √©ventuellement sur diff√©rentes machines), 
+    c'est-√†-dire un ensemble de r√®gles et de proc√©dures √† respecter pour √©mettre et recevoir des donn√©es sur un r√©seau. 
+    Il en existe plusieurs selon ce que l'on attend de la communication. Certains protocoles seront par exemple sp√©cialis√©s dans l'√©change de fichiers (le FTP), 
+    d'autres pourront servir √† g√©rer simplement l'√©tat de la transmission et des erreurs (c'est le cas du protocole ICMP), ... 
 
 \item TCP : 
-    Acronyme de Transmission Control Protocol, le protocole TCP/IP est le protocole standard utilsiÈ sur internet, pour la liaison entre deux ordinateurs.
-    Le protocoel TCP vÈrifie la validitÈ des paquets aprËs leur reception afin d'Ítre sur de la validitÈ de celle-ci. 
-    Le protocole TCP est situÈe sur la couche 4 (couche de transport) du modËle OSI. 
+    Acronyme de Transmission Control Protocol, le protocole TCP/IP est le protocole standard utilsi√© sur internet, pour la liaison entre deux ordinateurs.
+    Le protocoel TCP v√©rifie la validit√© des paquets apr√®s leur reception afin d'√™tre sur de la validit√© de celle-ci. 
+    Le protocole TCP est situ√©e sur la couche 4 (couche de transport) du mod√®le OSI. 
 
 \item UDP :
-    Acronyme User Datagram Protocol, le protocole UDP est un des protocoles standards utilisÈ sur internet. 
-    La diffÈrence avec TCP est que les paquets sont reÁus sous forme de datagramme qui doit Ítre vÈrifier pour valider la qualitÈ du paquet reÁu.
-    Le protocole UDP est trËs utilisÈ, notamment, dans le cadre du jeu en ligne, ou encore le streaming, car la perte de paquet influe peu sur la quantitÈ reÁus.
-    Le protocole UDP est situÈe sur la couche 4 (couche de transport) du modËle OSI, au mÍme titre que le protocole TCP. 
+    Acronyme User Datagram Protocol, le protocole UDP est un des protocoles standards utilis√© sur internet. 
+    La diff√©rence avec TCP est que les paquets sont re√ßus sous forme de datagramme qui doit √™tre v√©rifier pour valider la qualit√© du paquet re√ßu.
+    Le protocole UDP est tr√®s utilis√©, notamment, dans le cadre du jeu en ligne, ou encore le streaming, car la perte de paquet influe peu sur la quantit√© re√ßus.
+    Le protocole UDP est situ√©e sur la couche 4 (couche de transport) du mod√®le OSI, au m√™me titre que le protocole TCP. 
     
 \item Socket :
-    Une socket est une interface de connexion bidirectionnelle permettant l'Èchange de donnÈes entre deux processus (distants ou non).
+    Une socket est une interface de connexion bidirectionnelle permettant l'√©change de donn√©es entre deux processus (distants ou non).
     
 \item Socket de Berkeley :
-    Les sockets de Berkeley, sont un ensemble normalisÈs de fonctions de communications lancÈ par l'universitÈ de Berkeley au dÈbut des annÈes 1980.
-    De nos jours, elle est la norme utilisÈ par quasiment l'ensembles des langages de dÈveloppement (C, Java, Python, ...).
+    Les sockets de Berkeley, sont un ensemble normalis√©s de fonctions de communications lanc√© par l'universit√© de Berkeley au d√©but des ann√©es 1980.
+    De nos jours, elle est la norme utilis√© par quasiment l'ensembles des langages de d√©veloppement (C, Java, Python, ...).
     
-\item Pair ‡ pair :
-    Le pair ‡ pair (ou peer-to-peer en anglais), est un modËle de rÈseau permettant ‡ deux machines de discuter d'Ègale ‡ Ègale.
-    Dans les faits, cela s'explique par le fait qu'une machine se connecte a une autre machine et inversement afin que celles-ci puissent s'Èchanger des informations
+\item Pair √† pair :
+    Le pair √† pair (ou peer-to-peer en anglais), est un mod√®le de r√©seau permettant √† deux machines de discuter d'√©gale √† √©gale.
+    Dans les faits, cela s'explique par le fait qu'une machine se connecte a une autre machine et inversement afin que celles-ci puissent s'√©changer des informations
     sans passer par un serveur distant.
 \end{itemize}
 
-- Technologie utilisÈ :
-    - Java : FacilitÈ de dÈveloppement, due a une maitrise plus importante comparativement ‡ d'autre langage (langage C ou Python).
+- Technologie utilis√© :
+    - Java : Facilit√© de d√©veloppement, due a une maitrise plus importante comparativement √† d'autre langage (langage C ou Python).
     - GIT : Maintenance du code et versionning.
     
     
-- IdÈe d'amÈlioration :
+- Id√©e d'am√©lioration :
     - HardIA 
-        =>IA adaptant ses coups en fonction des bateaux touchÈs et des cases restantes sur le projet.
-        => On ne passe pas le nom du bateau coulÈ en argument + DifficultÈ d'apprÈhender en nombre de dimension variable.
-    - Gestion des Threads liÈes ‡ la partie Serveur. 
-        => GËle de l'IHM due au fait que EDT (Thread gÈrant l'IHM), ne devant se charger uniquement du calcul du rendu de l'IHM se retrouve gelÈ par le fait que les Socket se mettent en attente lors de la reception des donnÈes. 
-    - AmÈlioration de l'IHM.
-        => PrÈsence d'un menu lors de l'ouverture de l'application.
+        =>IA adaptant ses coups en fonction des bateaux touch√©s et des cases restantes sur le projet.
+        => On ne passe pas le nom du bateau coul√© en argument + Difficult√© d'appr√©hender en nombre de dimension variable.
+    - Gestion des Threads li√©es √† la partie Serveur. 
+        => G√®le de l'IHM due au fait que EDT (Thread g√©rant l'IHM), ne devant se charger uniquement du calcul du rendu de l'IHM se retrouve gel√© par le fait que les Socket se mettent en attente lors de la reception des donn√©es. 
+    - Am√©lioration de l'IHM.
+        => Pr√©sence d'un menu lors de l'ouverture de l'application.
     - Drag'n'Drop
-        => Afin de rendre la posent des bateaux plus intuitives et aisÈes.
+        => Afin de rendre la posent des bateaux plus intuitives et ais√©es.
     - Ajout de nouveau type de bateau.
         => Longueur, nombre de cases et nom du bateau.
-    - Modification des rËgles de jeu.
+    - Modification des r√®gles de jeu.
         => Ajout de bateaux en plus sur la grille.
-        => Joueur, qui aprËs avoir tirÈ, peut retirer si il a touchÈ un bateau.
+        => Joueur, qui apr√®s avoir tir√©, peut retirer si il a touch√© un bateau.
         => Timer entre chaque tour de jeu.
     - Ajout d'un tchat pour dialoguer avec son adversaire.
     
 
-- ProblËmes rencontrÈs :
+- Probl√®mes rencontr√©s :
     - Manque flagrant de temps.
-    - Manque flagrant de salle informatique pour travailler, notamment le vendredi aprËs midi (seul crÈneau de libre).
-    - ImpossibilitÈ de rediriger les ports, ne permettant pas de tester facilement la partie rÈseau du projet.
-    - ProblËmes organisationnelles et logistiques vis ‡ vis du travail de chacun.
-    - Uniformisation du code, nom des mÈthodes et variables.
-    - Manipulation et envoie des donnÈes sur EDT des Threads utilisateurs.
-    - DifficultÈs d'apprÈhensions et de visualisations au del‡ de la 3 dimensions.
+    - Manque flagrant de salle informatique pour travailler, notamment le vendredi apr√®s midi (seul cr√©neau de libre).
+    - Impossibilit√© de rediriger les ports, ne permettant pas de tester facilement la partie r√©seau du projet.
+    - Probl√®mes organisationnelles et logistiques vis √† vis du travail de chacun.
+    - Uniformisation du code, nom des m√©thodes et variables.
+    - Manipulation et envoie des donn√©es sur EDT des Threads utilisateurs.
+    - Difficult√©s d'appr√©hensions et de visualisations au del√† de la 3 dimensions.
     - 
 
-- CompÈtence acquise :
-    - Initiation ‡ GIT.
-    - ComprÈhension concrÈte des Sockets et du protocole TCP/IP.
+- Comp√©tence acquise :
+    - Initiation √† GIT.
+    - Compr√©hension concr√©te des Sockets et du protocole TCP/IP.
     - Gestion de la repartition du travail.
+
+
+========================================================================================================================================================================================================
+
+Intro :
+    Il nous √† √©t√© demand√© de pouvoir jouer √† la bataille navale en local. 
+De ce fait, nous avons due d√©velopper une Intelligence Artificiel (IA), car jouer √† deux sur un m√™me ordinateur pr√©sente de nombreux risques de triches.
+Notre IA se compose de 3 niveaux de difficult√©s diff√©rents, allant de facile √† difficile.
+Nous allons donc vous expliquez le fonctionnement de chacune de ces 3 IA.
+
+1) IA Facile
+    L'IA facile fut la premi√®re intelligence artificielle programm√©e. Son cheminement est simple, elle consiste simplement √† choisir al√©atoirement une case, en v√©rifiant bien entendu que celle-ci n'est pas d√©j√† √©tait tir√©e au pr√©alable, puis de tirer dessus, qu'importe l'avancement de la partie.
+    Le choix de l'al√©atoire est fait de la fa√ßon suivante :
+    
+    \begin{verbatim}
+        Fonction EasyAdvisor :
+        Entr√©e : Board un tableau de state contenant les resultats de tous les tirs.
+                 Dim le tableau des tailles des dimension de Board.
+        Sortie : Coord une Coordonn√©e d‚Äôune case non touch√©e.
+        D√©but
+            Faire {
+                Entier distance = Alea(0, taille(Board)) ;
+                Entier longueur = taille(Board) ;
+                Pour (n allant de 0 √† taille(Dim)) {
+                    longueur = longueur / Dim[taille(dim) - 1 ‚Äì n) ;
+                    Ajout(Coord, taille(dim) - 1 ‚Äì n, distance / longueur) ;
+                    Distant = distance % longueur
+                }
+            } tant que (Board[Coord] != NON_CIBL√â) ;
+            Retourner Coord ;
+        Fin
+    \end{verbatim}
+        
+2) IA Moyen:
+    L'IA moyen, deuxi√®me IA d√©velopp√©e, fonctionne de mani√®re similaire √† l'IA facile, √† ceci pr√®s qu'une fois un bateau touch√© l'IA passe en mode "chasse". 
+    Le mode chasse indique √† l'IA de tirer sur les quatres directions(nord, sud, est et ouest) entourant la case touch√©e et, si une nouvelle case est touch√©e, repart de cette derni√®re pour ainsi continuer jusqu'√† avoir coul√© le bateau.
+    Elle repart alors dans sa routine de ciblage.
+    L'algorithme est pr√©sent√© ci-dessous:
+    
+    \begin{verbatim}
+        Procedure MediumAdvisor :
+            Entr√©e : Board un tableau de state contenant les resultats de tous les tirs.
+                     Dim le tableau des tailles des dimension de Board.
+                     Coe une liste de case.
+            Sortie : Coord une Coordonn√©e d‚Äôune case non touch√©e.
+            
+            D√©but
+                Si estVide(coe) {
+                    Coodinate c = EasyAdvisor(Board, Dim) ;
+                    SI (Tir(enemy, c) != MANQU√â) {
+                        AjouterCasesAdjacentes(coe, coord) ;
+                    }
+                    Retourner Coord ;
+                }
+                Sinon {
+                    Si (Board[Coe[0]] == NON_CIBL√â) {
+                        Coord = coe[0] ;
+                        Retirer(coe, 0) ;
+                        Retourner Coord ;
+                    }
+                    MediumAdvisor(Board, Dim, Coe);
+                }
+            Fin
+    \end{verbatim}
+
+3) IA Difficile:
+    L'IA difficile, troisi√®me IA d√©velopp√©e, fonctionne de mani√®re similaire √† l'IA normale, c'est √† dire qu'elle effectue sa routine de "ciblage" jusqu'√† toucher un bateau, puis passe en mode "chasse" une fois un bateau touch√©.
+    La diff√©rence avec l'IA normale est que cette IA ne tire pas de case adjacente l'une √† l'autre. En effet, suivant la taille minimal du bateau ennemi existant au d√©but de partie, afin qu'elle ne tire que toute les tailles du bateau minimal.
+    Par exemple, dans le cas ou le plus petit bateau est un batea de 2, l'IA va donc √©carter ses tirs de 2 cases d'√©cart √† chaque fois. 
+    \begin{verbatim]
+        Procedure MediumAdvisor :
+            Entr√©e : Board un tableau de state contenant les resultats de tous les tirs.
+                     Dim le tableau des tailles des dimension de Board.
+                     Coe une liste de case.
+                     Minsize la taille du plus petit bateau present sur la grille
+            Sortie : Coord une Coordonn√©e d‚Äôune case non touch√©e.
+
+            Si estVide(coe) {
+                Faire {
+                    Entier distance = Alea(0, taille(Board)) ;
+                    Entier longueur = taille(Board) ;
+                    Entier mod = 0 ;
+                    Pour (n allant de 0 √† taille(Dim)) {
+                        Mod = 0 ;
+                        longueur = longueur / Dim[taille(dim) - 1 ‚Äì n) ;
+                        Ajout(Coord, taille(dim) - 1 ‚Äì n, distance / longueur) ;
+                        Distant = distance % longueur
+                        Mod = (mod + distance /longueur) % minsize;
+                    }
+                } tant que (mod != 0 || Board[Coord] != NOTAIMED) ;
+
+                SI (Tir(enemy, coord) != MISSED) {
+                    AjouterCasesAdjacentes(coe, coord) ;
+                }   
+                Retourner Coord ;
+            }
+            Sinon {
+                Si (Board[Coe[0]] == NOTAIMED {
+                    Coord = coe[0] ;
+                    Retirer(coe, 0) ;Retourner Coord ;
+                }
+            }
+            MediumAdvisor(Board, Dim, Coe) ;
+        Fin Procedure
+    \end{verbatim}
