@@ -1,6 +1,69 @@
-Modeles.dia
-	=> Représentation du modele classique Client - Server
-	et de notre modele a nous dit "Client / Serveur"
-		-> On peut observer que notre modele ne permet pas d'avoir une multiplicité de joueur
-		en meme temps, mais seulement deux personne jouant ensemble sur une partie.
-		
+\begin{itemize}
+\item Protocol réseau :
+    Un protocole est une méthode standard qui permet la communication entre des processus (s'exécutant éventuellement sur différentes machines), 
+    c'est-à-dire un ensemble de règles et de procédures à respecter pour émettre et recevoir des données sur un réseau. 
+    Il en existe plusieurs selon ce que l'on attend de la communication. Certains protocoles seront par exemple spécialisés dans l'échange de fichiers (le FTP), 
+    d'autres pourront servir à gérer simplement l'état de la transmission et des erreurs (c'est le cas du protocole ICMP), ... 
+
+\item TCP : 
+    Acronyme de Transmission Control Protocol, le protocole TCP/IP est le protocole standard utilsié sur internet, pour la liaison entre deux ordinateurs.
+    Le protocoel TCP vérifie la validité des paquets après leur reception afin d'être sur de la validité de celle-ci. 
+    Le protocole TCP est située sur la couche 4 (couche de transport) du modèle OSI. 
+
+\item UDP :
+    Acronyme User Datagram Protocol, le protocole UDP est un des protocoles standards utilisé sur internet. 
+    La différence avec TCP est que les paquets sont reçus sous forme de datagramme qui doit être vérifier pour valider la qualité du paquet reçu.
+    Le protocole UDP est très utilisé, notamment, dans le cadre du jeu en ligne, ou encore le streaming, car la perte de paquet influe peu sur la quantité reçus.
+    Le protocole UDP est située sur la couche 4 (couche de transport) du modèle OSI, au même titre que le protocole TCP. 
+    
+\item Socket :
+    Une socket est une interface de connexion bidirectionnelle permettant l'échange de données entre deux processus (distants ou non).
+    
+\item Socket de Berkeley :
+    Les sockets de Berkeley, sont un ensemble normalisés de fonctions de communications lancé par l'université de Berkeley au début des années 1980.
+    De nos jours, elle est la norme utilisé par quasiment l'ensembles des langages de développement (C, Java, Python, ...).
+    
+\item Pair à pair :
+    Le pair à pair (ou peer-to-peer en anglais), est un modèle de réseau permettant à deux machines de discuter d'égale à égale.
+    Dans les faits, cela s'explique par le fait qu'une machine se connecte a une autre machine et inversement afin que celles-ci puissent s'échanger des informations
+    sans passer par un serveur distant.
+\end{itemize}
+
+- Technologie utilisé :
+    - Java : Facilité de développement, due a une maitrise plus importante comparativement à d'autre langage (langage C ou Python).
+    - GIT : Maintenance du code et versionning.
+    
+    
+- Idée d'amélioration :
+    - HardIA 
+        =>IA adaptant ses coups en fonction des bateaux touchés et des cases restantes sur le projet.
+        => On ne passe pas le nom du bateau coulé en argument + Difficulté d'appréhender en nombre de dimension variable.
+    - Gestion des Threads liées à la partie Serveur. 
+        => Gèle de l'IHM due au fait que EDT (Thread gérant l'IHM), ne devant se charger uniquement du calcul du rendu de l'IHM se retrouve gelé par le fait que les Socket se mettent en attente lors de la reception des données. 
+    - Amélioration de l'IHM.
+        => Présence d'un menu lors de l'ouverture de l'application.
+    - Drag'n'Drop
+        => Afin de rendre la posent des bateaux plus intuitives et aisées.
+    - Ajout de nouveau type de bateau.
+        => Longueur, nombre de cases et nom du bateau.
+    - Modification des règles de jeu.
+        => Ajout de bateaux en plus sur la grille.
+        => Joueur, qui après avoir tiré, peut retirer si il a touché un bateau.
+        => Timer entre chaque tour de jeu.
+    - Ajout d'un tchat pour dialoguer avec son adversaire.
+    
+
+- Problèmes rencontrés :
+    - Manque flagrant de temps.
+    - Manque flagrant de salle informatique pour travailler, notamment le vendredi après midi (seul créneau de libre).
+    - Impossibilité de rediriger les ports, ne permettant pas de tester facilement la partie réseau du projet.
+    - Problèmes organisationnelles et logistiques vis à vis du travail de chacun.
+    - Uniformisation du code, nom des méthodes et variables.
+    - Manipulation et envoie des données sur EDT des Threads utilisateurs.
+    - Difficultés d'appréhensions et de visualisations au delà de la 3 dimensions.
+    - 
+
+- Compétence acquise :
+    - Initiation à GIT.
+    - Compréhension concréte des Sockets et du protocole TCP/IP.
+    - Gestion de la repartition du travail.
