@@ -1,9 +1,17 @@
 \begin{itemize}
+<<<<<<< HEAD
+\item Protocole rÈseau :
+    Un protocole est une mÈthode standard qui permet la communication entre des processus (s'exÈcutant Èventuellement sur diffÈrentes machines), 
+    c'est-‡-dire un ensemble de rËgles et de procÈdures ‡ respecter pour Èmettre et recevoir des donnÈes sur un rÈseau. 
+    Il en existe plusieurs selon ce que l'on attend de la communication. Certains protocoles seront par exemple spÈcialisÈs dans l'Èchange de fichiers (le FTP), 
+    d'autres pourront servir ‡ gÈrer simplement l'Ètat de la transmission et des erreurs (c'est le cas du protocole ICMP), ... 
+=======
 \item Protocol r√©seau :
     Un protocole est une m√©thode standard qui permet la communication entre des processus (s'ex√©cutant √©ventuellement sur diff√©rentes machines), 
     c'est-√†-dire un ensemble de r√®gles et de proc√©dures √† respecter pour √©mettre et recevoir des donn√©es sur un r√©seau. 
     Il en existe plusieurs selon ce que l'on attend de la communication. Certains protocoles seront par exemple sp√©cialis√©s dans l'√©change de fichiers (le FTP), 
     d'autres pourront servir √† g√©rer simplement l'√©tat de la transmission et des erreurs (c'est le cas du protocole ICMP), ... 
+>>>>>>> 2d4bbe6cfe6977816279cad092602367bb7f00d6
 
 \item TCP : 
     Acronyme de Transmission Control Protocol, le protocole TCP/IP est le protocole standard utilsi√© sur internet, pour la liaison entre deux ordinateurs.
