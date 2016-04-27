@@ -24,3 +24,8 @@
 		\subsubsubsection{Échanges des données}
 
 \subsection{Gestion des erreurs}
+	La gestion des erreurs est faites sur plusieurs niveaux d'abstraction dans notre projet. En effet, le premier niveau d'abstraction est le fait d'utiliser le protocole TCP/IP, car celui-ci, en opposition au protocole UDP, en plus de recevoir le paquet fait une vérification afin de valider le paquet avant de le transmettre. De ce fait, une partie des vérifications est déjà effectué par ce biais.\newline
+	
+	Le second niveau d'abstraction est lié au langage que nous avons choisi. En effet, Java implémente les protocoles TCP et UDP. Hors, Java effectue aussi des vérifications quand à la validité des données et permet facilement de vérifier si le paquet reçu est valide ou non, par le biais des Exceptions présente dans l'API de base.\newline
+	
+	Au final, nous avons implanté notre propre protocole de validité des données, afin d'être sur de ce que nous recevons. Comme vous avez pu le lire précédemment, chacune de nos données envoyées possède un format propre a notre protocole et si, lors d'un envoie de donnée, nous n'avons pas le bon type de données, alors nous gérons le problème en indiquant qu'un problème est survenue lors de l'envoie des données, ce qui n'est pas normal et qui indique un problème au niveau du programme. De ce fait, nous fermons donc proprement l'application afin d'éviter tout problèmes lors d'une exécution prolongée du logiciel.
