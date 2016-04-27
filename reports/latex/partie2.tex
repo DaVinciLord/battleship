@@ -2,10 +2,10 @@
 
 \subsection{Protocoles}
 	\subsubsection{Protocole Réseau}
-	Le protocole réseau utilisé pour que deux joueurs puisse se connecter et joueur en réseau est le protocole TCP\footnote{Transmission Control Protocol : https://tools.ietf.org/html/rfc793} qui une un protocole en mode connecté mais également fiable quant à la connexion entre deux machines et pour la réception des paquets envoyés sur le réseau. \newline
+	Le protocole réseau utilisé pour que deux joueurs puissent se connecter et jouer en réseau est le protocole TCP\footnote{Transmission Control Protocol : https://tools.ietf.org/html/rfc793} qui est un protocole en mode connecté mais également fiable quant à la connexion entre deux machines et pour la réception des paquets envoyés sur le réseau. \newline
 	
-	Nous avons préféré le protocole TCP au protocole UDP (\footnote{User Datagram Protocol : https://tools.ietf.org/html/rfc768} car, premièrement, son implémentation est bien plus aisée. En effet, nous n'avons pas à traité certains cas d'erreurs, notamment dans le cas d'un paquet qui soit mal formé ou imcomplet car TCP assure que celui-ci sera totalement prêt avant de l'envoyer. \newline
-	Deuxièmement, malgré le fait que le protocole UDP soit plus rapide dans l'envoie des données, utiliser le protocole TCP dans notre cadre n'a pas d'impact significatif puisque, comme il sera exposé un peu plus tard, chaque joueur doit attendre la réception de données avant de continuer son traitement. Ainsi, il n'est pas, en pratique, possible de recevoir des données qui ne sont pas attendus à des moments précis.
+	Nous avons préféré le protocole TCP au protocole UDP (\footnote{User Datagram Protocol : https://tools.ietf.org/html/rfc768} car, premièrement, son implémentation est bien plus aisée. En effet, nous n'avons pas à traiter certains cas d'erreurs, notamment dans le cas d'un paquet qui soit mal formé ou imcomplet car TCP assure que celui-ci sera totalement prêt avant de l'envoyer. \newline
+	Deuxièmement, malgré le fait que le protocole UDP soit plus rapide dans l'envoi des données, utiliser le protocole TCP dans notre cadre n'a pas d'impact significatif puisque, comme il sera exposé un peu plus tard, chaque joueur doit attendre la réception de données avant de continuer son traitement. Ainsi, il n'est pas, en pratique, possible de recevoir des données qui ne sont pas attendues à des moments précis.
 
 	\subsubsection{Protocole de l'application}
 		L'application doit suivre un certain protocole pour que les deux joueurs puissent communiquer correctement et sans problèmes majeurs. Il a donc été décidé de suivre un type de protocole classique qui est celui du question/réponse. Néanmoins, nous n'avons pas choisi d'implémenter de serveur d'hébergement centralisant toutes les parties et dirigeant toutes les actions des clients, nous avons opté pour un échange de type pair à pair, c'est à dire que les deux joueurs doivent jouer les deux rôles: le processus serveur et le processus client, chacun à des temps déterminés et non mutables. \newline
@@ -17,7 +17,7 @@
 			
 			Ensuite, le joueur hôte met son serveur en attente d'une demande de connexion via sa socket d'écoute (il est donc considéré en tant que processus serveur) et, de son côté, le joueur invité (considéré comme le processus client à ce moment) va se connecter à l'adresse du joueur hôte. Cela aura pour effet, côté processus serveur, de créer une socket de service par laquelle le joueur passera pour communiquer avec le joueur invité. \newline
 			
-			À cette étape, il reste à faire la connexion inverse, c'est à dire que le joueur hôte(qui est maintenant le processus client) doit faire une demande de connexion à l'adresse du serveur du joueur invité (devenu le processus serveur) et, une fois la connexion accepté par la socket d'écoute du processus serveur, une nouvelle socket de service est créée pour que le joueur invité puisse communiqué avec le joueur hôte.\newline
+			À cette étape, il reste à faire la connexion inverse, c'est à dire que le joueur hôte (qui est maintenant le processus client) doit faire une demande de connexion à l'adresse du serveur du joueur invité (devenu le processus serveur) et, une fois la connexion acceptée par la socket d'écoute du processus serveur, une nouvelle socket de service est créée pour que le joueur invité puisse communiqué avec le joueur hôte.\newline
 			
 			Suite à ces différentes étapes, la connexion entre le joueur hôte et le joueur invité est établie, les échanges de données peuvent donc être effectuée.
 
