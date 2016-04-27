@@ -8,6 +8,161 @@
 	
 	Le plateau de jeu permet donc de jouer en une dimension (soit sur la longueur ou soit sur la largeur), en deux dimensions (longueur et largeur), en trois dimensions nous ajoutons la profondeur pour enfin pouvoir jouer en plus de trois dimensions.\newline
 	
+	\subsubsection{Définition récursive des Boards}
+		Nous avons uns structure donnée qui se définit récursivement de la manière suivante : \newline
+		\begin{itemize}
+		\item Une case d'un Board est un Board à zéro dimensions.\newline
+		\newline	
+		\item Un Board à N dimensions, dont les tailles dans chaque dimension sont (TN, TN-1, … , T1) où les Ti sont les tailles, est composé de TN Boards à N - 1 dimensions, dont les tailles dans chaque dimension sont (TN-1, … , T1). 
+		\end{itemize}
+			
+
+	Notez bien que les Boards à N - 1 dimensions ont exactement les même tailles pour chaque dimension. Ainsi, un Board à deux dimensions sera toujours représentable comme un rectangle, un Board à trois dimensions peut-être visualisé comme un pavé droit et ceux des dimensions supérieures suivent le même principe, bien qu'ils soient plus difficile à représenter.
+\newline
+
+	On peut aussi voir le Board comme un arbre particulier avec les propriétés suivantes : \newline
+		\begin{itemize}
+			\item La distance (plus court chemin de la racine à une feuille) et la hauteur (plus long chemin de la racine à une feuille) de l'arbre sont égales.\newline
+			\item Tous les nœuds d'un même niveau ont le même nombre de descendants.
+		\end{itemize}
+
+	Cette structure récursive nous permet d'instancier un Board de n'importe quel nombre de dimensions en lui passant tout simplement un tableau d'entier classique contenant les tailles dans chaque dimension.
+
+
+	\subsubsection{Remplissage des Boards}
+
+	Pour remplir un tableau classique en programmation, on utilise généralement autant de boucles imbriquées qu'il y a de dimensions au tableau. Dans le cas du Board, ce n'est pas possible à notre connaissance, puisque le nombre de dimensions est inconnu à la compilation et qu'il faudrait un nombre variable de boucles imbriquées dans le code.\newline
+	
+	Nous avons donc créé un itérateur de Boards à nombre de dimensions zéro, implémenté dans la classe interne de Board, DimZeroIterator qui donne un par un les Boards à zéro dimensions qui sont les cases du Board. \newline
+
+	Cet itérateur est également construit de manière récursive. Il contient les DimZeroIterator correspondants aux Boards fils du Board qu'il itère et les méthodes next() et hasNext() appelent leurs homologues sur l'itérateur fils en cours de parcours.
+
+	Si on voit le Board comme un arbre, cet itérateur donne les cases dans l'ordre où un parcours en profondeur donnerait les feuilles.
+
+	\subsubsection{Accès aux cases}
+
+	L'accès en lecture et en écriture d'une case en particulier se fait grâce aux objets Coordinates.
+Ces objets sont techniquement des tableaux d'entiers non mutables, dont on peut tester l'égalité avec la méthode equals() redéfinie. L'accès à une case de ce tableau se fait avec la méthode get(int index), à la façon des listes, mais il est itérable comme un tableau classique.\newline
+
+	Lors d'un appel à getItem() ou setItem() sur un Board, chaque composante de la Coordinates fournie en paramètre sert à déterminer sur quel Board de dimension inférieure il faut effectuer l'appel récursif. \newline
+
+	Les objets Coordinates sont également utilisés pour instancier les Boards en fournissant le nombre de dimensions et la taille pour chaque dimension.
+
+	\subsubsection{Détails de l'implantation}
+
+	Les algorithmes d'accès aux cases de Board sont récursifs terminaux. \newline
+	Structures des objets :
+
+	\begin{verbatim}
+structure Board :
+    champ Object : item;
+    champ Liste de Board : boards;
+fin structure
+		
+structure Coordinates :
+    champ Tableau d'entiers : coord;
+    champ Entier : length;
+fin structure
+	\end{verbatim}
+
+
+	\subsubsubsection{Algorithmes de Coordinates}
+	
+		\begin{verbatim}
+algo Coordinates creerCoordinates(Tableau d'entier t) :
+    coord <- copie de t;
+	length <- longueur de t;
+fin algo
+			
+algo Entier get(Coordinates c, Entier index) :
+    renvoyer c.coord[index];
+fin algo
+		\end{verbatim}
+		
+
+	\subsubsubsection{Algorithmes de Board}
+
+	\begin{verbatim}
+algo Board creerBoard(Coordinates c) :
+    renvoyer creerBoard(c, 0);
+fin algo
+		
+algo Board creerBoard(Coordinates c, entier index) :
+    Board b;
+    b.item <- null;
+    si index = c.length alors
+        renvoyer b;
+    finsi
+    b.boards <- nouvelle Liste de Board;
+    pour entier k de 0 à c.get(index) faire
+        b.boards[k] <- creerBoard(c, index + 1);
+    fin pour
+    renvoyer b;
+fin algo
+		
+algo Object getItem(Board b, Coordinates c) :
+    renvoyer getItem(b, c, 0);
+fin algo
+		
+		
+algo Object getItem(Board b, Coordinates c, Entier index) :
+    si index = c.length alors
+        renvoyer b.item;
+    finsi
+    renvoyer getItem(b.boards.get(c.get(index)), c, index + 1);
+fin algo
+		
+algo voidsetItem(Board b, Coordinates c, Object item) :
+    setItem(b, c, 0, item);
+fin algo
+		
+algo void setItem(Board b, Coordinates c, Entier index, Object item) :
+    si index = c.length alors
+        b.item <- item;
+    finsi
+    setItem(b.boards.get(c.get(index)), c, index + 1, item);
+fin algo
+	\end{verbatim}
+
+\subsection{Les bateaux en dimensions variables}
+	Les navires sont représentés par la classe Ship. Ils ont une longueur, un nom et contiennent les coordonnées des cases du Board qu'ils occupent lorsqu'ils sont placés. \newline
+
+	Dans une bataille navale classique, chaque navire est disposé verticalement ou horizontalement. Dans notre modèle à nombre variable de dimensions, il faut généraliser cette règle pour qu'elle fonctionne dans tous les cas.
+
+\subsubsection{Définition d'un bon placement}
+
+	Pour être bien placés, les Ship doivent respecter les conditions suivantes :
+	\begin{itemize}
+		\item Bon alignement : les cases occupées par un Ship doivent avoir des coordonnées dont toutes les composantes sauf une sont égales, et les composantes qui ne le sont pas doivent se suivre. \newline
+		Exemple : Dans un Board en quatre dimensions, un porte-avion (de longueur 5) occupe les cases (0,2,1,3), (0,2,2,3), (0,2,3,3), (0,2,4,3), (0,2,5,3). Ce placement respecte la condition de bon alignement car les premières, deuxièmes et quatrièmes composantes des coordonnés sont respectivement égales entre-elles, et que les troisièmes composantes se suivent. \newline
+		
+		\item Non dépassement : les cases occupées par un Ship sont celles contenues dans un Board. \newline
+		Exemple : Dans un Board de dimensions (5,5,5,5), le porte-avion placé précédemment dépasse par sa dernière coordonnée, dont la troisième composante n'est pas comprise entre 0 et 4. \newline
+		
+		\item Bonne longueur : un Ship doit occuper exactement le même nombre de cases que sa longueur. \newline
+		
+		\item Non-Chevauchement : une case ne peut être occupée que par un seul Ship.
+	\end{itemize}
+
+
+\subsubsection{Tir sur les Ships}
+
+	Les tirs sur les Ships se font via le Board sur lequel ils sont disposés. Pour cela, le type générique Board est paramétré soit par le type Case, soit par le type State. \newline
+	
+	Les Board<Case> de chaque joueur sont ceux sur lesquels ils placent leurs navires, et les Board<State> représentent la grille de tir des joueurs, là où ils peuvent voir où ils ont tirés et pour quel résultat. \newline
+	
+	State est une énumération représentant le statut de tir de chaque case d'un Board<State>. Il existe quatre états possibles :
+	\begin{itemize}
+		\item NOT$\_$AIMED : cette case n'a pas été visée par un tir.
+		\item MISSED : il y a eu un tir sur cette case, mais il n'y avait pas de Ship adverse sur la case correspondante du Board<Case> du joueur adverse.
+		\item HIT : Il y a eu un tir sur cette case, et un Ship adverse a été touché.
+		\item SUNK : Même chose que HIT, avec en plus l'information que le Ship touché a été coulé par ce tir.
+	\end{itemize}
+
+
+	Les objets Case ont pour rôle de stocker deux informations : la présence d'un Ship et si la case a déjà reçu un tir. Ces deux informations suffisent à faire la distinction entre les états NOT$\_$AIMED, MISSED et HIT/SUNK. \newline
+	
+	Un objet Case sert également à relayer un tir jusqu'au Ship qui l'occupe, s'il y en a un, et à s'assurer qu'on ne tire pas deux fois au même endroit. Cette condition rend non-nécessaire le stockage dans les Ship des endroits précis où ils ont été touchés : un Ship qui a été touché un nombre de fois égal à sa longueur a forcément été touché sur toutes les cases qu'il occupe, et on sait ainsi qu'il a été coulé.
 
 \subsection{Les intelligences artificielles}
 	Il nous à été demandé de pouvoir jouer à la bataille navale en local. 

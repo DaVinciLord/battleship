@@ -26,7 +26,7 @@
 			
 			De ce fait, le joueur hôte devient donc le processus client qui doit alors choisir puis envoyer les coordonnées de son tir, ces dernières étant réceptionnées par le processus serveur, i.e le joueur invité, qui est en attente de ces coordonnées et rien d'autre. En effet, nous verrons plus tard comment ces données sont formatées pour que notre protocole fonctionne correctement (voir \ref{dataformat}).  \newline
 			
-			La prochaine étape consiste, pour le joueur invité maintenant devenu le processus client, d'envoyer le résultat du tir qui est un état de la case visée. Cet état peut être de trois natures: "touché", "coulé" ou bien "dans l'eau". Le joueur hôte, quant à lui, attend l'arrivée de ce résultat en tant que processus serveur.\newline \label{states}
+			La prochaine étape consiste, pour le joueur invité maintenant devenu le processus client, d'envoyer le résultat du tir qui est un état de la case visée. Cet état peut être de trois natures: "touché", "coulé" ou bien "manqué". Le joueur hôte, quant à lui, attend l'arrivée de ce résultat en tant que processus serveur.\newline \label{states}
 			
 			Enfin, les joueurs mettent à jour leur vue respective pour finalement changer le tour de jeu, c'est à dire que le joueur hôte passe la main au joueur invité. \newline
 			
@@ -41,11 +41,11 @@
 			Ces deux composantes définissent donc le format des données envoyées. Nous allons donc maintenant définir quels sont les types d'objets possible ainsi que leurs valeurs associées.
 			
 			\begin{enumerate}
-				\item "Coordinates:X,X" $\rightarrow$ Ce format permet d'envoyer les coordonnées d'un tir, la valeur est une suite de nombres séparés par des virgules représentant la coordonnée sur un axe donné. Par exemple, si nous recevons "Coordinates:1,1", cela signifie que nous voulons tirer sur la case situé à 1 sur l'axe des X et en 1 sur l'axe des Y.
+				\item "Coordinates:X,X" $\Rightarrow$ Ce format permet d'envoyer les coordonnées d'un tir, la valeur est une suite de nombres séparés par des virgules représentant la coordonnée sur un axe donné. Par exemple, si nous recevons "Coordinates:1,1", cela signifie que nous voulons tirer sur la case situé à 1 sur l'axe des X et en 1 sur l'axe des Y.
 			 
-				\item "State:X" $\rightarrow$ Ce format permet d'envoyer l'état de la case qui a été visé. Les valeurs possibles ont déjà été définies dans la partie \ref{states}. Par exemple, en recevant "State:HIT", cela signifie que la case visé à été touché.
+				\item "State:X" $\Rightarrow$ Ce format permet d'envoyer l'état de la case qui a été visé. Les valeurs possibles ont déjà été définies dans la partie \ref{states}. Par exemple, en recevant "State:HIT", cela signifie que la case visé à été touché.
 				
-				\item "String:X" $\rightarrow$ Un objet String est une chaîne de caractères, la valeur pouvant être n'importe quelle chaîne. Grâce à ce format, nous pouvons envoyer des messages simples, comme le fait d'avoir gagné la partie ou bien un message d'erreur que nous affichons à l'utilisateur. 
+				\item "String:X" $\Rightarrow$ Un objet String est une chaîne de caractères, la valeur pouvant être n'importe quelle chaîne. Grâce à ce format, nous pouvons envoyer des messages simples, comme le fait d'avoir gagné la partie ou bien un message d'erreur que nous affichons à l'utilisateur. 
 				
 			\end{enumerate}
 			
