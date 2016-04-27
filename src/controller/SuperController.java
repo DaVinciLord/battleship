@@ -54,8 +54,8 @@ public class SuperController {
 
             @Override
             public void doWithCoord(CoordinatesEvent e) {
-                tourdujoueur(e.getCoordinates());
-                tourdelennemie();
+                playerTurn(e.getCoordinates());
+                enemyTurn();
             }
         });
 
@@ -65,7 +65,7 @@ public class SuperController {
             public void doWithCoord(CoordinatesEvent e) {
                 if (e.getActionType().equals("ready")) {
                     if (!isHost) {
-                        tourdelennemie();
+                        enemyTurn();
                     } else {
                         gbs.setMyTurn(isHost);
                     }
@@ -74,7 +74,7 @@ public class SuperController {
                     sc.sendData("Victory:Bravo");
                     alive = false;
                     JOptionPane.showMessageDialog(frame, "Perdu");
-                    rageQuitServer();
+                    exitApplication();
                 }
             }
         });
@@ -138,7 +138,7 @@ public class SuperController {
                 sc.setTimeout(sc.getConnectedSocket(), TIMEOUT);
                 sc.setTimeout(sc.getDistantServerSocket(), TIMEOUT);
                 if (ServOut.receiveData(sc) != RetVal.COORDINATES) {
-                    rageQuitServer();
+                    exitApplication();
                 }
 
                 c = ServOut.getCoordinates();
@@ -155,22 +155,22 @@ public class SuperController {
         return c;
     }
 
-    private void tourdujoueur(Coordinates c) {
+    private void playerTurn(Coordinates c) {
 
         sc.sendData("Coordinates:" + c.toString());
         if (ServOut.receiveData(sc) != RetVal.STATE) {
-            rageQuitServer();
+            exitApplication();
         }
         if (!sc.getConnectedSocket().isClosed() && !sc.getDistantServerSocket().isClosed()) {
             p1.updateFireGrid(c, ServOut.getState());
         }
     }
 
-    private void tourdelennemie() {
+    private void enemyTurn() {
         if (!sc.getConnectedSocket().isClosed() && !sc.getDistantServerSocket().isClosed()) {
             jtp.setSelectedIndex(0);
             if (ServOut.receiveData(sc) != RetVal.COORDINATES) {
-                rageQuitServer();
+                exitApplication();
             }
 
             State st = p1.takeHit(ServOut.getCoordinates());
@@ -185,7 +185,7 @@ public class SuperController {
         return frame;
     }
 
-    private void rageQuitServer() {
+    private void exitApplication() {
         if (alive) {
             JOptionPane.showMessageDialog(frame, "Vous avez Gagné, Bravo");
         }

@@ -34,14 +34,13 @@ public class LocalController {
     }
 
     private void createController() {
-        // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         gbs.addCoordinatesListener(new CoordinatesListener() {
             
         @Override
         public void doWithCoord(CoordinatesEvent e) {
-             tourdujoueur(e.getCoordinates());
-             tourdelia();
+             playerTurn(e.getCoordinates());
+             aiTurn();
         }
         });
         
@@ -52,12 +51,13 @@ public class LocalController {
                 if (e.getActionType().equals("ready")) {
                 	gbs.setMyTurn(turn);
                     if(!turn) {
-                        tourdelia();
+                        aiTurn();
                     }
                 }
                 if (e.getActionType().equals("dead")) {
                     
                     JOptionPane.showMessageDialog(frame, "Perdu");
+                    frame.dispose();
                 }
             }
         });
@@ -70,6 +70,7 @@ public class LocalController {
                 if (e.getActionType().equals("dead")) {
                     
                     JOptionPane.showMessageDialog(frame, "Gagné");
+                    frame.dispose();
                 }
             }
         });
@@ -107,7 +108,7 @@ public class LocalController {
 
 
 
-    private void tourdujoueur(Coordinates c) {
+    private void playerTurn(Coordinates c) {
         
         State st = ai.takeHit(c);
         p1.updateFireGrid(c, st);
@@ -115,11 +116,10 @@ public class LocalController {
     }
     
     
-    private void tourdelia() {
+    private void aiTurn() {
         
         Coordinates c = ai.shoot();
         State st = p1.takeHit(c);
-        System.out.println(c + "  " + st);
         ai.updateFireGrid(c, st);
         
         gbs.setMyTurn(true);

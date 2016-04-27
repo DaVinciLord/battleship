@@ -1,16 +1,15 @@
 package model.ship;
 
+import java.util.List;
+
 import exceptions.ship.ShipBadLengthException;
 import exceptions.ship.ShipCaseRaceException;
 import exceptions.ship.ShipNotAlignException;
 import exceptions.ship.ShipOffLimitException;
-import model.board.Board;
 import model.board.Case;
 import model.board.IBoard;
 import model.board.State;
 import model.coordinates.Coordinates;
-
-import java.util.List;
 
 /**
  * Modélise un vaisseau pour bataille navale en nombre de dimensions quelconque.

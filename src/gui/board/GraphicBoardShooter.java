@@ -156,7 +156,6 @@ public class GraphicBoardShooter extends JPanel {
         fire.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                // player.updateFireGrid(target, State.MISSED); // à modifier ensuite quand on aura vraiment de quoi tirer.
                 cls.fireCoord(target, "fire");
             }
         });
@@ -185,7 +184,6 @@ public class GraphicBoardShooter extends JPanel {
                         good = false;
                     }
                 }
-                // traitement selon si la coordonnée est bonne ou pas :
                 if (good) {
                     target = c;
                     if (player.getShootGrid().getItem(target) == State.NOTAIMED) {

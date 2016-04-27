@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
@@ -56,8 +55,7 @@ public class GraphicBoardLayer<E> extends JPanel {
     /**
      * tailles des axes.
      */
-    private int dimX;
-    private int dimY;
+
     private int dimZ;
     
     /**
@@ -171,14 +169,7 @@ public class GraphicBoardLayer<E> extends JPanel {
                 p.setAlignmentX(align);
                 p.setAlignmentY(1.f - align);
                 p.setBackground(new Color(0, 0, 0, 0));
-                /*
-                Dimension size;
-                if (model.dimensionNb() >= 3) {
-                    size = new Dimension(gb.getMaximumSize().width * 2, gb.getMaximumSize().height);
-                } else {
-                    size = new Dimension(gb.getMaximumSize().width, gb.getMaximumSize().height);
-                }
-                */
+
                 Dimension size = new Dimension(gb.getMaximumSize().width * 2 + gb.getInsets().left + gb.getInsets().right,
                         gb.getMaximumSize().height + gb.getInsets().top + gb.getInsets().bottom);
                 p.setMinimumSize(size);
@@ -186,12 +177,14 @@ public class GraphicBoardLayer<E> extends JPanel {
                 p.setMaximumSize(size);
                 boards.add(gb);
                 p.add(new JComponent() {
+
+
+                    private static final long serialVersionUID = 339550300913704206L;
                 });
                 p.add(gb);
                 boardPanels.add(p);
             }
         } else {
-            // gestion deux dimensions
             GraphicBoard<E> gb = new GraphicBoard<E>(model, axes, drawer);
             gb.setOpacity(0.5f);
             JPanel p = new JPanel();
@@ -368,6 +361,8 @@ public class GraphicBoardLayer<E> extends JPanel {
             JPanel p = boardPanels.get(k);
             p.removeAll();
             p.add(new JComponent() {
+
+                private static final long serialVersionUID = -8040986933978664177L;
             });
             p.add(boards.get(k));
         }
@@ -376,6 +371,8 @@ public class GraphicBoardLayer<E> extends JPanel {
             p.removeAll();
             p.add(boards.get(k));
             p.add(new JComponent() {
+
+                private static final long serialVersionUID = -1211875283772444314L;
             });
         }
         revalidate();
@@ -507,20 +504,18 @@ public class GraphicBoardLayer<E> extends JPanel {
         });
     }
     
-    /**
-     * Ne doit être appelée que quand le nombre de dimensions est supérieur à 3
-     */
+
     private void enableFixedFields() {
         for (int k = 0; k < model.dimensionNb(); k++) {
             if (!selectAxeX.get(k).isSelected() && !selectAxeY.get(k).isSelected()
                     && !selectAxeZ.get(k).isSelected()) {
                 fixedCoords.get(k).setEnabled(true);
                 fixedCoords.get(k).setEditable(true);
-                // fixedCoords.get(k).setText("" + axes.get(k));
+
             } else {
                 fixedCoords.get(k).setEnabled(false);
                 fixedCoords.get(k).setEditable(false);
-                // fixedCoords.get(k).setText("");
+
             }
         }
     }
@@ -567,18 +562,18 @@ public class GraphicBoardLayer<E> extends JPanel {
         boolean xFixed = false;
         boolean yFixed = false;
         boolean zFixed = false;
-        for (int k = 0; k < axes.length; k++) { // début de la méga boucle
+        for (int k = 0; k < axes.length; k++) { 
             int comp = axes.get(k);
             if (comp == -1) {
                 if (!xFixed) {
-                    dimX = model.getDimensionsSizes().get(k);
+                    
                     xFixed = true;
                 } else {
                     throw new AssertionError("Deux axes X impossibles");
                 }
             } else if (comp == -2) {
                 if (!yFixed) {
-                    dimY = model.getDimensionsSizes().get(k);
+                   
                     yFixed = true;
                 } else {
                     throw new AssertionError("Deux axes Y impossibles");
@@ -594,8 +589,8 @@ public class GraphicBoardLayer<E> extends JPanel {
             } else if (comp < -3 || comp >= model.getDimensionsSizes().get(k)) {
                 throw new AssertionError("composante hors des dimensions");
             }
-        } // fin de la méga boucle
-        // vérification que tous les axes sont bien renseignés.
+        } 
+  
         if (!xFixed) {
             throw new AssertionError("Il manque l'axe X");
         }
@@ -621,7 +616,7 @@ public class GraphicBoardLayer<E> extends JPanel {
     
     public void updateCase(Coordinates kaze) {
         boolean really = true;
-        int profondeur = 0; // en cas de 2D
+        int profondeur = 0; 
         if (kaze.length != model.dimensionNb()) {
             throw new AssertionError("pas le bon nombre de dimension");
         }
@@ -630,12 +625,12 @@ public class GraphicBoardLayer<E> extends JPanel {
                 throw new AssertionError("kaze en dehors du modèle");
             }
             if (axes.get(k) >= 0 && axes.get(k) != kaze.get(k)) {
-                // On ignore : la case en question n'est pas visible sur la représentation actuelle
+  
                 really = false;
                 break;
             }
             if (axes.get(k) == -3) {
-                // On a trouvé le GraphicBoard sur lequel doit se faire la mise à jour.
+
                 profondeur = kaze.get(k);
             }
         }
@@ -644,63 +639,10 @@ public class GraphicBoardLayer<E> extends JPanel {
         }
     }
     
-    /**
-     * L'index de profondeur de la grille active.
-     */
+
     public int getActiveGridDepth() {
         return caseActiveIndex;
     }
     
-    /**
-     * Donne la position du coin supérieur gauche de la grille active, relativement à this.
-     */
-    @Deprecated
-    public Point getActiveGridLocation() {
-        // localisation de la grille sur son boardPanel
-        Point p = boards.get(caseActiveIndex).getLocation();
-        // localisation du boardPanel sur boardLayers
-        Point q = boardPanels.get(caseActiveIndex).getLocation();
-        // localisation du boardLayers sur this
-        Point r = boardLayers.getLocation();
-        // on additionne tout
-        p.translate(q.x + r.x, q.y + r.y);
-        return p;
-    }
-    
-    
-    /**
-     * Donne la Coordinates de la case sur laquelle on clique.
-     * Les coordonnées doivent être relatives à this.
-     * Renvoie null si le point de coordonnées (x, y) est en dehors de la grille active.
-     */ 
-    @Deprecated
-    public Coordinates getClicPosition(int x, int y) {
-        int caseSize = Math.round(boards.get(caseActiveIndex).getScale() * GraphicBoard.DEFAULT_CASE_SIZE);
-        // int delta = caseSize / 2; // pour centrer
-        // on regarde dans quelle case on clique :
-        int posx = (x - getActiveGridLocation().x) / caseSize;
-        int posy = (y - getActiveGridLocation().y) / caseSize;
-        int[] coord = axes.getCoordinates();
-        boolean valid = true;
-        for (int k = 0; k < coord.length ; k++) {
-            if (coord[k] == -1) {
-                coord[k] = posx;
-                if (posx < 0 || posx >= model.getDimensionsSizes().get(k)) {
-                    valid = false;
-                    break;
-                }
-            }
-            if (coord[k] == -2) {
-                coord[k] = posy;
-                if (posy < 0 || posy >= model.getDimensionsSizes().get(k)) {
-                    valid = false;
-                    break;
-                }
-            }
-            if (coord[k] == -3) {
-                coord[k] = caseActiveIndex;
-            }
-        }
-        return valid ? new Coordinates(coord) : null;
-    }
+ 
 }

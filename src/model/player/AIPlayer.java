@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import exceptions.ship.OverPanamaException;
-import model.ai.EasyAdvisor;
-import model.ai.IAdvisor;
 import model.ai.MediumAdvisor;
-import model.ai.NoobAdvisor;
+import model.ai.IAdvisor;
+import model.ai.HardAdvisor;
+import model.ai.EasyAdvisor;
 import model.board.Case;
 import model.board.IBoard;
 import model.coordinates.Coordinates;
@@ -19,10 +19,9 @@ public class AIPlayer extends APlayer {
     IAdvisor adv;
     
     public static enum AdvType {
-        NOOB(new NoobAdvisor()),
         EASY(new EasyAdvisor()),
-        MEDIUM(new MediumAdvisor());
-     // HARD(new HardAdvisor());
+        MEDIUM(new MediumAdvisor()),
+        HARD(new HardAdvisor());
         private IAdvisor elconsiglieri;
         
         AdvType(IAdvisor adv) {elconsiglieri = adv; }
@@ -31,7 +30,7 @@ public class AIPlayer extends APlayer {
     
     public AIPlayer(Coordinates dimensions, Map<String, Integer> shipNaL) throws OverPanamaException {
         super(dimensions, shipNaL);
-        adv = new NoobAdvisor();
+        adv = new EasyAdvisor();
         adv.setEnemyBoard(getShootGrid()); 
         adv.setShipLeft( new ArrayList<Integer>(shipNaL.values()));
         placeShipRandomly();
@@ -41,7 +40,7 @@ public class AIPlayer extends APlayer {
 
     public AIPlayer(Coordinates dimensions) throws OverPanamaException {
         super(dimensions);
-        adv = new NoobAdvisor();
+        adv = new EasyAdvisor();
         adv.setEnemyBoard(getShootGrid()); 
         ArrayList<Integer> l = new ArrayList<Integer>();
         for (IShip s : getShips()) {

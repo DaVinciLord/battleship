@@ -68,7 +68,7 @@ public class StartGame {
         }
         br.close();
         
-        advIA = AdvType.NOOB;
+        advIA = AdvType.EASY;
                 
         createView();
         placeComponents();
@@ -235,7 +235,6 @@ public class StartGame {
                         bw.newLine();
                         bw.close();
                     } catch (IOException e1) {
-                        // TODO Bloc catch généré automatiquement
                         e1.printStackTrace();
                     }
                 }
@@ -253,7 +252,6 @@ public class StartGame {
                         bw.newLine();
                         bw.close();
                     } catch (IOException e1) {
-                        // TODO Bloc catch généré automatiquement
                         e1.printStackTrace();
                     }
                 }
@@ -343,7 +341,6 @@ public class StartGame {
                 try {
                     new StartGame().display();
                 } catch (IOException e) {
-                    // TODO Bloc catch généré automatiquement
                     e.printStackTrace();
                 }
             }

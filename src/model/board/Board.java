@@ -82,8 +82,6 @@ public class Board<E> implements IBoard<E> {
     }
     
     private E getItem(Coordinates coords, int k) {
-        // débug sauvage
-        // System.out.println("getItem, étape : " + k + ", tableau : " + (boards == null));
         if (k == coords.length) {
             return item;
         }
@@ -128,15 +126,11 @@ public class Board<E> implements IBoard<E> {
             throw new AssertionError("mauvais nombre de coordonnées");
         }
         setItem(coords, item, 0);
-        // debug sauvage
-        // System.out.println("");
+
     }
     
     private void setItem(Coordinates coords, E item, int k) {
-        // débug sauvage
-        // System.out.println("getItem, étape : " + k + ", tableau : " + (boards == null));
         modCount++;
-        // System.out.print(" " + modCount);
         if (k == coords.length) {
             this.item = item;
         } else {
@@ -179,7 +173,6 @@ public class Board<E> implements IBoard<E> {
         return size;
     }
     
-    // Pour celle-ci, pas d'amélioration de complexité possible.
     public void clear() {
         modCount++;
         if (boards == null) {
