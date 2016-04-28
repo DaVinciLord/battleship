@@ -58,7 +58,7 @@ public class StartGame {
     
     public StartGame() throws IOException {
 
-        dimensions = null;
+        dimensions = new Coordinates(10, 10);
         adresses = new Vector<String>();
         ADRESSES.createNewFile(); // crée le fichier s'il n'existe 
         BufferedReader br = new BufferedReader(new FileReader(ADRESSES));

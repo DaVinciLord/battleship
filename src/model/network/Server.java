@@ -106,9 +106,6 @@ public class Server implements IServer {
 	}
 
 	public void setData(String s) {
-		if (s == null) {
-			throw new AssertionError("Vos donnÃ©es sont nulles");
-		}
 		this.lastData = s;
 	}
 
@@ -117,9 +114,6 @@ public class Server implements IServer {
 	}
 	
 	public void setConnectedSocket(Socket s) {
-		if (s == null) {
-			throw new AssertionError("Socket is null");
-		}
 		this.connectedSocket= s;
 	}
 
@@ -128,16 +122,10 @@ public class Server implements IServer {
 	}
 	
 	public void setDistantServerSocket(Socket s) {
-		if (s == null) {
-			throw new AssertionError("Socket is null");
-		}
 		this.distantServerSocket= s;
 	}
 
 	public void closeSocket(Socket s) throws ServerClosedSocketException, ServerNullSocketException {
-		if (s == null) {
-			throw new ServerNullSocketException("La socket n'existe pas");
-		}
 		if (!s.isClosed()) {
 			try {
 				s.close();

@@ -25,9 +25,6 @@ public class ShipDrawer implements BoardDrawer<Case> {
     // CONSRUCTEUR
     
     public ShipDrawer(File imgDir) {
-        if (imgDir == null) {
-            throw new AssertionError("imgDir null");
-        }
         this.imgDir = imgDir;
     }
     

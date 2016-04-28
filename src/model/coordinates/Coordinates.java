@@ -49,9 +49,6 @@ public class Coordinates implements Iterable<Integer> {
     }
     
     public int get(int n) {
-        if (n < 0 || n >= length) {
-            throw new AssertionError("out of bounds");
-        }
         return coord[n];
     }
     

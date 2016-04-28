@@ -117,9 +117,6 @@ public class GraphicShipBoard extends JPanel {
      *     p != null </pre>
      */
 	public GraphicShipBoard(IPlayer p) {
-		if (p == null) {
-            throw new AssertionError("pas de joueur");
-        }
         player = p;
         createView();
         placeComponents();

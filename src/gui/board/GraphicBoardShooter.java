@@ -75,7 +75,7 @@ public class GraphicBoardShooter extends JPanel {
     }
     
     public GraphicBoardShooter() {
-        throw new AssertionError("Puisqu'il faut que ce soit un Bean");
+        
     }
     
     // OUTILS DE CONSTRUCTION

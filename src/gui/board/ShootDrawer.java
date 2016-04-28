@@ -22,9 +22,6 @@ public class ShootDrawer implements BoardDrawer<State> {
     // CONSRUCTEUR
     
     public ShootDrawer(File imgDir) {
-        if (imgDir == null) {
-            throw new AssertionError("imgDir null");
-        }
         this.imgDir = imgDir;
     }
     

@@ -40,9 +40,6 @@ public class Case {
 	
 	// correspond à un tir (à ajouter après)
 	public State fireAt() {
-		if (isAimed) {
-			throw new AssertionError("déjà visé");
-		}
 		isAimed = true;
 		if (ship != null) {
 			return ship.takeHit();

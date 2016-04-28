@@ -128,9 +128,6 @@ public class GraphicBoardLayer<E> extends JPanel {
      */
     public GraphicBoardLayer(IBoard<E> model, Coordinates axes, BoardDrawer<E> drawer) {
         super(null);
-        if (model == null || axes == null || drawer == null) {
-            throw new AssertionError("paramètres null");
-        }
         this.drawer = drawer;
         this.model = model;
         dimZ = 1; // sera écrasé si 3D ou plus
@@ -248,11 +245,9 @@ public class GraphicBoardLayer<E> extends JPanel {
                 }
             }
             sliderZ = new JSlider(SwingConstants.VERTICAL, 0, dimZ - 1, 0);
-            // sliderZ.setPaintTicks(true);
             sliderZ.setLabelTable(sliderZ.createStandardLabels(1));
             sliderZ.setPaintLabels(true);
-            // sliderZ.setPaintTrack(true);
-            // sliderZ.setSnapToTicks(true);
+
         }
     }
     
@@ -418,7 +413,7 @@ public class GraphicBoardLayer<E> extends JPanel {
                                 selectAxeY.get(n).setSelected(false);
                             }
                         } else {
-                            throw new AssertionError("si ceci arrive, c'est la faute de BarbeFuschia");
+                           
                         }
                     }
                 }
@@ -428,20 +423,14 @@ public class GraphicBoardLayer<E> extends JPanel {
             }
         };
         // selection d'axes
-        // ButtonGroup bg = new ButtonGroup();
         for (JRadioButton jrb : selectAxeX) {
-            // bg.add(jrb);
             jrb.addActionListener(al);
         }
-        // bg = new ButtonGroup();
         for (JRadioButton jrb : selectAxeY) {
-            // bg.add(jrb);
             jrb.addActionListener(al);
         }
         if (model.dimensionNb() >= 3) {
-            // bg = new ButtonGroup();
             for (JRadioButton jrb : selectAxeZ) {
-                // bg.add(jrb);
                 jrb.addActionListener(al);
             }
         }
@@ -552,12 +541,6 @@ public class GraphicBoardLayer<E> extends JPanel {
  // OUTILS
 
     private void updateAxes(Coordinates axes) {
-        if (axes == null) {
-            throw new AssertionError("axes null");
-        }
-        if (axes.length != model.dimensionNb()) {
-            throw new AssertionError("mauvais nombre de dimension");
-        }
         this.axes = axes;
         boolean xFixed = false;
         boolean yFixed = false;
@@ -569,14 +552,14 @@ public class GraphicBoardLayer<E> extends JPanel {
                     
                     xFixed = true;
                 } else {
-                    throw new AssertionError("Deux axes X impossibles");
+                    
                 }
             } else if (comp == -2) {
                 if (!yFixed) {
                    
                     yFixed = true;
                 } else {
-                    throw new AssertionError("Deux axes Y impossibles");
+                    
                 }
             } else if (comp == -3) {
                 if (!zFixed && model.dimensionNb() >= 3) {
@@ -584,22 +567,14 @@ public class GraphicBoardLayer<E> extends JPanel {
                     axeZ = k;
                     zFixed = true;
                 } else {
-                    throw new AssertionError("Deux axes Z impossibles");
+                    
                 }
             } else if (comp < -3 || comp >= model.getDimensionsSizes().get(k)) {
-                throw new AssertionError("composante hors des dimensions");
+               
             }
         } 
   
-        if (!xFixed) {
-            throw new AssertionError("Il manque l'axe X");
-        }
-        if (!yFixed) {
-            throw new AssertionError("Il manque l'axe Y");
-        }
-        if (model.dimensionNb() >= 3 && !zFixed) {
-            throw new AssertionError("Il manque l'axe Z");
-        }
+
     }
     
     private void updateView() {
@@ -618,11 +593,9 @@ public class GraphicBoardLayer<E> extends JPanel {
         boolean really = true;
         int profondeur = 0; 
         if (kaze.length != model.dimensionNb()) {
-            throw new AssertionError("pas le bon nombre de dimension");
         }
         for (int k = 0; k < kaze.length; k++) {
             if (kaze.get(k) < 0 || kaze.get(k) >= model.getDimensionsSizes().get(k)) {
-                throw new AssertionError("kaze en dehors du modèle");
             }
             if (axes.get(k) >= 0 && axes.get(k) != kaze.get(k)) {
   

@@ -95,15 +95,6 @@ public class GraphicBoard<E> extends JComponent {
      *     axe.get(i) < model.getDimensionsSizes().get(i) </pre>
      */
     public GraphicBoard(IBoard<E> model, Coordinates axes, BoardDrawer<E> drawer) {
-        if (model == null) {
-            throw new AssertionError("model null");
-        }
-        if (model.dimensionNb() < 2 ) {
-            throw new AssertionError("pas assez de dimensions");
-        }
-        if (drawer == null) {
-            throw new AssertionError("pas assez de dimensions");
-        }
         opacity = 1.f;
         scale = 1.f;
         caseSize = DEFAULT_CASE_SIZE;
@@ -255,9 +246,7 @@ public class GraphicBoard<E> extends JComponent {
     }
     
     public void scaleAndRepaint(float scale) {
-        if (scale <= 0.0f) {
-            throw new AssertionError("scale négatif ou nul");
-        }
+
         this.scale = scale;
         caseSize = Math.round(DEFAULT_CASE_SIZE * scale);
         Dimension d = new Dimension(caseSize * dimX + 1, caseSize * dimY + 1);
@@ -305,7 +294,7 @@ public class GraphicBoard<E> extends JComponent {
             }
             g.drawRect(x * caseSize + 1, y * caseSize + 1, caseSize - 2, caseSize - 2);
         }
-        // /!\ Je n'ai pas trouvé comment régler l'épaisseur du trait.
+
     }
 
     /**
@@ -336,17 +325,7 @@ public class GraphicBoard<E> extends JComponent {
      *     kaze doit être une coordonnée valide dans getModel()
      */
     public void updateCase(Coordinates kaze) {
-        if (kaze.length != model.dimensionNb()) {
-            throw new AssertionError("pas le bon nombre de dimension");
-        }
-        for (int k = 0; k < kaze.length; k++) {
-            if (kaze.get(k) < 0 || kaze.get(k) >= model.getDimensionsSizes().get(k)) {
-                throw new AssertionError("kaze en dehors du modèle");
-            }
-            if (axes.get(k) >= 0 && axes.get(k) != kaze.get(k)) {
-                throw new AssertionError("kaze en dehors de la représentation");
-            }
-        }
+
         // trouver la position de la case
         int x = 0;
         int y = 0;
@@ -374,12 +353,6 @@ public class GraphicBoard<E> extends JComponent {
     // OUTILS
 
     private void updateAxes(Coordinates axes) {
-        if (axes == null) {
-            throw new AssertionError("axes null");
-        }
-        if (axes.length != model.dimensionNb()) {
-            throw new AssertionError("mauvais nombre de dimension");
-        }
         this.axes = axes;
         boolean xFixed = false;
         boolean yFixed = false;
@@ -390,17 +363,17 @@ public class GraphicBoard<E> extends JComponent {
                     dimX = model.getDimensionsSizes().get(k);
                     xFixed = true;
                 } else {
-                    throw new AssertionError("Deux axes X impossibles");
+                   
                 }
             } else if (comp == -2) {
                 if (!yFixed) {
                     dimY = model.getDimensionsSizes().get(k);
                     yFixed = true;
                 } else {
-                    throw new AssertionError("Deux axes Y impossibles");
+                    
                 }
             } else if (comp < -2 || comp >= model.getDimensionsSizes().get(k)) {
-                throw new AssertionError("composante hors des dimensions");
+                
             }
         }
     }

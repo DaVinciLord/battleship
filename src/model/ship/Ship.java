@@ -36,12 +36,6 @@ public class Ship implements IShip {
 	// CONSTRUCTEUR
     
     public Ship(IBoard<Case> board, ShipType type) throws OverPanamaException {
-        if (board == null) {
-            throw new AssertionError("il faut un board");
-        }
-        if (type == null) {
-            throw new AssertionError("il faut un type de navire");
-        }
         int n = 0;
         for (int k : board.getDimensionsSizes()) {
             if (k > n) {
@@ -58,23 +52,11 @@ public class Ship implements IShip {
     }
     
     public Ship(IBoard<Case> board, int length, String name) {
-        if (board == null) {
-            throw new AssertionError("il faut un board");
-        }
-        if (name == null) {
-            throw new AssertionError("il faut un nom");
-        }
-        if (length <= 0) {
-            throw new AssertionError("il faut une longueur positive");
-        }
         int n = 0;
         for (int k : board.getDimensionsSizes()) {
             if (k > n) {
                 n = k;
             }
-        }
-        if (length > n) {
-            throw new AssertionError("Over panama");
         }
         sea = board;
         this.name = name;
@@ -126,18 +108,6 @@ public class Ship implements IShip {
 	        throws ShipBadLengthException, ShipOffLimitException,
 			ShipNotAlignException, ShipCaseRaceException
 	         {
-	    if (positions != null) {
-	        throw new AssertionError("navire déjà à flot");
-	    }
-		// conditions de bonnes dimensions :
-		if (proue == null || poupe == null) {
-			throw new AssertionError("navire fantôme ?");
-		}
-		if (proue.length != sea.dimensionNb()
-				|| proue.length != poupe.length) {
-			throw new AssertionError("navire extra-dimensionnel ?");
-		}
-		
 		int extr = -1; // stockera la coordonnée dim la plus basse de la proue
 		int dim = -1; // stockera la dimension du sens du navire
 
@@ -203,9 +173,6 @@ public class Ship implements IShip {
 
     @Override
     public void removePosition() {
-        if (positions == null) {
-            throw new AssertionError("navire déjà en cale sèche");
-        }
         for (Coordinates coord : positions) {
             sea.getItem(coord).setShip(null);
         }
@@ -216,9 +183,6 @@ public class Ship implements IShip {
 
 	@Override
 	public State takeHit() {
-		if (hp == 0) {
-			throw new AssertionError("navire déjà coulé");
-		}
 		hp--;
 		return hp == 0 ? State.SUNK : State.HIT;
 	}

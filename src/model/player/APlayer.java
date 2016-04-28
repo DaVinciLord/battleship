@@ -171,17 +171,7 @@ public abstract class APlayer implements IPlayer {
     }
     
     public void removeShip(String name) {
-        if (ready) {
-            throw new AssertionError("la partie va commencer");
-        }
         Ship s = ships.get(name);
-        if (s == null) {
-            throw new AssertionError("navire inconnu à l'amirauté");
-        }
-        if (!s.isPlaced()) {
-            throw new AssertionError("navire pas encore placé");
-        }
-        
         List<Coordinates> oldPositions = s.getPosition();
         s.removePosition();
         for (Coordinates c : oldPositions) {
@@ -190,26 +180,12 @@ public abstract class APlayer implements IPlayer {
     }
     
     public void setReady() {
-        for (Ship s : ships.values()) {
-            if (!s.isPlaced()) {
-                throw new AssertionError("Il manque un navire");
-            }
-        }
         ready = true;
         
         cls.fireCoord(selfGrid.getDimensionsSizes(), "ready");
     }
     
     public State takeHit(Coordinates fire) {
-        if (!ready) {
-            throw new AssertionError("not ready yet");
-        }
-        if (fire.length != selfGrid.dimensionNb()) {
-            throw new AssertionError("bad dimensions");
-        }
-        if (selfGrid.getItem(fire).getState() != State.NOTAIMED) {
-            throw new AssertionError("already shot in there !");
-        }
         State s = selfGrid.getItem(fire).fireAt();
         if (s != State.MISSED) {
             life--;

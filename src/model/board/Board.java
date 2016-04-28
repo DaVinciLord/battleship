@@ -20,9 +20,6 @@ public class Board<E> implements IBoard<E> {
     
     public Board(Coordinates sizes) {
         this(sizes, 0);
-        if (sizes == null) {
-            throw new AssertionError("size null");
-        }
     }
     
     private Board(Coordinates sizes, int k) {
@@ -30,9 +27,6 @@ public class Board<E> implements IBoard<E> {
         if (sizes.length == k) {
             boards = null;
         } else {
-            if (sizes.get(k) < 0) {
-                throw new AssertionError("taille négative pour " + k + " : " + sizes.get(k));
-            }
             boards = new ArrayList<Board<E>>();
             for (int i = 0; i < sizes.get(k); i++) {
                 boards.add(new Board<E>(sizes, k + 1));
@@ -72,12 +66,6 @@ public class Board<E> implements IBoard<E> {
     }
     
     public E getItem(Coordinates coords) {
-        if (coords == null) {
-            throw new AssertionError("coord null");
-        }
-        if (coords.length != nbDim) {
-            throw new AssertionError("mauvais nombre de coordonnées");
-        }
         return getItem(coords, 0);
     }
     
@@ -85,19 +73,10 @@ public class Board<E> implements IBoard<E> {
         if (k == coords.length) {
             return item;
         }
-        if (coords.get(k) < 0) {
-            throw new AssertionError("coordonnée négative pour " + k + " : " + coords.get(k));
-        }
         return boards.get(coords.get(k)).getItem(coords, k+1);
     }
 
     public Board<E> getBoard(Coordinates dimCoords) {
-        if (dimCoords == null) {
-            throw new AssertionError("coord null");
-        }
-        if (dimCoords.length != nbDim) {
-            throw new AssertionError("mauvais nombre de coordonnées");
-        }
         return getBoard(dimCoords, 0);
     }
     
@@ -119,12 +98,6 @@ public class Board<E> implements IBoard<E> {
     // COMMANDES
 
     public void setItem(Coordinates coords, E item) {
-        if (coords == null) {
-            throw new AssertionError("coord null");
-        }
-        if (coords.length != nbDim) {
-            throw new AssertionError("mauvais nombre de coordonnées");
-        }
         setItem(coords, item, 0);
 
     }
@@ -134,20 +107,11 @@ public class Board<E> implements IBoard<E> {
         if (k == coords.length) {
             this.item = item;
         } else {
-            if (coords.get(k) < 0) {
-                throw new AssertionError("coordonnée négative pour " + k + " : " + coords.get(k));
-            }
             boards.get(coords.get(k)).setItem(coords, item, k+1);
         }
     }
     
     public E removeItem(Coordinates coords) {
-        if (coords == null) {
-            throw new AssertionError("coord null");
-        }
-        if (coords.length != nbDim) {
-            throw new AssertionError("mauvais nombre de coordonnées");
-        }
         return removeItem(coords, 0);
     }
     
@@ -158,9 +122,6 @@ public class Board<E> implements IBoard<E> {
             item = null;
             return echg;
         } else {
-            if (coords.get(k) < 0) {
-                throw new AssertionError("coordonnée négative pour " + k + " : " + coords.get(k));
-            }
             return boards.get(coords.get(k)).removeItem(coords, k+1);
         }
     }

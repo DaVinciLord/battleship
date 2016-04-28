@@ -22,10 +22,10 @@ public class AIPlayer extends APlayer {
         EASY(new EasyAdvisor()),
         MEDIUM(new MediumAdvisor()),
         HARD(new HardAdvisor());
-        private IAdvisor elconsiglieri;
+        private IAdvisor advisor;
         
-        AdvType(IAdvisor adv) {elconsiglieri = adv; }
-        IAdvisor getAdv() { return elconsiglieri; }
+        AdvType(IAdvisor adv) {advisor = adv; }
+        IAdvisor getAdv() { return advisor; }
     }
     
     public AIPlayer(Coordinates dimensions, Map<String, Integer> shipNaL) throws OverPanamaException {
@@ -81,10 +81,20 @@ public class AIPlayer extends APlayer {
         return adv.getAdvise();
     }
     
-    private void placeShipRandomly() {
+    private void placeShipRandomly() throws OverPanamaException {
+        int tries = 0;
         for (IShip s : getShips()) {
+            tries ++;
+            if (tries > 10000) {
+                System.out.println("pbm\n");
+                throw new OverPanamaException("L'ia a échoué à placer les bateau");
+            }
             boolean ok = false;
             while (!ok ) {
+            tries ++;
+            if (tries > 10000) {
+                throw new OverPanamaException("L'ia a échoué à placer les bateau");
+             }
             int dim = (int) (Math.random() * getShipGrid().dimensionNb());
             Coordinates proue = getAdvise();
             
