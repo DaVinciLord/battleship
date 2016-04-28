@@ -91,7 +91,7 @@ public class StartGame {
         chooseYourAdress = new JComboBox<String>(adresses);
         chooseAdvAdress = new JComboBox<String>(adresses);
         
-        chooseIA = new JComboBox<String>(new String[] {"trop facile", "facile", "medium"});
+        chooseIA = new JComboBox<String>(new String[] {"facile", "moyen", "difficle"});
         
     }
     
