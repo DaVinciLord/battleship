@@ -1,17 +1,18 @@
 \section{Modèle de jeu}
+Dans cette partie, nous allons présenter le modèle de notre application, nous allons donc voir dans un premier temps le fonctionnement de notre grille de jeu, qui est une grille modulaire à un nombre possible de dimension. Nous allons ensuite expliquer comment fonctionne nos navires, et la façon dont on tire dessus. Puis pour finir, nous allons montrer le fonctionnement de nos IA ainsi que les différences entre les 3 niveaux de difficultés.
 
 \subsection{Le plateau de jeu}
 
 	Dans le cadre de ce projet, nous avons choisi de donner aux joueurs la possibilité de jouer différemment à la bataille navale, notamment de jouer en trois dimensions.\newline
 	
-	Pour cela, nous avons réfléchi puis développé un modèle capable de s'adapter aux besoins des joueurs. En effet, celui-ci peut décider de toutes les tailles, longueur, largeur ou encore profondeur, ainsi qu'un nombre de dimensions quelconques. \newline
+	Pour cela, nous avons réfléchi puis développé un modèle capable de s'adapter aux besoins des joueurs. En effet, celui-ci peut décider de toutes les tailles, longueur, largeur ou encore profondeur, ainsi qu'un nombre quelconque de dimensions. \newline
 	
-	Le plateau de jeu permet donc de jouer en une dimension (soit sur la longueur ou soit sur la largeur), en deux dimensions (longueur et largeur), en trois dimensions nous ajoutons la profondeur pour enfin pouvoir jouer en plus de trois dimensions.\newline
+	Le plateau de jeu permet donc de jouer en une dimension (soit sur la longueur ou soit sur la largeur), en deux dimensions (longueur et largeur). En trois dimensions nous ajoutons la profondeur pour enfin pouvoir jouer en plus de trois dimensions.\newline
 	
 	\subsubsection{Définition récursive des Boards}
-		Nous avons uns structure donnée qui se définit récursivement de la manière suivante : \newline
+		Nous avons une structure de donnée qui se définit récursivement de la manière suivante : \newline
 		\begin{itemize}
-		\item Une case d'un Board est un Board à zéro dimensions.\newline
+		\item Une case d'un Board est un Board à zéro dimension.\newline
 		\item Un Board à N dimensions, dont les tailles dans chaque dimension sont (TN, TN-1, … , T1) où les Ti sont les tailles, est composé de TN Boards à N - 1 dimensions, dont les tailles dans chaque dimension sont (TN-1, … , T1). 
 		\end{itemize}
 			
@@ -24,7 +25,7 @@
 			\item Tous les nœuds d'un même niveau ont le même nombre de descendants.
 		\end{itemize}
 
-	Cette structure récursive nous permet d'instancier un Board de n'importe quel nombre de dimensions en lui passant tout simplement un tableau d'entier classique contenant les tailles dans chaque dimension.
+	Cette structure récursive nous permet d'instancier un Board de n'importe quel nombre de dimensions en lui passant tout simplement un tableau d'entiers classique contenant les tailles dans chaque dimension.
 
 	\subsubsection{Remplissage des Boards}
 
@@ -273,5 +274,5 @@ De ce fait, nous avons du développer une Intelligence Artificielle (IA), car jo
 {\bf Fin Procedure}
 \end{alltt}
     
-    Voici ce qui conclut notre première partie présentant le modèle de notre application, nous avons donc vu dans un premier temps le fonctionnement de notre grille de jeu, qui est donc une grille modulaire à un nombre de dimension infini. Nous avons ensuite expliqué comment fonctionne nos navires, et la façon dont on tire dessus. Puis pour finir, nous avons montré le fonctionnement de nos IA ainsi que les différences entre les 3 niveaux de difficultés.
-    Nous allons donc maintenant passer sur la seconde partie du projet qui est celle du réseau.
+    
+    Nous allons maintenant passer sur la seconde partie du projet qui est celle du réseau.
