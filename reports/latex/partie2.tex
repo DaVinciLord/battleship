@@ -23,7 +23,7 @@
 			Suite à ces différentes étapes, la connexion entre le joueur hôte et le joueur invité est établie, les échanges de données peuvent donc être effectués.
 
 		\subsubsubsection{Échanges des données}
-			Mais avant de pouvoir commencer la partie et à échanger des données, chaque joueur doit placer ses bateaux puis attendre que l'adversaire finisse de placer les siens. Pour nos besoins, nous n'avons pas décidé de laisser l'application choisir au hasard qui commence une partie~: ce sera toujours le joueur hôte. \newline
+			Mais avant de pouvoir commencer la partie et à échanger des données, chaque joueur doit placer ses navires puis attendre que l'adversaire finisse de placer les siens. Pour nos besoins, nous n'avons pas décidé de laisser l'application choisir au hasard qui commence une partie~: ce sera toujours le joueur hôte. \newline
 			
 			De ce fait, le joueur hôte devient donc le processus client qui doit alors choisir puis envoyer les coordonnées de son tir, ces dernières étant réceptionnées par le processus serveur, i.e le joueur invité, qui est en attente de ces coordonnées et rien d'autre. En effet, nous verrons plus tard comment ces données sont formatées pour que notre protocole fonctionne correctement (voir \ref{dataformat}).  \newline
 			
@@ -42,7 +42,7 @@
 			Ces deux composantes définissent donc le format des données envoyées. Nous allons donc maintenant définir quels sont les types d'objets possible ainsi que leurs valeurs associées.
 			
 			\begin{enumerate}
-				\item "Coordinates:X,X" $\Rightarrow$ Ce format permet d'envoyer les coordonnées d'un tir, la valeur est une suite de nombres séparés par des virgules représentant la coordonnée sur un axe donné. Par exemple, si nous recevons "Coordinates:1,1", cela signifie que nous voulons tirer sur la case situé à 1 sur l'axe des X et en 1 sur l'axe des Y.
+				\item "Coordinates:(X,)*X" $\Rightarrow$ Ce format permet d'envoyer les coordonnées d'un tir, la valeur est une suite de nombres séparés par des virgules représentant la coordonnée sur un axe donné. Par exemple, si nous recevons "Coordinates:1,2", cela signifie que nous voulons tirer sur la case dont les composantes de coordonnées sont 1 pour la première composante et 2 pour la seconde.
 			 
 				\item "State:X" $\Rightarrow$ Ce format permet d'envoyer l'état de la case qui a été visée. Les valeurs possibles ont déjà été définies dans la partie \ref{states}. Par exemple, en recevant "State:HIT", cela signifie que la case visée a été touchée.
 				
