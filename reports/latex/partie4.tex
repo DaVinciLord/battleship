@@ -1,0 +1,33 @@
+\section{Autres}
+	
+	Dans cette partie, nous allons présenter les aspects "humains" du projet, c'est à dire notre ressenti lors du projet, les technologies qui nous ont servis tout au long du projet, nos idées d'améliorations que nous proposons pour les futurs développeurs souhaitant reprendre notre projet par exemple, les problèmes que nous avons pu rencontrer au cours du développement de notre application, ou bien encore ce que nous avons appris au cours du projet et ce que celui-ci nous a apporté.
+
+\subsection{Technologies utilisés}
+	Les technologies que nous avons utilisé durant le projet sont les suivantes.\newline
+	La première technologie utilisée fut le langage Java. En effet, nous avons choisit de prendre le Java, car notre client nous l'a conseillé, en particulier pour ce qui est la gestion de l'IHM. De plus, étant un langage que nous maîtrisons tous plus ou moins, nous avions ainsi davantage de facilité à le manier et donc à développer le projet voulu.\newline
+	La seconde technologie fut l'utilisation de GIT, un logiciel de gestion de version de code source. En effet, via GIT, nous pouvions aisément travailler sur des partie du code différentes sans interférer avec les autres. De plus, cela nous permettait, en cas de soucis, de récupérer le code ultérieur pour repartir dessus si des améliorations, ou des modifications apportées au code courant modifièrent trop le fonctionnement de l'application, ou pire, créèrent des bugs non réparable.\newline
+	La troisième technologie que certains d'entre nous apprirent fut le \LaTeX{}, car nous tenions a rendre un projet propre, agréable a lire et surtout "professionnel", hors \LaTeX{} est la technologie la plus adapté a nos besoins, c'est pourquoi deux personnes furent chargées d'apprendre le \LaTeX{} afin de rendre le compte-rendu via ce langage.
+
+\subsection{Idées d'améliorations}
+	Voici une liste d'amélioration possible qui pourrait être implanter sur le projet afin de le rendre encore plus complet.\newline
+	La première amélioration serait d'ajouter une IA très difficile, qui fonctionnerait de la même façon que l'IA difficile, avec cependant une variante qui consisterait à adapter les coups qu'elle tire en fonction des bateaux touchées et des cases restantes sur la grille.\newline
+	La seconde amélioration possible serait le fait qu'un thread utilisateur soit lancer lorsque nos sockets de service sont en attendent. En effet, lorsque celles-ci sont en attente, EDT\footnote{Voir lexique} le thread gérant toute l'IHM se retrouve aussi bloquer due a l'attente de réception de données.\newline
+	Une troisième amélioration potentielle serait d'améliorer l'IHM afin que celle-ci affiche un beau menu lors de l'ouverture du logiciel, afin que les utilisateurs ait vraiment la sensation de jouer à un jeu.\newline
+	Nous pourrions aussi ajouter le Drag'n'Drop, appelé aussi "Glissé-Déposé", pour placer plus facilement nos bateaux sur la grille, lors du début d'une partie. En effet, nous plaçons actuellement nos bateaux par le biais d'un clique plaçant l'avant du bateau, puis l'arrière du bateau par un second clique, et le fait de le faire par Drag'n'Drop serais plus intuitifs pour certaines personnes.\newline
+	Il serait aussi possible d'offrir la liberté d'ajouter plus de bateaux, ou de modifier ceux existant, par exemple en modifiant leur taille, ou encore en jouant avec 7 bateaux au lieu de 5 initialement dans les règles officiels de la bataille navale.\newline
+	Une autre amélioration développable serait de pouvoir changer les règles ou d'ajouter des règles durant une partie. Par exemple, nous pourrions utiliser ajouter un chronomètre lors d'un tour de jeu, afin que chaque joueur doivent jouer rapidement, sous peine de voir son tour être passé sans avoir eu le temps de jouer.
+	Nous pourrions aussi ajouter un chat pour que les joueurs puissent communiquer entre eux, afin qu'ils puissent par exemple discuter entre eux, ou encore se charrier gentillement lors d'un coulé par exemple.\newline
+	Comme nous l'avons vu, ce projet ne possède guère de limite si ce n'est notre imagination.\newline
+
+\subsection{Problèmes rencontrés}
+	De nombreux problèmes ont été rencontrés au cours du projet, les plus important d'entre eux sont le fait que nous avons manquée de temps pour le projet, ainsi que le manque de salle informatique pour travailler efficacement, notamment le vendredi après midi, ou aucune salle informatique n'était libre pour nous permettre de bosser tous ensemble.\newline
+	Un autre problème que nous avons rencontré est le fait que nous n'avions pas de redirection de port, ne permettant pas de tester facilement la partie réseau du projet, car il faut absolument que chacun possède son point d'accès, pour pouvoir le modifier, ce qui n'était pas forcément le cas.\newline
+	Nous avons rencontré aussi des problèmes organisationnelles et logistiques vis à vis du travail de chacun au début, en particulier sur le début du projet.\newline
+	Au niveau du développement, nous avons rencontré un problème au niveau de l'uniformisation du code. En effet, nous avions convenu initialement de coder en anglais, langue universelle de l'informatique. Hors, plusieurs fois nous nous somme rencontrer a des noms de variables ou encore de méthodes écrite en français, faisant ainsi une grosse différence entre chaque développeur présent sur le projet.\newline
+	Toujours au niveau du code, nous avons eu de grosse difficultés à manipuler les threads, en particulier le lien entre EDT et les thread utilisateurs, ce qui explique que cette gestion n'ait pas été réalisé et implanter dans le code, malgré de nombreuses heures passées dessus.\newline
+	Pour terminer, une dernière difficulté s'est aussi présenté à nous, en effet, l'appréhension et la visualisation du modèle permettant des grilles à dimension variable et inconnu a été assez difficile a comprendre, car au delà de la troisième dimension, nous étions régulièrement perdu.
+
+\subsection{Compétences acquises}
+	Au cours du projet, nous avons acquit nombres de connaissances tels que par exemple l'initiation a GIT, un logiciel de versionning de code, permettant ainsi un travail efficace en groupe, car chacun peut facilement travailler sur un module du projet sans risquer de "casser" le code fonctionnel.\newline
+	 Nous avons aussi acquis de nombreuses connaissances sur le réseau, en particulier sur le protocole TCP/IP qui est un standard d'internet, ainsi que le fonctionnement d'un protocole question/réponse et pour finir l'utilisation des sockets par le biais du langage Java.\newline
+	 Pour finir, nous avons acquit la capacité de gérer et de se répartir le travail efficacement lorsqu'on travail en groupe.
