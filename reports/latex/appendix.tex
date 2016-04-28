@@ -3,16 +3,16 @@
 \section{Lexique}
 \begin{itemize}
 	\item EDT :
-	EDT est un acronyme signifiant Event Dispatch Thread. Concrétement, EDT est le thread principal s'occupant de la partie graphique d'une application Java, c'est-à-dire le dessin de l'IHM ou la gestion des interactions avec l'utilisateur.
+	EDT est un acronyme signifiant Event Dispatch Thread. Concrètement, EDT est le thread principal s'occupant de la partie graphique d'une application Java, c'est-à-dire le dessin de l'IHM ou la gestion des interactions avec l'utilisateur.
 	\newline
 
 	\item Itérateur :
-	En programmation, un itérateur est un objet permettant de parcourir un tableau, non pas nécessairement depuis le début du tableau, mais depuis n'importe quel index du tableau. Dans le cadre de notre projet, notre itérateur nous permet de parcourir notre Board.
+	En programmation, un itérateur est un objet permettant de parcourir un tableau ou une collection, non pas nécessairement depuis le début du tableau, mais depuis n'importe quel index du tableau. Dans le cadre de notre projet, notre itérateur nous permet de parcourir notre Board.
 	\newline
 
-	\item Pair à  pair :
-    Le pair à  pair (ou peer-to-peer en anglais), est un modèle de réseau permettant à  deux machines de discuter d'égale à  égale.
-    Dans les faits, cela s'explique par le fait qu'une machine se connecte a une autre machine et inversement afin que celles-ci puissent s'échanger des informations sans passer par un serveur distant.
+	\item Pair à pair :
+    Le pair à  pair (ou peer-to-peer en anglais), est un modèle de réseau permettant à deux machines de discuter d'égale à égale.
+    Dans les faits, cela s'explique par le fait qu'une machine se connecte à une autre machine et inversement afin que celles-ci puissent s'échanger des informations sans passer par un serveur distant.
     \newline
     
    	\item Protocole réseau :
@@ -21,14 +21,14 @@
 	\newline
 
 	\item Protocole TCP : 
-    Acronyme de Transmission Control Protocol, le protocole TCP/IP est le protocole standard utilsié sur internet, pour la liaison entre deux ordinateurs.
-    Le protocoel TCP vérifie la validité des paquets après leur réception afin d'être sur de la validité de celle-ci. 
+    Acronyme de Transmission Control Protocol, le protocole TCP/IP est le protocole standard utilisé sur internet, pour la liaison entre deux ordinateurs.
+    Le protocole TCP vérifie la validité des paquets après leur réception afin d'être sûr de la validité de celle-ci.
     Le protocole TCP est située sur la couche 4 (couche de transport) du modèle OSI. 
 	\newline
 	
 	\item Protocole UDP :
     Acronyme User Datagram Protocol, le protocole UDP est un des protocoles standards utilisé sur internet. 
-    La différence avec TCP est que les paquets sont reçus sous forme de datagramme qui doit être vérifier pour valider la qualité du paquet reçu.
+    La différence avec TCP est que les paquets sont reçus sous forme de datagrammes qui doivent être vérifiés pour valider la qualité du paquet reçu.
     Le protocole UDP est très utilisé, notamment, dans le cadre du jeu en ligne, ou encore le streaming, car la perte de paquet influe peu sur la quantité reçus.
     Le protocole UDP est située sur la couche 4 (couche de transport) du modèle OSI, au même titre que le protocole TCP. 
    \newline
@@ -43,11 +43,11 @@
     \newline
   
 	\item Socket d'écoute :
-    Une socket d'écoute est une socket présente uniquement dans le protocole TCP. En effet, son rôle consiste, comme son nom l'indique, a écouter les demandes de connexion de socket externe sur un port prédéfini, afin de créer une socket qui permettra ensuite l'échange de données avant de reprendre son rôle d'écouteur.
+    Une socket d'écoute est une socket présente uniquement dans le protocole TCP. En effet, son rôle consiste, comme son nom l'indique, à écouter les demandes de connexion de socket externe sur un port prédéfini, afin de créer une socket qui permettra ensuite l'échange de données avant de reprendre son rôle d'écouteur.
 	\newline
   
 	\item Socket de service :
-    La socket de service est la socket crée par la socket d'écoute lorsque celle-ci reçoit une demande de connexion. La socket de service permet la communication entre le serveur et le client ayant fait une demande de connexion. C'est par cette socket que transite toute les données émises par le client et le serveur.
+    La socket de service est la socket crée par la socket d'écoute lorsque celle-ci reçoit une demande de connexion. La socket de service permet la communication entre le serveur et le client ayant fait une demande de connexion. C'est par cette socket que transitent toutes les données émises par le client et le serveur.
 	\newline
   
 	\item Thread :
@@ -74,13 +74,13 @@
 \begin{sidewaysfigure}
     \centering
     \includegraphics [width=215mm]{images/connection_between_players.png}
-    \caption{Schéma représetant le protocole de connexion entre deux joueurs}
+    \caption{Schéma représentant le protocole de connexion entre deux joueurs}
     \label{connection}
 \end{sidewaysfigure}
 \begin{sidewaysfigure}
     \centering
     \includegraphics [width=215mm]{images/data_exhange_between_players.png}
-    \caption{Schéma représetant le protocole d'échange de données entre deux joueurs}
+    \caption{Schéma représentant le protocole d'échange de données entre deux joueurs}
     \label{connection}
 \end{sidewaysfigure}
 
