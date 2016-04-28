@@ -15,7 +15,7 @@
 		\item Un Board à N dimensions, dont les tailles dans chaque dimension sont (TN, TN-1, … , T1) où les Ti sont les tailles, est composé de TN Boards à N - 1 dimensions, dont les tailles dans chaque dimension sont (TN-1, … , T1). 
 		\end{itemize}
 			
-	Notez bien que les Boards à N - 1 dimensions ont exactement les même tailles pour chaque dimension. Ainsi, un Board à deux dimensions sera toujours représentable comme un rectangle, un Board à trois dimensions peut-être visualisé comme un pavé droit et ceux des dimensions supérieures suivent le même principe, bien qu'ils soient plus difficile à représenter.
+	Notez bien que les Boards à N - 1 dimensions ont exactement les mêmes tailles pour chaque dimension. Ainsi, un Board à deux dimensions sera toujours représentable comme un rectangle, un Board à trois dimensions peut-être visualisé comme un pavé droit et ceux des dimensions supérieures suivent le même principe, bien qu'ils soient plus difficile à représenter.
 \newline
 
 	On peut aussi voir le Board comme un arbre particulier avec les propriétés suivantes : \newline
@@ -50,77 +50,77 @@ Ces objets sont techniquement des tableaux d'entiers non mutables, dont on peut 
 	Les algorithmes d'accès aux cases de Board sont récursifs terminaux; c'est à dire que lors de la compilation, le compilateur (si il y a compilation, ce qui est notre cas ici) peut remplacer ces appels récursifs par une simple boucle itérative. Cela s'explique par le fait que le rappelle a soi-même soit la dernière instruction a être évaluée. De ce fait, cela permet d'économiser de la mémoire lors des appels a ces fonctions, car seul l'adresse de l'appel de la fonction doit être sauvegarder sur la pile d'exécution. \newline
 	Structures des objets :
 
-	\begin{alltt}
-	{\bf Structure} Board :
-    	{\bf Champ} Object : item;
-    	{\bf Champ} Liste de Board : boards;
-	{\bf fin Structure}
-		
-	{\bf Structure} Coordinates :
-    	{\bf Champ} Tableau d'entiers : coord;
-	    {\bf Champ} Entier : length;
-	{\bf fin Structure}
-	\end{alltt}
+\begin{alltt}
+{\bf Structure} Board :
+    {\bf Champ} Object : item;
+    {\bf Champ} Liste de Board : boards;
+{\bf fin Structure}
+
+{\bf Structure} Coordinates :
+    {\bf Champ} Tableau d'entiers : coord;
+    {\bf Champ} Entier : length;
+{\bf fin Structure}
+\end{alltt}
 
 
-	\subsubsubsection{Algorithmes de Coordinates}
-	
-	\begin{alltt}
+\subsubsubsection{Algorithmes de Coordinates}
+
+\begin{alltt}
 {\bf Algo} Coordinates creerCoordinates(Tableau d'entier t) :
     coord <- copie de t;
-	length <- longueur de t;
+    length <- longueur de t;
 {\bf finAlgo}
-			
+
 {\bf Algo} Entier get(Coordinates c, Entier index) :
     renvoyer c.coord[index];
 {\bf finAlgo}
-	\end{alltt}
+\end{alltt}
 
-		
-	\newpage
-	\subsubsubsection{Algorithmes de Board}
 
-	\begin{alltt}
+\newpage
+\subsubsubsection{Algorithmes de Board}
+
+\begin{alltt}
 {\bf Algo} Board creerBoard(Coordinates c) :
     renvoyer creerBoard(c, 0);
 {\bf finAlgo}
-		
+
 {\bf Algo} Board creerBoard(Coordinates c, entier index) :
     Board b;
     b.item <- null;
-    {\bf si} index = c.length {\bf alors}
+    {\bf Si} index = c.length {\bf Alors}
         renvoyer b;
     {\bf finSi}
     b.boards <- nouvelle Liste de Board;
-    {\bf pour} entier k de 0 à c.get(index) {\bf faire}
+    {\bf Pour} entier k de 0 à c.get(index) {\bf Faire}
         b.boards[k] <- creerBoard(c, index + 1);
     {\bf finPour}
     renvoyer b;
 {\bf finAlgo}
-		
+
 {\bf Algo} Object getItem(Board b, Coordinates c) :
     renvoyer getItem(b, c, 0);
 {\bf finAlgo}
-		
-		
+
+
 {\bf Algo} Object getItem(Board b, Coordinates c, Entier index) :
     {\bf si} index = c.length {\bf alors}
         renvoyer b.item;
     {\bf finSi}
     renvoyer getItem(b.boards.get(c.get(index)), c, index + 1);
 {\bf finAlgo}
-		
+
 {\bf Algo} voidsetItem(Board b, Coordinates c, Object item) :
     setItem(b, c, 0, item);
 {\bf finAlgo}
-		
+
 {\bf Algo} void setItem(Board b, Coordinates c, Entier index, Object item) :
     {\bf si} index = c.length {\bf alors}
         b.item <- item;
     {\bf finSi}
     setItem(b.boards.get(c.get(index)), c, index + 1, item);
 {\bf finAlgo}
-	\end{alltt}
+\end{alltt}
 
 \subsection{Les bateaux en dimensions variables}
 	Les navires sont représentés par la classe Ship. Ils ont une longueur, un nom et contiennent les coordonnées des cases du Board qu'ils occupent lorsqu'ils sont placés. \newline
@@ -167,8 +167,7 @@ Ces objets sont techniquement des tableaux d'entiers non mutables, dont on peut 
 \subsection{Les intelligences artificielles}
 	Il nous à été demandé de pouvoir jouer à la bataille navale en local. 
 De ce fait, nous avons due développer une Intelligence Artificiel (IA), car jouer à deux sur un même ordinateur présente de nombreux risques de triches.\newline
-	Notre IA se compose de 3 niveaux de difficultés différents, allant de facile à difficile.\newline
-	Nous allons donc vous expliquez le fonctionnement de chacune de ces 3 IA.\newline
+	Notre IA se compose de 3 niveaux de difficultés différents, allant de facile à difficile. Nous allons donc vous expliquez le fonctionnement de chacune de ces 3 IA.\newline
 
 \subsubsection{IA Facile}
     L'IA facile fut la première intelligence artificielle programmée. Son cheminement est simple, elle consiste simplement à choisir aléatoirement une case, en vérifiant bien entendu que celle-ci n'est pas déjà était tirée au préalable, puis de tirer dessus, qu'importe l'avancement de la partie.\newline
@@ -198,13 +197,13 @@ De ce fait, nous avons due développer une Intelligence Artificiel (IA), car jou
         
 \subsubsection{IA Moyen}
 	L'IA moyen, deuxième IA développée, fonctionne de manière similaire à l'IA facile, à ceci près qu'une fois un bateau touché l'IA passe en mode "chasse".\newline
-	Le mode chasse indique à l'IA de tirer sur les quatres directions(nord, sud, est et ouest) entourant la case touchée et, si une nouvelle case est touchée, celle-ci repart de cette dernière pour ainsi continuer jusqu'à avoir coulé le bateau.\newline
-	Elle repart alors dans sa routine de ciblage.\newline
+	Le mode chasse indique à l'IA de tirer sur les quatre directions(nord, sud, est et ouest) entourant la case touchée et, si une nouvelle case est touchée, celle-ci part de cette dernière pour ainsi continuer jusqu'à avoir coulé le bateau.\newline
+	Une fois le bateau coulé, notre IA reprends sa routine de "ciblage".\newline
 	L'algorithme est présenté ci-dessous:
     
 \begin{alltt}
 {\bf Procedure} MediumAdvisor :
-    {\bf Entrée} : Board un tableau de state contenant les résultats de tous les tirs.
+    {\bf Entrée} : Board un tableau de State contenant le résultats de tous les tirs.
               Dim le tableau des tailles des dimension de Board.
               Coe une liste de case.
     {\bf Sortie} : Coord une Coordonnée d’une case non touchée.
@@ -232,7 +231,7 @@ De ce fait, nous avons due développer une Intelligence Artificiel (IA), car jou
 
 \subsubsection{IA Difficile}
     L'IA difficile, troisième IA développée, fonctionne de manière similaire à l'IA normale, c'est à dire qu'elle effectue sa routine de "ciblage" jusqu'à toucher un bateau, puis passe en mode "chasse" une fois un bateau touché.
-    La différence avec l'IA normale est que cette IA ne tire pas de case adjacente l'une à l'autre. En effet, suivant la taille minimal du bateau ennemi existant au début de partie, afin qu'elle ne tire que toute les tailles du bateau minimal.
+    La différence avec l'IA normale est que cette IA ne tire pas de case adjacente l'une à l'autre. En effet, suivant la taille minimal du bateau ennemi existant au début de partie, notre IA ne tire que que toutes les cases séparées d'une taille minimale du plus petit bateau.
     Par exemple, dans le cas ou le plus petit bateau est un bateau de 2, l'IA va donc écarter ses tirs de 2 cases d'écart à chaque fois.
     
 \begin{alltt}
@@ -274,5 +273,5 @@ De ce fait, nous avons due développer une Intelligence Artificiel (IA), car jou
 {\bf Fin Procedure}
 \end{alltt}
     
-    Voici ce qui conclut notre première partie présentant le modèle de notre application, nous avons donc vu dans un premier temps le fonctionnement de notre grille de jeu, qui est donc une grille modulable à un nombre de dimension infini. Nous avons ensuite expliqué comment fonctionne nos bateaux, et la façon dont on tire dessus. Puis pour finir, nous avons montré le fonctionnement de nos IA ainsi que les différences entres les 3 niveaux de difficultés.
+    Voici ce qui conclut notre première partie présentant le modèle de notre application, nous avons donc vu dans un premier temps le fonctionnement de notre grille de jeu, qui est donc une grille modulaire à un nombre de dimension infini. Nous avons ensuite expliqué comment fonctionne nos bateaux, et la façon dont on tire dessus. Puis pour finir, nous avons montré le fonctionnement de nos IA ainsi que les différences entres les 3 niveaux de difficultés.
     Nous allons donc maintenant passer sur la seconde partie du projet qui est celle du réseau.

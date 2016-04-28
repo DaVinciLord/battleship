@@ -8,7 +8,7 @@
 	Deuxièmement, malgré le fait que le protocole UDP soit plus rapide dans l'envoi des données, utiliser le protocole TCP dans notre cadre n'a pas d'impact significatif puisque, comme il sera exposé un peu plus tard, chaque joueur doit attendre la réception de données avant de continuer son traitement. Ainsi, il n'est pas, en pratique, possible de recevoir des données qui ne sont pas attendues à des moments précis.
 
 	\subsubsection{Protocole de l'application}
-		L'application doit suivre un certain protocole pour que les deux joueurs puissent communiquer correctement et sans problèmes majeurs. Il a donc été décidé de suivre un type de protocole classique qui est celui du question/réponse. Néanmoins, nous n'avons pas choisi d'implémenter de serveur d'hébergement centralisant toutes les parties et dirigeant toutes les actions des clients, nous avons opté pour un échange de type pair à pair, c'est à dire que les deux joueurs doivent jouer les deux rôles: le processus serveur et le processus client, chacun à des temps déterminés et non mutables. \newline
+		L'application doit suivre un certain protocole pour que les deux joueurs puissent communiquer correctement et sans problèmes majeurs. Il a donc été décidé de suivre un type de protocole classique qui est celui du question/réponse. Néanmoins, nous n'avons pas choisi d'implémenter de serveur d'hébergement centralisant toutes les parties et dirigeant toutes les actions des clients, nous avons opté pour un échange de type pair à pair\footnote{Voir lexique}, c'est à dire que les deux joueurs doivent jouer les deux rôles: le processus serveur et le processus client, chacun à des temps déterminés et non mutables. \newline
 		Nous expliquerons dans cette partie la connexion entre les deux joueurs, comment se passe l'échange de données ainsi que le format que les données doivent respectées. Les deux premières parties seront également accompagné de schémas explicatifs sous forme d'automate disponible en annexe.
 		
 		\subsubsubsection{Connexion des joueurs}
@@ -16,7 +16,7 @@
 			
 			Les deux joueurs vont, en premier lieu, créer et lancer leur serveur respectif, en spécifiant l'adresse de la machine en format IPv4, un port d'écoute (nous vérifions qu'il soit compris entre 1024 et 65535), ainsi qu'un nombre de connexions autorisées qu'on nommera "backlog". \newline
 			
-			Ensuite, le joueur hôte met son serveur en attente d'une demande de connexion via sa socket d'écoute (il est donc considéré en tant que processus serveur) et, de son côté, le joueur invité (considéré comme le processus client à ce moment) va se connecter à l'adresse du joueur hôte. Cela aura pour effet, côté processus serveur, de créer une socket de service par laquelle le joueur passera pour communiquer avec le joueur invité. \newline
+			Ensuite, le joueur hôte met son serveur en attente d'une demande de connexion via sa socket d'écoute\footnote{Voir lexique} (il est donc considéré en tant que processus serveur) et, de son côté, le joueur invité (considéré comme le processus client à ce moment) va se connecter à l'adresse du joueur hôte. Cela aura pour effet, côté processus serveur, de créer une socket de service\footnote{Voir lexique} par laquelle le joueur passera pour communiquer avec le joueur invité. \newline
 			
 			À cette étape, il reste à faire la connexion inverse, c'est à dire que le joueur hôte (qui est maintenant le processus client) doit faire une demande de connexion à l'adresse du serveur du joueur invité (devenu le processus serveur) et, une fois la connexion acceptée par la socket d'écoute du processus serveur, une nouvelle socket de service est créée pour que le joueur invité puisse communiqué avec le joueur hôte.\newline
 			
@@ -31,7 +31,7 @@
 			
 			Enfin, les joueurs mettent à jour leur vue respective pour finalement changer le tour de jeu, c'est à dire que le joueur hôte passe la main au joueur invité. \newline
 			
-			Ce schéma, se répète quand c'est au tour du joueur invité de jouer, il suffit simplement d'inverser les rôles pour obtenir un tour de jeu complet et ce jusqu'à la victoire d'un des joueurs qui fermeront correctement ensuite proprement les différentes sockets mises en jeu.
+			Ce schéma, se répète quand c'est au tour du joueur invité de jouer, il suffit simplement d'inverser les rôles pour obtenir un tour de jeu complet et ce jusqu'à la victoire d'un des joueurs qui fermeront correctement ensuite les différentes sockets\footnote{Voir lexique} mises en jeu.
 			
 		\subsubsubsection{Format des données}
 		\label{dataformat}
@@ -58,4 +58,4 @@
 	
 	Au final, nous avons implanté notre propre protocole de validité des données, afin d'être sur de ce que nous recevons. Comme vous avez pu le lire précédemment, chacune de nos données envoyées possède un format propre a notre protocole et si, lors d'un envoie de donnée, nous n'avons pas le bon type de données, alors nous gérons le problème en indiquant qu'un problème est survenue lors de l'envoie des données, ce qui n'est pas normal et qui indique un problème au niveau du programme. De ce fait, nous fermons donc proprement l'application afin d'éviter tout problèmes lors d'une exécution prolongée du logiciel.\newline
 	
-	Voici ce qui conclut notre présentation de la partie réseau du projet. Nous avons donc vu ensemble le fonctionnement de notre protocole réseau ainsi que la façon dont nous avons gérer les potentielles erreurs pouvant survenir dans le cadre d'une partie en réseau. Il nous reste donc plus qu'une seule partie de l'application, il s'agit de l'IHM \footnote{Interface Homme-Machine, aussi appelé Graphical User Interface}, que nous allons vous expliquez dans la prochaine partie.
+	Voici ce qui conclut notre présentation de la partie réseau du projet. Nous avons donc vu ensemble le fonctionnement de notre protocole réseau ainsi que la façon dont nous avons gérer les potentielles erreurs pouvant survenir dans le cadre d'une partie en réseau. Il nous reste donc plus qu'une seule partie de l'application, il s'agit de l'IHM \footnote{Interface Homme-Machine, aussi appelé Graphical User Interface, voir lexique}, que nous allons vous expliquez dans la prochaine partie.
