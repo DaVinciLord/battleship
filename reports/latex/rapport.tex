@@ -12,9 +12,11 @@
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage{titlesec}
+\usepackage[title,titletoc]{appendix}
+\usepackage{rotating}
 
 \newcommand{\reporttitle}{Rapport de projet Bataille Navale}     % Titre
-\newcommand{\reportauthor}{Charles \textsc{Éponville}, Nicolas \textsc{Gille}, Vincent \textsc{Metton}, Grégoire \textsc{Pommier}, Sylvestre \textsc{Vimard}} % Auteur
+\newcommand{\reportauthor}{Charles \textsc{Éponville}, Nicolas \textsc{Gille}, Vincent \textsc{Metton},$\newline$ Grégoire \textsc{Pommier}, Sylvestre \textsc{Vimard}} % Auteur
 \newcommand{\reportsubject}{}  % Sujet
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \setlength{\parskip}{1ex} % Espace entre les paragraphes
@@ -22,6 +24,8 @@
 \hypersetup{
     pdftitle={\reporttitle},%
     pdfauthor={\reportauthor},%
+    colorlinks=false,
+    pdfborder={0 0 0},
 }
 
 \titleclass{\subsubsubsection}{straight}[\subsection]
@@ -74,6 +78,8 @@
   \renewcommand{\headrulewidth}{2pt}
   \renewcommand{\footrulewidth}{1pt}
   \tableofcontents % Table des matières
+  \newpage
+  \listoffigures  % table des figures
   \sloppy          % Justification moins stricte : des mots ne dépasseront pas des paragraphes
   \cleardoublepage
   \setcounter{page}{1}

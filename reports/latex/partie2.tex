@@ -9,9 +9,10 @@
 
 	\subsubsection{Protocole de l'application}
 		L'application doit suivre un certain protocole pour que les deux joueurs puissent communiquer correctement et sans problèmes majeurs. Il a donc été décidé de suivre un type de protocole classique qui est celui du question/réponse. Néanmoins, nous n'avons pas choisi d'implémenter de serveur d'hébergement centralisant toutes les parties et dirigeant toutes les actions des clients, nous avons opté pour un échange de type pair à pair, c'est à dire que les deux joueurs doivent jouer les deux rôles: le processus serveur et le processus client, chacun à des temps déterminés et non mutables. \newline
-		Nous expliquerons dans cette partie la connexion entre les deux joueurs ainsi que comment se passe l'échange de données.
+		Nous expliquerons dans cette partie la connexion entre les deux joueurs, comment se passe l'échange de données ainsi que le format que les données doivent respectées. Les deux premières parties seront également accompagné de schémas explicatifs sous forme d'automate disponible en annexe.
+		
 		\subsubsubsection{Connexion des joueurs}
-			Comme dit plus haut, chaque joueur doit jouer deux rôles bien distincts, celui du processus serveur comme celui du processus client. Dans ce cas-ci, il est donc bon de noter l'ordre des différentes opérations effectuées entre un joueur qui va accueillir la partie et celui qui va en être l'invité, nous allons donc expliciter quelles actions font parties du processus client et lesquelles font parties du processus serveur. \newline
+			Comme dit plus haut, chaque joueur doit jouer deux rôles bien distincts, celui du processus serveur comme celui du processus client. Dans ce cas-ci, il est donc bon de noter l'ordre des différentes opérations effectuées entre un joueur qui va accueillir la partie et celui qui va en être l'invité, nous allons donc expliciter quelles actions font parties du processus client et lesquelles font parties du processus serveur. \newline			
 			
 			Les deux joueurs vont, en premier lieu, créer et lancer leur serveur respectif, en spécifiant l'adresse de la machine en format IPv4, un port d'écoute (nous vérifions qu'il soit compris entre 1024 et 65535), ainsi qu'un nombre de connexions autorisées qu'on nommera "backlog". \newline
 			
