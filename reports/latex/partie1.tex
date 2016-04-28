@@ -12,11 +12,9 @@
 		Nous avons uns structure donnée qui se définit récursivement de la manière suivante : \newline
 		\begin{itemize}
 		\item Une case d'un Board est un Board à zéro dimensions.\newline
-		\newline	
 		\item Un Board à N dimensions, dont les tailles dans chaque dimension sont (TN, TN-1, … , T1) où les Ti sont les tailles, est composé de TN Boards à N - 1 dimensions, dont les tailles dans chaque dimension sont (TN-1, … , T1). 
 		\end{itemize}
 			
-
 	Notez bien que les Boards à N - 1 dimensions ont exactement les même tailles pour chaque dimension. Ainsi, un Board à deux dimensions sera toujours représentable comme un rectangle, un Board à trois dimensions peut-être visualisé comme un pavé droit et ceux des dimensions supérieures suivent le même principe, bien qu'ils soient plus difficile à représenter.
 \newline
 
@@ -27,7 +25,6 @@
 		\end{itemize}
 
 	Cette structure récursive nous permet d'instancier un Board de n'importe quel nombre de dimensions en lui passant tout simplement un tableau d'entier classique contenant les tailles dans chaque dimension.
-
 
 	\subsubsection{Remplissage des Boards}
 
@@ -50,79 +47,80 @@ Ces objets sont techniquement des tableaux d'entiers non mutables, dont on peut 
 
 	\subsubsection{Détails de l'implantation}
 
-	Les algorithmes d'accès aux cases de Board sont récursifs terminaux. \newline
+	Les algorithmes d'accès aux cases de Board sont récursifs terminaux; c'est à dire que lors de la compilation, le compilateur (si il y a compilation, ce qui est notre cas ici) peut remplacer ces appels récursifs par une simple boucle itérative. Cela s'explique par le fait que le rappelle a soi-même soit la dernière instruction a être évaluée. De ce fait, cela permet d'économiser de la mémoire lors des appels a ces fonctions, car seul l'adresse de l'appel de la fonction doit être sauvegarder sur la pile d'exécution. \newline
 	Structures des objets :
 
-	\begin{verbatim}
-structure Board :
-    champ Object : item;
-    champ Liste de Board : boards;
-fin structure
+	\begin{alltt}
+	{\bf Structure} Board :
+    	{\bf Champ} Object : item;
+    	{\bf Champ} Liste de Board : boards;
+	{\bf fin Structure}
 		
-structure Coordinates :
-    champ Tableau d'entiers : coord;
-    champ Entier : length;
-fin structure
-	\end{verbatim}
+	{\bf Structure} Coordinates :
+    	{\bf Champ} Tableau d'entiers : coord;
+	    {\bf Champ} Entier : length;
+	{\bf fin Structure}
+	\end{alltt}
 
 
 	\subsubsubsection{Algorithmes de Coordinates}
 	
-		\begin{verbatim}
-algo Coordinates creerCoordinates(Tableau d'entier t) :
+	\begin{alltt}
+{\bf Algo} Coordinates creerCoordinates(Tableau d'entier t) :
     coord <- copie de t;
 	length <- longueur de t;
-fin algo
+{\bf finAlgo}
 			
-algo Entier get(Coordinates c, Entier index) :
+{\bf Algo} Entier get(Coordinates c, Entier index) :
     renvoyer c.coord[index];
-fin algo
-		\end{verbatim}
-		
+{\bf finAlgo}
+	\end{alltt}
 
+		
+	\newpage
 	\subsubsubsection{Algorithmes de Board}
 
-	\begin{verbatim}
-algo Board creerBoard(Coordinates c) :
+	\begin{alltt}
+{\bf Algo} Board creerBoard(Coordinates c) :
     renvoyer creerBoard(c, 0);
-fin algo
+{\bf finAlgo}
 		
-algo Board creerBoard(Coordinates c, entier index) :
+{\bf Algo} Board creerBoard(Coordinates c, entier index) :
     Board b;
     b.item <- null;
-    si index = c.length alors
+    {\bf si} index = c.length {\bf alors}
         renvoyer b;
-    finsi
+    {\bf finSi}
     b.boards <- nouvelle Liste de Board;
-    pour entier k de 0 à c.get(index) faire
+    {\bf pour} entier k de 0 à c.get(index) {\bf faire}
         b.boards[k] <- creerBoard(c, index + 1);
-    fin pour
+    {\bf finPour}
     renvoyer b;
-fin algo
+{\bf finAlgo}
 		
-algo Object getItem(Board b, Coordinates c) :
+{\bf Algo} Object getItem(Board b, Coordinates c) :
     renvoyer getItem(b, c, 0);
-fin algo
+{\bf finAlgo}
 		
 		
-algo Object getItem(Board b, Coordinates c, Entier index) :
-    si index = c.length alors
+{\bf Algo} Object getItem(Board b, Coordinates c, Entier index) :
+    {\bf si} index = c.length {\bf alors}
         renvoyer b.item;
-    finsi
+    {\bf finSi}
     renvoyer getItem(b.boards.get(c.get(index)), c, index + 1);
-fin algo
+{\bf finAlgo}
 		
-algo voidsetItem(Board b, Coordinates c, Object item) :
+{\bf Algo} voidsetItem(Board b, Coordinates c, Object item) :
     setItem(b, c, 0, item);
-fin algo
+{\bf finAlgo}
 		
-algo void setItem(Board b, Coordinates c, Entier index, Object item) :
-    si index = c.length alors
+{\bf Algo} void setItem(Board b, Coordinates c, Entier index, Object item) :
+    {\bf si} index = c.length {\bf alors}
         b.item <- item;
-    finsi
+    {\bf finSi}
     setItem(b.boards.get(c.get(index)), c, index + 1, item);
-fin algo
-	\end{verbatim}
+{\bf finAlgo}
+	\end{alltt}
 
 \subsection{Les bateaux en dimensions variables}
 	Les navires sont représentés par la classe Ship. Ils ont une longueur, un nom et contiennent les coordonnées des cases du Board qu'ils occupent lorsqu'ils sont placés. \newline
@@ -144,7 +142,6 @@ fin algo
 		\item Non-Chevauchement : une case ne peut être occupée que par un seul Ship.
 	\end{itemize}
 
-
 \subsubsection{Tir sur les Ships}
 
 	Les tirs sur les Ships se font via le Board sur lequel ils sont disposés. Pour cela, le type générique Board est paramétré soit par le type Case, soit par le type State. \newline
@@ -159,10 +156,13 @@ fin algo
 		\item SUNK : Même chose que HIT, avec en plus l'information que le Ship touché a été coulé par ce tir.
 	\end{itemize}
 
-
 	Les objets Case ont pour rôle de stocker deux informations : la présence d'un Ship et si la case a déjà reçu un tir. Ces deux informations suffisent à faire la distinction entre les états NOT$\_$AIMED, MISSED et HIT/SUNK. \newline
 	
-	Un objet Case sert également à relayer un tir jusqu'au Ship qui l'occupe, s'il y en a un, et à s'assurer qu'on ne tire pas deux fois au même endroit. Cette condition rend non-nécessaire le stockage dans les Ship des endroits précis où ils ont été touchés : un Ship qui a été touché un nombre de fois égal à sa longueur a forcément été touché sur toutes les cases qu'il occupe, et on sait ainsi qu'il a été coulé.
+	Un objet Case sert également à relayer un tir jusqu'au Ship qui l'occupe, s'il y en a un, et à s'assurer qu'on ne tire pas deux fois au même endroit. Cette condition rend non-nécessaire le stockage dans les Ship des endroits précis où ils ont été touchés : un Ship qui a été touché un nombre de fois égal à sa longueur a forcément été touché sur toutes les cases qu'il occupe, et on sait ainsi qu'il a été coulé.\newline	
+	
+	Voici ce qui conclut la partie sur le modèles en tant que tels, vous avez vu comment est généré notre plateau de jeu ainsi, la façon dont on place nos bateaux sur cette grille de jeu ainsi que la façon dont se passe les tirs. Nous allons donc maintenant voir les intelligences artificielles développer dans le cadre du projet.
+	
+	\newpage
 
 \subsection{Les intelligences artificielles}
 	Il nous à été demandé de pouvoir jouer à la bataille navale en local. 
@@ -174,95 +174,105 @@ De ce fait, nous avons due développer une Intelligence Artificiel (IA), car jou
     L'IA facile fut la première intelligence artificielle programmée. Son cheminement est simple, elle consiste simplement à choisir aléatoirement une case, en vérifiant bien entendu que celle-ci n'est pas déjà était tirée au préalable, puis de tirer dessus, qu'importe l'avancement de la partie.\newline
     Le choix de l'aléatoire est fait de la façon suivante :\newline
     
-    \begin{verbatim}
-        Fonction EasyAdvisor :
-        Entrée : Board un tableau de state contenant les resultats de tous les tirs.
-                 Dim le tableau des tailles des dimension de Board.
-        Sortie : Coord une Coordonnée d’une case non touchée.
-        Début
-            Faire {
-                Entier distance = Alea(0, taille(Board)) ;
-                Entier longueur = taille(Board) ;
-                Pour (n allant de 0 à taille(Dim)) {
-                    longueur = longueur / Dim[taille(dim) - 1 – n) ;
-                    Ajout(Coord, taille(dim) - 1 – n, distance / longueur) ;
-                    Distant = distance % longueur
-                }
-            } tant que (Board[Coord] != NON_CIBLÉ) ;
-            Retourner Coord ;
-        Fin
-    \end{verbatim}
+\begin{alltt}
+{\bf Fonction} EasyAdvisor :
+	{\bf Entrée} : Board un tableau de state contenant les resultats de tous les tirs.
+          Dim le tableau des tailles des dimension de Board.
+    {\bf Sortie} : Coord une Coordonnée d’une case non touchée.
+    {\bf Début}
+        {\bf Faire}
+            Entier distance = Alea(0, taille(Board)) ;
+            Entier longueur = taille(Board) ;
+            {\bf Pour} (n allant de 0 à taille(Dim))
+                longueur = longueur / Dim[taille(dim) - 1 – n) ;
+                Ajout(Coord, taille(dim) - 1 – n, distance / longueur) ;
+                Distant = distance % longueur
+            {\bf finPour}
+        {\bf Tant que} (Board[Coord] != NON_CIBLÉ) ;
+        Retourner Coord ;
+    {\bf Fin}
+{\bf Fin Procedure} 
+\end{alltt}
+        
+\newpage        
         
 \subsubsection{IA Moyen}
 	L'IA moyen, deuxième IA développée, fonctionne de manière similaire à l'IA facile, à ceci près qu'une fois un bateau touché l'IA passe en mode "chasse".\newline
-	Le mode chasse indique à l'IA de tirer sur les quatres directions(nord, sud, est et ouest) entourant la case touchée et, si une nouvelle case est touchée, repart de cette dernière pour ainsi continuer jusqu'à avoir coulé le bateau.\newline
+	Le mode chasse indique à l'IA de tirer sur les quatres directions(nord, sud, est et ouest) entourant la case touchée et, si une nouvelle case est touchée, celle-ci repart de cette dernière pour ainsi continuer jusqu'à avoir coulé le bateau.\newline
 	Elle repart alors dans sa routine de ciblage.\newline
 	L'algorithme est présenté ci-dessous:
     
-    \begin{verbatim}
-        Procedure MediumAdvisor :
-            Entrée : Board un tableau de state contenant les résultats
-            		 de tous les tirs.
-                     Dim le tableau des tailles des dimension de Board.
-                     Coe une liste de case.
-            Sortie : Coord une Coordonnée d’une case non touchée.
-            
-            Début
-                Si estVide(coe) {
-                    Coodinate c = EasyAdvisor(Board, Dim) ;
-                    SI (Tir(enemy, c) != MANQUÉ) {
-                        AjouterCasesAdjacentes(coe, coord) ;
-                    }
-                    Retourner Coord ;
-                }
-                Sinon {
-                    Si (Board[Coe[0]] == NON_CIBLÉ) {
-                        Coord = coe[0] ;
-                        Retirer(coe, 0) ;
-                        Retourner Coord ;
-                    }
-                    MediumAdvisor(Board, Dim, Coe);
-                }
-            Fin
-    \end{verbatim}
+\begin{alltt}
+{\bf Procedure} MediumAdvisor :
+    {\bf Entrée} : Board un tableau de state contenant les résultats de tous les tirs.
+              Dim le tableau des tailles des dimension de Board.
+              Coe une liste de case.
+    {\bf Sortie} : Coord une Coordonnée d’une case non touchée.
+
+    {\bf Début}
+        {\bf Si} estVide(coe) 
+            Coodinate c = EasyAdvisor(Board, Dim) ;
+            {\bf SI} (Tir(enemy, c) != MANQUÉ)
+                AjouterCasesAdjacentes(coe, coord) ;
+            {\bf FinSi}
+            Retourner Coord ;
+        {\bf Sinon} 
+            {\bf Si} (Board[Coe[0]] == NON_CIBLÉ)
+                Coord = coe[0] ;
+                Retirer(coe, 0) ;
+                Retourner Coord ;
+            {\bf FinSi}
+            MediumAdvisor(Board, Dim, Coe);
+        {\bf FinSi}
+    {\bf Fin}
+{\bf Fin Procedure}            
+\end{alltt}
+
+\newpage
 
 \subsubsection{IA Difficile}
     L'IA difficile, troisième IA développée, fonctionne de manière similaire à l'IA normale, c'est à dire qu'elle effectue sa routine de "ciblage" jusqu'à toucher un bateau, puis passe en mode "chasse" une fois un bateau touché.
     La différence avec l'IA normale est que cette IA ne tire pas de case adjacente l'une à l'autre. En effet, suivant la taille minimal du bateau ennemi existant au début de partie, afin qu'elle ne tire que toute les tailles du bateau minimal.
-    Par exemple, dans le cas ou le plus petit bateau est un batea de 2, l'IA va donc écarter ses tirs de 2 cases d'écart à chaque fois. 
-    \begin{verbatim}
-            Procedure MediumAdvisor :
-            Entrée : Board un tableau de state contenant les resultats de tous les tirs.
-                     Dim le tableau des tailles des dimension de Board.
-                     Coe une liste de case.
-                     Minsize la taille du plus petit bateau present sur la grille
-            Sortie : Coord une Coordonnée d’une case non touchée.
+    Par exemple, dans le cas ou le plus petit bateau est un bateau de 2, l'IA va donc écarter ses tirs de 2 cases d'écart à chaque fois.
+    
+\begin{alltt}
+{\bf Procedure} HardAdvisor :
+    {\bf Entrée} : Board un tableau de state contenant les résultats de tous les tirs.
+              Dim le tableau des tailles des dimension de Board.
+              Coe une liste de case.
+              Minsize la taille du plus petit bateau présent sur la grille
+    {\bf Sortie} : Coord une Coordonnée d’une case non touchée.
 
-            Si estVide(coe) {
-                Faire {
-                    Entier distance = Alea(0, taille(Board)) ;
-                    Entier longueur = taille(Board) ;
-                    Entier mod = 0 ;
-                    Pour (n allant de 0 à taille(Dim)) {
-                        Mod = 0 ;
-                        longueur = longueur / Dim[taille(dim) - 1 – n) ;
-                        Ajout(Coord, taille(dim) - 1 – n, distance / longueur) ;
-                        Distant = distance % longueur
-                        Mod = (mod + distance /longueur) % minsize;
-                    }
-                } tant que (mod != 0 || Board[Coord] != NOTAIMED) ;
+    {\bf Début}
+        {\bf Si} estVide(coe)
+            {\bf Faire}
+                Entier distance = Alea(0, taille(Board)) ;
+                Entier longueur = taille(Board) ;
+                Entier mod = 0 ;
+                {\bf Pour} (n allant de 0 à taille(Dim))
+                    Mod = 0 ;	
+                    longueur = longueur / Dim[taille(dim) - 1 – n) ;
+                    Ajout(Coord, taille(dim) - 1 – n, distance / longueur) ;
+                    Distant = distance % longueur
+                    Mod = (mod + distance /longueur) % minsize;
+                {\bf FinPour}
+            {\bf Tant Que}(mod != 0 || Board[Coord] != NOTAIMED) ;
 
-                SI (Tir(enemy, coord) != MISSED) {
-                    AjouterCasesAdjacentes(coe, coord) ;
-                }   
+            {\bf SI} (Tir(enemy, coord) != MISSED)
+                AjouterCasesAdjacentes(coe, coord) ;
+            {\bf FinSi}   
+            Retourner Coord ;
+        {\bf Sinon}
+            {\bf Si} (Board[Coe[0]] == NOTAIMED)
+                Coord = coe[0] ;
+                Retirer(coe, 0) ;
                 Retourner Coord ;
-            }
-            Sinon {
-                Si (Board[Coe[0]] == NOTAIMED {
-                    Coord = coe[0] ;
-                    Retirer(coe, 0) ;Retourner Coord ;
-                }
-            }
-            MediumAdvisor(Board, Dim, Coe) ;
-        Fin Procedure
-    \end{verbatim}
+            {\bf FinSi}
+        {\bf FinSi}
+        MediumAdvisor(Board, Dim, Coe) ;
+    {\bf Fin}
+{\bf Fin Procedure}
+\end{alltt}
+    
+    Voici ce qui conclut notre première partie présentant le modèle de notre application, nous avons donc vu dans un premier temps le fonctionnement de notre grille de jeu, qui est donc une grille modulable à un nombre de dimension infini. Nous avons ensuite expliqué comment fonctionne nos bateaux, et la façon dont on tire dessus. Puis pour finir, nous avons montré le fonctionnement de nos IA ainsi que les différences entres les 3 niveaux de difficultés.
+    Nous allons donc maintenant passer sur la seconde partie du projet qui est celle du réseau.
